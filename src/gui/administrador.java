@@ -116,6 +116,23 @@ public class administrador extends javax.swing.JFrame {
         pswAO = new javax.swing.JPasswordField();
         ButtonCrearAO = new javax.swing.JButton();
         mensaje1 = new javax.swing.JLabel();
+        jPanel15 = new javax.swing.JPanel();
+        jLabel41 = new javax.swing.JLabel();
+        jLabel42 = new javax.swing.JLabel();
+        jLabel45 = new javax.swing.JLabel();
+        jLabel46 = new javax.swing.JLabel();
+        jLabel47 = new javax.swing.JLabel();
+        jLabel48 = new javax.swing.JLabel();
+        jLabel49 = new javax.swing.JLabel();
+        crear_NITProv = new javax.swing.JTextField();
+        crear_NombreProv = new javax.swing.JTextField();
+        Crear_DirProv = new javax.swing.JTextField();
+        crear_TelProv = new javax.swing.JPasswordField();
+        Crear_TFaxProv = new javax.swing.JTextField();
+        Crear_CiudadProv = new javax.swing.JTextField();
+        Crear_PaisProv = new javax.swing.JTextField();
+        jLabel50 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         AO1 = new javax.swing.JTabbedPane();
         jPanel8 = new javax.swing.JPanel();
@@ -416,6 +433,111 @@ public class administrador extends javax.swing.JFrame {
         );
 
         AO.addTab("Auxiliar de Oficina", jPanel7);
+
+        jLabel41.setText("Ingrese los siguientes datos.");
+
+        jLabel42.setText("NIT");
+
+        jLabel45.setText("Nombre");
+
+        jLabel46.setText("Dirección");
+
+        jLabel47.setText("Telefono");
+
+        jLabel48.setText("Telefax");
+
+        jLabel49.setText("Ciudad");
+
+        crear_NITProv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                crear_NITProvActionPerformed(evt);
+            }
+        });
+
+        Crear_DirProv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Crear_DirProvActionPerformed(evt);
+            }
+        });
+
+        jLabel50.setText("País");
+
+        jButton3.setText("Crear Proveedor");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
+        jPanel15.setLayout(jPanel15Layout);
+        jPanel15Layout.setHorizontalGroup(
+            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel15Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel49, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel48, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel41)
+                    .addComponent(jLabel46)
+                    .addComponent(jLabel47)
+                    .addComponent(jLabel45)
+                    .addComponent(jLabel42)
+                    .addComponent(jLabel50, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(58, 58, 58)
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Crear_DirProv, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
+                    .addComponent(crear_NombreProv)
+                    .addComponent(crear_NITProv, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(crear_TelProv)
+                    .addComponent(Crear_TFaxProv)
+                    .addComponent(Crear_CiudadProv)
+                    .addComponent(Crear_PaisProv))
+                .addGap(134, 134, 134))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel15Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton3)
+                .addContainerGap())
+        );
+        jPanel15Layout.setVerticalGroup(
+            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel15Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel41)
+                .addGap(29, 29, 29)
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel42)
+                    .addComponent(crear_NITProv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel45)
+                    .addComponent(crear_NombreProv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel46)
+                    .addComponent(Crear_DirProv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel47)
+                    .addComponent(crear_TelProv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel48)
+                    .addComponent(Crear_TFaxProv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel49)
+                    .addComponent(Crear_CiudadProv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Crear_PaisProv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel50))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
+                .addComponent(jButton3)
+                .addContainerGap())
+        );
+
+        AO.addTab("Proveedor", jPanel15);
 
         javax.swing.GroupLayout crearUsuarioLayout = new javax.swing.GroupLayout(crearUsuario);
         crearUsuario.setLayout(crearUsuarioLayout);
@@ -1528,6 +1650,30 @@ public class administrador extends javax.swing.JFrame {
                
     }//GEN-LAST:event_btnPdf001ActionPerformed
 
+    private void Crear_DirProvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Crear_DirProvActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Crear_DirProvActionPerformed
+
+    private void crear_NITProvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crear_NITProvActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_crear_NITProvActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        Usuario u = cliente.Cliente.conectarU();
+        boolean valido =false;
+        try {
+            valido =u.CrearProveedor(this.crear_NITProv.getText(), this.crear_NombreProv.getText(), this.Crear_DirProv.getText(), new Integer(this.crear_TelProv.getText()),new Integer(this.Crear_TFaxProv.getText()), this.Crear_CiudadProv.getText(), this.Crear_PaisProv.getText());
+            if(valido)
+                JOptionPane.showMessageDialog(null, "Proveedor Creado");
+            else
+                JOptionPane.showMessageDialog(null, "Error creando al proveedor");
+                
+        
+        } catch (RemoteException ex) {
+            Logger.getLogger(administrador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     public boolean validar(String correo) {
         pattern = Pattern.compile(this.emailValid);
         boolean ret = false;
@@ -1594,6 +1740,10 @@ public class administrador extends javax.swing.JFrame {
     private javax.swing.JButton ButtonCrearRA2;
     private javax.swing.JButton ButtonCrearRA_act;
     private javax.swing.JButton ButtonVolver;
+    private javax.swing.JTextField Crear_CiudadProv;
+    private javax.swing.JTextField Crear_DirProv;
+    private javax.swing.JTextField Crear_PaisProv;
+    private javax.swing.JTextField Crear_TFaxProv;
     private javax.swing.JTabbedPane TabbedGestionUsuarios;
     private javax.swing.JTabbedPane TabbedPaneUsuarios;
     private javax.swing.JTable TablaSolicitudesRev;
@@ -1613,6 +1763,9 @@ public class administrador extends javax.swing.JFrame {
     private javax.swing.JTextField correoRA_act;
     private javax.swing.JTextField correoRA_eli;
     private javax.swing.JPanel crearUsuario;
+    private javax.swing.JTextField crear_NITProv;
+    private javax.swing.JTextField crear_NombreProv;
+    private javax.swing.JPasswordField crear_TelProv;
     private javax.swing.Box.Filler filler1;
     private javax.swing.JTextField identificacionAO;
     private javax.swing.JTextField identificacionAO2;
@@ -1622,6 +1775,7 @@ public class administrador extends javax.swing.JFrame {
     private javax.swing.JTextField identificacionRA_eli;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1657,9 +1811,17 @@ public class administrador extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
+    private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel43;
     private javax.swing.JLabel jLabel44;
+    private javax.swing.JLabel jLabel45;
+    private javax.swing.JLabel jLabel46;
+    private javax.swing.JLabel jLabel47;
+    private javax.swing.JLabel jLabel48;
+    private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -1670,6 +1832,7 @@ public class administrador extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;

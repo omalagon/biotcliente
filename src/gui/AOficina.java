@@ -35,6 +35,7 @@ public class AOficina extends javax.swing.JFrame {
     private static BigDecimal id = null;
     private static String area = null;
     private static GregorianCalendar hoy = new GregorianCalendar();
+
     /**
      * Creates new form administrador
      *
@@ -46,7 +47,7 @@ public class AOficina extends javax.swing.JFrame {
         initComponents();
         setIcon();
         id = new BigDecimal(ide);
-        
+
         this.fecha.setText(hoy.get(Calendar.DAY_OF_MONTH) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/" + hoy.get(Calendar.YEAR));
         Usuario u = cliente.Cliente.conectarU();
         String user = null;
@@ -56,7 +57,14 @@ public class AOficina extends javax.swing.JFrame {
         } catch (RemoteException ex) {
             Logger.getLogger(AOficina.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        try {
+            ArrayList<proveedor> todosProveedores = u.todosProveedores();
+            for (proveedor p : todosProveedores) {
+                this.Apro_NITProv.addItem(p.getNIT());
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(AOficina.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.AreaProcesoSolicitante.setText(area);
         this.AreaProcesoSolicitante.setEditable(false);
         this.NombreSolicitante.setText(user);
@@ -139,6 +147,9 @@ public class AOficina extends javax.swing.JFrame {
         BotonRefrescarSolRev = new javax.swing.JButton();
         btnRealizarOrden = new javax.swing.JButton();
         btnAyudaOrden = new javax.swing.JButton();
+        jLabel28 = new javax.swing.JLabel();
+        btnVerProv = new javax.swing.JButton();
+        Apro_NITProv = new javax.swing.JComboBox();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         tablaitemsCot = new javax.swing.JTable();
@@ -182,8 +193,6 @@ public class AOficina extends javax.swing.JFrame {
         jLabel35 = new javax.swing.JLabel();
         jLabel36 = new javax.swing.JLabel();
         subtotal = new javax.swing.JLabel();
-        jLabel38 = new javax.swing.JLabel();
-        iva = new javax.swing.JLabel();
         jLabel40 = new javax.swing.JLabel();
         total = new javax.swing.JLabel();
         jLabel42 = new javax.swing.JLabel();
@@ -391,7 +400,7 @@ public class AOficina extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 144, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
@@ -425,7 +434,7 @@ public class AOficina extends javax.swing.JFrame {
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 573, Short.MAX_VALUE)
+            .addGap(0, 680, Short.MAX_VALUE)
         );
 
         jTabbedPane2.addTab("Servicio", jPanel5);
@@ -486,7 +495,7 @@ public class AOficina extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(RefrescarInven)
@@ -593,7 +602,7 @@ public class AOficina extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 195, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 302, Short.MAX_VALUE)
                 .addComponent(BotonCotizar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -610,7 +619,7 @@ public class AOficina extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createSequentialGroup()
                     .addGap(44, 44, 44)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(362, Short.MAX_VALUE)))
+                    .addContainerGap(469, Short.MAX_VALUE)))
         );
 
         tabbedReportes.addTab("Solicitudes", jPanel6);
@@ -659,6 +668,17 @@ public class AOficina extends javax.swing.JFrame {
             }
         });
 
+        jLabel28.setText("Ingrese el NIT del proveedor ");
+
+        btnVerProv.setText("Ver Listado de Proveedores");
+        btnVerProv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerProvActionPerformed(evt);
+            }
+        });
+
+        Apro_NITProv.setMaximumRowCount(3);
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -679,7 +699,13 @@ public class AOficina extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel19))
                             .addComponent(btnAyudaOrden))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(jLabel28)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(Apro_NITProv, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnVerProv)))
                 .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
@@ -692,7 +718,12 @@ public class AOficina extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAyudaOrden)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel28)
+                    .addComponent(btnVerProv)
+                    .addComponent(Apro_NITProv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 534, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BotonRefrescarSolRev)
@@ -872,7 +903,7 @@ public class AOficina extends javax.swing.JFrame {
                 .addComponent(jLabel15)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(obsCot, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 135, Short.MAX_VALUE)
                 .addComponent(BotonRevisar)
                 .addContainerGap())
             .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -932,13 +963,9 @@ public class AOficina extends javax.swing.JFrame {
         jLabel35.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel35.setText("Datos Pedido");
 
-        jLabel36.setText("Subtotal");
+        jLabel36.setText("Subtotal (Antes de IVA)");
 
         subtotal.setText("jLabel37");
-
-        jLabel38.setText("IVA");
-
-        iva.setText("jLabel39");
 
         jLabel40.setText("Total");
 
@@ -972,13 +999,6 @@ public class AOficina extends javax.swing.JFrame {
                     .addComponent(jSeparator7)
                     .addComponent(jSeparator8)
                     .addComponent(jSeparator9)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1))
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addComponent(jLabel42)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane10))
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addComponent(jLabel22)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -995,30 +1015,40 @@ public class AOficina extends javax.swing.JFrame {
                                 .addComponent(oc_nomProv)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(numorden))))
-                    .addComponent(jLabel35)
-                    .addComponent(jLabel23)
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel24)
-                            .addComponent(jLabel25)
-                            .addComponent(jLabel26)
-                            .addComponent(jLabel27))
-                        .addGap(256, 256, 256)
+                            .addComponent(jLabel35)
+                            .addComponent(jLabel23)
+                            .addGroup(jPanel9Layout.createSequentialGroup()
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel24)
+                                    .addComponent(jLabel25)
+                                    .addComponent(jLabel26)
+                                    .addComponent(jLabel27))
+                                .addGap(256, 256, 256)
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(oc_nit)
+                                    .addComponent(oc_dir)
+                                    .addComponent(oc_cel)
+                                    .addComponent(oc_fax)))
+                            .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel9Layout.createSequentialGroup()
+                                    .addComponent(jLabel40)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(total))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel9Layout.createSequentialGroup()
+                                    .addComponent(jLabel36)
+                                    .addGap(100, 100, 100)
+                                    .addComponent(subtotal))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(oc_nit)
-                            .addComponent(oc_dir)
-                            .addComponent(oc_cel)
-                            .addComponent(oc_fax)))
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel36)
-                            .addComponent(jLabel38)
-                            .addComponent(jLabel40))
-                        .addGap(50, 50, 50)
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(subtotal)
-                            .addComponent(total)
-                            .addComponent(iva))))
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                                .addComponent(jLabel42)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 583, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         jPanel9Layout.setVerticalGroup(
@@ -1065,25 +1095,17 @@ public class AOficina extends javax.swing.JFrame {
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel36)
                     .addComponent(subtotal))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel38)
-                    .addComponent(iva))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel40)
                     .addComponent(total))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(jLabel42, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE))
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                    .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel42, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addContainerGap())
         );
@@ -1410,59 +1432,76 @@ public class AOficina extends javax.swing.JFrame {
     }//GEN-LAST:event_BotonRefrescarSolRevActionPerformed
 
     private void btnRealizarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarOrdenActionPerformed
-        Usuario u  = cliente.Cliente.conectarU();
+        Usuario u = cliente.Cliente.conectarU();
         this.TabbedPaneUsuarios.setSelectedIndex(3);
         this.fechaOrden.setText(hoy.get(Calendar.DAY_OF_MONTH) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/" + hoy.get(Calendar.YEAR));
         int selectedRow = this.TablaSolicitudesRev.getSelectedRow();
-        String proveedor = this.TablaSolicitudesRev.getValueAt(selectedRow, 3).toString();
-        DefaultTableModel df = (DefaultTableModel)this.tablaDatosPedido.getModel();
-        float total =0;
-        String com="";
+        String proveedor = this.Apro_NITProv.getSelectedItem().toString();
+        DefaultTableModel df = (DefaultTableModel) this.tablaDatosPedido.getModel();
+        float total = 0;
+        String com = "";
+        ArrayList<itemsOrdenCompra> pedidoOrdenCompra = new ArrayList<>();
         try {
             proveedor prov = u.getDatosProveedor(proveedor);
-            this.oc_nomProv.setText(prov.getNombre());
-            this.oc_nit.setText(prov.getNIT());
-            this.oc_dir.setText(prov.getDireccion());
-            this.oc_cel.setText(new Integer(prov.getTelefono()).toString());
-            this.oc_fax.setText(new Integer(prov.getTelefax()).toString());
-            ArrayList<itemsOrdenCompra> pedidoOrdenCompra = u.pedidoOrdenCompra(proveedor);
-            for (itemsOrdenCompra p : pedidoOrdenCompra) {
-                Vector datos = new Vector();
-                datos.add(p.getCinterno());
-                datos.add(p.getInventario());
-                datos.add(p.getCaprobada());
-                datos.add(p.getPresen());
-                datos.add(p.getPrecioU());
-                datos.add(p.getvTotal());
-                total +=p.getvTotal();
-                com += p.getObs() +" // ";
-                df.addRow(datos);    
+            if (prov != null) {
+                this.oc_nomProv.setText(prov.getNombre());
+                this.oc_nit.setText(prov.getNIT());
+                this.oc_dir.setText(prov.getDireccion());
+                this.oc_cel.setText(new Integer(prov.getTelefono()).toString());
+                this.oc_fax.setText(new Integer(prov.getTelefax()).toString());
+                pedidoOrdenCompra = u.pedidoOrdenCompra(proveedor);
+                for (itemsOrdenCompra p : pedidoOrdenCompra) {
+                    Vector datos = new Vector();
+                    datos.add(p.getCinterno());
+                    datos.add(p.getInventario());
+                    datos.add(p.getCaprobada());
+                    datos.add(p.getPresen());
+                    datos.add(p.getPrecioU());
+                    datos.add(p.getvTotal());
+                    total += p.getvTotal();
+                    com += p.getObs() + " // ";
+                    df.addRow(datos);
+                }
             }
-        this.total.setText(new Float(total).toString());
-        this.subtotal.setText(new Float(total*0.84).toString());
-        this.iva.setText(new Float(total*0.16).toString());
-        this.obsOrden.setText(com);
-        u.crearOrdenCompra(this.id);
-        BigDecimal numOrden = u.OrdenValida(id);
-        this.numorden.setText(numOrden.toString());
-        boolean valido = u.itemsxorden(numOrden,proveedor, pedidoOrdenCompra, com);
-        if(valido ==true)
-        {
-            JOptionPane.showMessageDialog(null, "Hecho...Numero de Orden: "+ numOrden.toString());
-        }
-        else
-        {
-            JOptionPane.showMessageDialog(null, "Error!");
-        }
+            this.total.setText(new Float(total).toString());
+            this.subtotal.setText(new Float(total).toString());
+            this.obsOrden.setText(com);
+            u.crearOrdenCompra(this.id);
+            BigDecimal numOrden = u.OrdenValida(id);
+            this.numorden.setText(numOrden.toString());
+            boolean valido = u.itemsxorden(numOrden, proveedor, pedidoOrdenCompra, com);
+            if (valido == true) {
+                JOptionPane.showMessageDialog(null, "Hecho...Numero de Orden: " + numOrden.toString());
+            } else {
+                JOptionPane.showMessageDialog(null, "Error!");
+            }
         } catch (RemoteException ex) {
             Logger.getLogger(AOficina.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnRealizarOrdenActionPerformed
 
     private void btnAyudaOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAyudaOrdenActionPerformed
-        String msg ="La orden de compra se realizará para el proveedor de la fila que ud seleccione, de tal manera que se procesarán todos los ítems relacionados con él";
+        String msg = "Debe seleccionar el NIT del proveedor al cual le va a realizar un pedido";
         JOptionPane.showMessageDialog(null, msg);
     }//GEN-LAST:event_btnAyudaOrdenActionPerformed
+
+    private void btnVerProvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerProvActionPerformed
+        Usuario u = cliente.Cliente.conectarU();
+        try {
+            ArrayList<proveedor> todosProveedores = u.todosProveedores();
+            ArrayList<Vector> tabla = new ArrayList<>();
+            for (proveedor t : todosProveedores) {
+                Vector datos = new Vector();
+                datos.add(t.getNIT());
+                datos.add(t.getNombre());
+                tabla.add(datos);
+            }
+            verProveedores ver = new verProveedores(tabla);
+            ver.setVisible(true);
+        } catch (RemoteException ex) {
+            Logger.getLogger(AOficina.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnVerProvActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
@@ -1524,6 +1563,7 @@ public class AOficina extends javax.swing.JFrame {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox Apro_NITProv;
     private javax.swing.JTextField AreaProcesoSolicitante;
     private javax.swing.JButton BotonAyudaCot;
     private javax.swing.JButton BotonCotizar;
@@ -1544,10 +1584,10 @@ public class AOficina extends javax.swing.JFrame {
     private javax.swing.JButton botonAgregar;
     private javax.swing.JButton btnAyudaOrden;
     private javax.swing.JButton btnRealizarOrden;
+    private javax.swing.JButton btnVerProv;
     private javax.swing.JLabel fecha;
     private javax.swing.JLabel fechaCot;
     private javax.swing.JLabel fechaOrden;
-    private javax.swing.JLabel iva;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -1570,10 +1610,10 @@ public class AOficina extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
-    private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel42;

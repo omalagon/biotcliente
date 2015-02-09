@@ -218,7 +218,6 @@ public class InicioSesion extends javax.swing.JFrame {
             }
             if (validarTipoUsuario == true && tipo.equalsIgnoreCase("ra")) {
                 RArea responsable = new RArea(usuario);
-
                 responsable.setVisible(true);
                 this.labelError.setText("Correcto");
                 this.labelError.setForeground(Color.BLUE);
@@ -262,7 +261,7 @@ public class InicioSesion extends javax.swing.JFrame {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel("com.jtattoo.plaf.noire.NoireLookAndFeel");
+                    javax.swing.UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
                     break;
                 }
             }
