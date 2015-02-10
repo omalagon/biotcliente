@@ -192,6 +192,7 @@ public class RArea extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         btnProcesarRec = new javax.swing.JButton();
         btnEnviarRec = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -999,6 +1000,13 @@ public class RArea extends javax.swing.JFrame {
 
         TabbedPaneUsuarios.addTab("Recepción de Pedidos", jPanel8);
 
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -1009,6 +1017,8 @@ public class RArea extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(labelAdministrador)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addGap(85, 85, 85)
                         .addComponent(ButtonCerrarSesion))
                     .addComponent(TabbedPaneUsuarios))
                 .addContainerGap())
@@ -1019,7 +1029,9 @@ public class RArea extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelAdministrador)
-                    .addComponent(ButtonCerrarSesion))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(ButtonCerrarSesion)
+                        .addComponent(jButton1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(TabbedPaneUsuarios)
                 .addContainerGap())
@@ -1361,6 +1373,11 @@ public class RArea extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnEnviarRecActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        descargoConsumos d = new descargoConsumos(this.id);
+        d.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1421,6 +1438,7 @@ public class RArea extends javax.swing.JFrame {
     private javax.swing.JLabel fecha;
     private javax.swing.JLabel fecha1;
     private javax.swing.JLabel iva;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

@@ -9,6 +9,7 @@ import EstructurasAux.ItemInventario;
 import EstructurasAux.aprobacion;
 import EstructurasAux.cotizaciones;
 import EstructurasAux.fdc_001;
+import EstructurasAux.informeDescargos;
 import EstructurasAux.itemxproveedor;
 import EstructurasAux.solicitudPr;
 import EstructurasAux.users;
@@ -32,8 +33,10 @@ import java.util.logging.Logger;
 import java.util.regex.*;
 import javax.swing.DropMode;
 import javax.swing.JFileChooser;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
 import javax.swing.plaf.FileChooserUI;
 import javax.swing.plaf.ProgressBarUI;
 import javax.swing.table.DefaultTableModel;
@@ -43,13 +46,14 @@ import javax.swing.table.DefaultTableModel;
  * @author Oscar_Malagon
  */
 public class administrador extends javax.swing.JFrame {
-
+    
     private static String emailValid = "^[_A-Za-z0-9-\\+]+(\\.[A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.A-Za-z0-9]+)*(\\.[A-Za-z]{2,})*$";
     private Pattern pattern;
     private Matcher matcher;
     private static BigDecimal id = null;
     private static Dimension original = new Dimension(550, 620);
+    private Object u;
 
     /**
      * Creates new form administrador
@@ -66,7 +70,7 @@ public class administrador extends javax.swing.JFrame {
         this.BotonGenerarUs.doClick();
         this.BotonRefrescarSolRev.doClick();
     }
-
+    
     private administrador() {
         initComponents();
     }
@@ -215,6 +219,13 @@ public class administrador extends javax.swing.JFrame {
         botonDevolverCot = new javax.swing.JButton();
         BotonRefrescarSolRev = new javax.swing.JButton();
         btnPdf001 = new javax.swing.JButton();
+        jPanel16 = new javax.swing.JPanel();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tablaInformes = new javax.swing.JTable();
+        jButton7 = new javax.swing.JButton();
         jPanel13 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaSolicitudesNoRev = new javax.swing.JTable();
@@ -341,7 +352,7 @@ public class administrador extends javax.swing.JFrame {
                     .addComponent(comboBoxAreaRA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(mensaje)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 199, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 214, Short.MAX_VALUE)
                 .addComponent(ButtonCrearRA)
                 .addContainerGap())
             .addComponent(filler1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -532,7 +543,7 @@ public class administrador extends javax.swing.JFrame {
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Crear_PaisProv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel50))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 194, Short.MAX_VALUE)
                 .addComponent(jButton3)
                 .addContainerGap())
         );
@@ -758,7 +769,7 @@ public class administrador extends javax.swing.JFrame {
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(AO1, javax.swing.GroupLayout.DEFAULT_SIZE, 543, Short.MAX_VALUE)
+            .addComponent(AO1, javax.swing.GroupLayout.DEFAULT_SIZE, 558, Short.MAX_VALUE)
         );
 
         TabbedGestionUsuarios.addTab("Actualizar", jPanel5);
@@ -963,7 +974,7 @@ public class administrador extends javax.swing.JFrame {
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(AO2, javax.swing.GroupLayout.DEFAULT_SIZE, 543, Short.MAX_VALUE)
+            .addComponent(AO2, javax.swing.GroupLayout.DEFAULT_SIZE, 558, Short.MAX_VALUE)
         );
 
         TabbedGestionUsuarios.addTab("Eliminar", jPanel6);
@@ -1111,7 +1122,7 @@ public class administrador extends javax.swing.JFrame {
                     .addComponent(jLabel40))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BotonRefrescar)
                     .addComponent(jButton1))
@@ -1191,7 +1202,7 @@ public class administrador extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel44)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonDevolverCot)
@@ -1201,6 +1212,77 @@ public class administrador extends javax.swing.JFrame {
         );
 
         jTabbedPane1.addTab("Solicitudes Revisadas", jPanel14);
+
+        jButton4.setText("Ver Informe de Descargos");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jButton5.setText("Ver Consumo por Laboratorio");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        jButton6.setText("Buscar Consumo de Empleado");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        tablaInformes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane4.setViewportView(tablaInformes);
+
+        jButton7.setText("Generar .pdf");
+
+        javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
+        jPanel16.setLayout(jPanel16Layout);
+        jPanel16Layout.setHorizontalGroup(
+            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel16Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE)
+                    .addGroup(jPanel16Layout.createSequentialGroup()
+                        .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jButton6))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel16Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton7)))
+                .addContainerGap())
+        );
+        jPanel16Layout.setVerticalGroup(
+            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel16Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton6)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton7)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Descargos", jPanel16);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -1286,7 +1368,7 @@ public class administrador extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel43)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 507, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BotonRefrescarSol)
@@ -1454,7 +1536,7 @@ public class administrador extends javax.swing.JFrame {
         String psw = this.pswAO.getText();
         boolean creado = false;
         Usuario ad = cliente.Cliente.conectarU();
-
+        
         if (identificacion.isEmpty() == false && nombre.isEmpty() == false && correo.isEmpty() == false && psw.isEmpty() == false) {
             try {
                 creado = ad.crearAO(identificacion, nombre, correo, psw, id);
@@ -1539,7 +1621,7 @@ public class administrador extends javax.swing.JFrame {
         GregorianCalendar fecha = new GregorianCalendar();
         Usuario u = cliente.Cliente.conectarU();
         aprobacion ap = null;
-        boolean aprobado=false;
+        boolean aprobado = false;
         for (int i : filasSelec) {
             String valor = this.tablaSolicitudesNoRev.getValueAt(i, 7).toString();
             if (valor.equalsIgnoreCase("")) {
@@ -1549,15 +1631,14 @@ public class administrador extends javax.swing.JFrame {
                 lab = this.tablaSolicitudesNoRev.getValueAt(i, 4).toString();
                 codigoInt = new BigDecimal(this.tablaSolicitudesNoRev.getValueAt(i, 5).toString());
                 cantAprobada = new Float(valor);
-                ap = new aprobacion(noCot, lab, codigoInt, cantAprobada, fecha, id,0);
+                ap = new aprobacion(noCot, lab, codigoInt, cantAprobada, fecha, id, 0);
                 try {
-                    aprobado =u.aprobar(ap, "SI");
-                    if(!aprobado)
-                    {
+                    aprobado = u.aprobar(ap, "SI");
+                    if (!aprobado) {
                         JOptionPane.showMessageDialog(null, "Error en la aprobacion");
-                    }
-                    else 
+                    } else {
                         JOptionPane.showMessageDialog(null, "Hecho");
+                    }
                 } catch (RemoteException ex) {
                     Logger.getLogger(administrador.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -1575,23 +1656,22 @@ public class administrador extends javax.swing.JFrame {
         GregorianCalendar fecha = new GregorianCalendar();
         Usuario u = cliente.Cliente.conectarU();
         aprobacion ap = null;
-        boolean aprobado=false;
+        boolean aprobado = false;
         for (int i : filasSelec) {
-                noCot = new BigDecimal(this.TablaSolicitudesRev.getValueAt(i, 0).toString());
-                lab = this.TablaSolicitudesRev.getValueAt(i, 4).toString();
-                codigoInt = new BigDecimal(this.TablaSolicitudesRev.getValueAt(i, 5).toString());
-                ap = new aprobacion(noCot, lab, codigoInt, -1, fecha, id, 0);
-                try {
-                    aprobado =u.eliminarAprobacion(ap);
-                    if(!aprobado)
-                    {
-                        JOptionPane.showMessageDialog(null, "Error en la aprobacion");
-                    }
-                    else 
-                        JOptionPane.showMessageDialog(null, "Hecho");
-                } catch (RemoteException ex) {
-                    Logger.getLogger(administrador.class.getName()).log(Level.SEVERE, null, ex);
+            noCot = new BigDecimal(this.TablaSolicitudesRev.getValueAt(i, 0).toString());
+            lab = this.TablaSolicitudesRev.getValueAt(i, 4).toString();
+            codigoInt = new BigDecimal(this.TablaSolicitudesRev.getValueAt(i, 5).toString());
+            ap = new aprobacion(noCot, lab, codigoInt, -1, fecha, id, 0);
+            try {
+                aprobado = u.eliminarAprobacion(ap);
+                if (!aprobado) {
+                    JOptionPane.showMessageDialog(null, "Error en la aprobacion");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Hecho");
                 }
+            } catch (RemoteException ex) {
+                Logger.getLogger(administrador.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
         }
         this.BotonRefrescarSol.doClick();    }//GEN-LAST:event_botonDevolverCotActionPerformed
@@ -1639,15 +1719,16 @@ public class administrador extends javax.swing.JFrame {
         String path = chooser.getSelectedFile().getPath();
         try {
             fdc_001 datosGenerales = u.datosGenerales(numSOl, numCot);
-            File pdf_001 = u.pdf_001(path,datosGenerales);
-            if(JOptionPane.showConfirmDialog(null, "¿Desea abrir el archivo?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
-            Desktop.getDesktop().open(pdf_001);
+            File pdf_001 = u.pdf_001(path, datosGenerales);
+            if (JOptionPane.showConfirmDialog(null, "¿Desea abrir el archivo?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                Desktop.getDesktop().open(pdf_001);
+            }
         } catch (RemoteException ex) {
             Logger.getLogger(administrador.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(administrador.class.getName()).log(Level.SEVERE, null, ex);
         }
-               
+
     }//GEN-LAST:event_btnPdf001ActionPerformed
 
     private void Crear_DirProvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Crear_DirProvActionPerformed
@@ -1660,20 +1741,175 @@ public class administrador extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         Usuario u = cliente.Cliente.conectarU();
-        boolean valido =false;
+        boolean valido = false;
         try {
-            valido =u.CrearProveedor(this.crear_NITProv.getText(), this.crear_NombreProv.getText(), this.Crear_DirProv.getText(), new Integer(this.crear_TelProv.getText()),new Integer(this.Crear_TFaxProv.getText()), this.Crear_CiudadProv.getText(), this.Crear_PaisProv.getText());
-            if(valido)
+            valido = u.CrearProveedor(this.crear_NITProv.getText(), this.crear_NombreProv.getText(), this.Crear_DirProv.getText(), new Integer(this.crear_TelProv.getText()), new Integer(this.Crear_TFaxProv.getText()), this.Crear_CiudadProv.getText(), this.Crear_PaisProv.getText());
+            if (valido) {
                 JOptionPane.showMessageDialog(null, "Proveedor Creado");
-            else
+            } else {
                 JOptionPane.showMessageDialog(null, "Error creando al proveedor");
-                
-        
+            }
+            
         } catch (RemoteException ex) {
             Logger.getLogger(administrador.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        Usuario u = cliente.Cliente.conectarU();
+        ArrayList<informeDescargos> Informe;
+        Vector meses = new Vector();// 
+        String m[] = {"ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"};
+        String cabeceras[] = {"Código", "Descripción", "Inventario Actual", "Gastado", "Nombre", "Área"};
+        for (String m1 : m) {
+            meses.add(m1);
+        }
+        JList list = new JList(meses);
+        JOptionPane elegir = new JOptionPane();
+        elegir.showConfirmDialog(null, list, "Seleccione el mes", elegir.PLAIN_MESSAGE);
+        int si_no = JOptionPane.showConfirmDialog(null, "Se generará el informe para el mes de: " + list.getSelectedValue());
+        int aux = list.getSelectedIndex() + 1;
+        DefaultTableModel df = (DefaultTableModel) this.tablaInformes.getModel();
+        df.setColumnIdentifiers(cabeceras);
+        this.tablaInformes.setModel(df);
+        for (int i = df.getRowCount() - 1; i >= 0; i--) {
+            df.removeRow(i);
+        }
+        try {
+            if (si_no == JOptionPane.YES_OPTION) {
+                if (aux < 10) {
+                    Informe = u.generarInforme("0".concat(new Integer(aux).toString()));
+                } else {
+                    Informe = u.generarInforme(new Integer(aux).toString());
+                }
+                for (informeDescargos i : Informe) {
+                    Vector datos = new Vector();
+                    datos.add(i.getArea() + "-" + i.getCinterno());
+                    datos.add(i.getDescripcion());
+                    datos.add(i.getEninventario());
+                    datos.add(i.getEmpleado());
+                    datos.add(i.getNombre());
+                    datos.add(i.getArea());
+                    df.addRow(datos);
+                }
+            }
+            
+        } catch (RemoteException ex) {
+            Logger.getLogger(administrador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        Usuario u = cliente.Cliente.conectarU();
+        String cabecera[] = {"Código", "Descripción", "Inventario Actual", "Gastado"};        
+        ArrayList<informeDescargos> Informe = null;
+        DefaultTableModel df = (DefaultTableModel) this.tablaInformes.getModel();
+        df.setColumnIdentifiers(cabecera);
+        this.tablaInformes.setModel(df);
+        Vector meses = new Vector();// 
+        String m[] = {"ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"};
+        for (String m1 : m) {
+            meses.add(m1);
+        }
+        JList list = new JList(meses);
+        JOptionPane elegir = new JOptionPane();
+        elegir.showConfirmDialog(null, list, "Seleccione el mes", elegir.PLAIN_MESSAGE);
+        int si_no = JOptionPane.showConfirmDialog(null, "Se generará el informe para el mes de: " + list.getSelectedValue());
+        int aux = list.getSelectedIndex() + 1;
+        int contadorMA = 0;
+        int contadorMB = 0;
+        int contadorFQ = 0;
+        for (int i = df.getRowCount() - 1; i >= 0; i--) {
+            df.removeRow(i);
+        }
+        try {
+            if (si_no == JOptionPane.YES_OPTION) {
+                if (aux < 10) {
+                    Informe = u.generarInformePorLab("0".concat(new Integer(aux).toString()));
+                } else {
+                    Informe = u.generarInformePorLab(new Integer(aux).toString());
+                }
+                for (informeDescargos i : Informe) {
+                    if (i.getInventario().equalsIgnoreCase("MA")) {
+                        contadorMA += 1;
+                    }
+                    if (i.getInventario().equalsIgnoreCase("MB")) {
+                        contadorMB += 1;
+                    }
+                    if (i.getInventario().equalsIgnoreCase("FQ")) {
+                        contadorFQ += 1;
+                    }
+                }
+                for (informeDescargos i : Informe) {
+                    Vector datos = new Vector();
+                    datos.add(i.getInventario() + "-" + i.getCinterno());
+                    datos.add(i.getDescripcion());
+                    datos.add(i.getEninventario());
+                    datos.add(i.getEmpleado());
+                    df.addRow(datos);
+                }
+                
+            }
+            
+        } catch (RemoteException ex) {
+            Logger.getLogger(administrador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        Usuario u = cliente.Cliente.conectarU();
+        
+        String cabecera[] = {"Código", "Descripción", "Inventario Actual", "Gastado", "Fecha"};        
+        ArrayList<informeDescargos> Informe = null;
+        DefaultTableModel df = (DefaultTableModel) this.tablaInformes.getModel();
+        df.setColumnIdentifiers(cabecera);
+        this.tablaInformes.setModel(df);
+        Vector usuarios = new Vector();
+        ArrayList<users> us = null;
+        try {
+            us = u.getUsuarios();
+            for (users uss : us) {
+                if (uss.getLab().equalsIgnoreCase("")) {
+                    usuarios.add(uss.getId() + "||" + uss.getNombre() + "||" + uss.getLab());
+                }
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(administrador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        JScrollPane scrollPane = new JScrollPane();
+        JList list = new JList(usuarios);
+        scrollPane = new JScrollPane(list);
+        JOptionPane elegir = new JOptionPane();
+        elegir.showConfirmDialog(null, list, "Seleccione el usuario", elegir.PLAIN_MESSAGE);
+        int si_no = JOptionPane.showConfirmDialog(null, "Se generará el informe para el usuario: " + list.getSelectedValue());
+        int aux = list.getSelectedIndex();
+        for (int i = df.getRowCount() - 1; i >= 0; i--) {
+            df.removeRow(i);
+        }
+        try {
+            if (si_no == JOptionPane.YES_OPTION) {
+                users uu = us.get(aux);
+                Informe = u.generarInformePorRA(uu.getLab(), uu.getId());
+                
+                for (informeDescargos i : Informe) {
+                    Vector datos = new Vector();
+                    datos.add(i.getInventario() + "-" + i.getCinterno());
+                    datos.add(i.getDescripcion());
+                    datos.add(i.getEninventario());
+                    datos.add(i.getEmpleado());
+                    GregorianCalendar hoy = i.getFecha();
+                    String cadenaFecha = hoy.get(Calendar.DAY_OF_MONTH) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/" + hoy.get(Calendar.YEAR);
+                    datos.add(cadenaFecha);
+                    df.addRow(datos);
+                }
+                
+            }
+            
+        } catch (RemoteException ex) {
+            Logger.getLogger(administrador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+    
     public boolean validar(String correo) {
         pattern = Pattern.compile(this.emailValid);
         boolean ret = false;
@@ -1683,7 +1919,7 @@ public class administrador extends javax.swing.JFrame {
             ret = matcher.matches();
         }
         return ret;
-
+        
     }
 
     /**
@@ -1720,7 +1956,7 @@ public class administrador extends javax.swing.JFrame {
             }
         });
     }
-
+    
     private void setIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
@@ -1776,6 +2012,10 @@ public class administrador extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1833,6 +2073,7 @@ public class administrador extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -1844,6 +2085,7 @@ public class administrador extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel labelAdministrador;
@@ -1865,6 +2107,7 @@ public class administrador extends javax.swing.JFrame {
     private javax.swing.JPasswordField pswRA;
     private javax.swing.JPasswordField pswRA_act;
     private javax.swing.JPasswordField pswRA_eli;
+    private javax.swing.JTable tablaInformes;
     private javax.swing.JTable tablaInventario;
     private javax.swing.JTable tablaSolicitudesNoRev;
     private javax.swing.JTable tablaVerUsuarios;
