@@ -5,6 +5,7 @@
  */
 package gui;
 
+import inicioSesion.InicioSesion;
 import EstructurasAux.ItemInventario;
 import EstructurasAux.aprobacion;
 import EstructurasAux.cotizaciones;
@@ -137,6 +138,17 @@ public class administrador extends javax.swing.JFrame {
         Crear_PaisProv = new javax.swing.JTextField();
         jLabel50 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
+        jPanel17 = new javax.swing.JPanel();
+        jLabel51 = new javax.swing.JLabel();
+        jLabel52 = new javax.swing.JLabel();
+        identificacionDA = new javax.swing.JTextField();
+        jLabel53 = new javax.swing.JLabel();
+        jLabel54 = new javax.swing.JLabel();
+        jLabel55 = new javax.swing.JLabel();
+        pswDA = new javax.swing.JPasswordField();
+        correoDA = new javax.swing.JTextField();
+        nombreDA = new javax.swing.JTextField();
+        ButtonCrearDA = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         AO1 = new javax.swing.JTabbedPane();
         jPanel8 = new javax.swing.JPanel();
@@ -549,6 +561,87 @@ public class administrador extends javax.swing.JFrame {
         );
 
         AO.addTab("Proveedor", jPanel15);
+
+        jLabel51.setText("Ingrese los siguientes datos.");
+
+        jLabel52.setText("Identificación");
+
+        jLabel53.setText("Nombre");
+
+        jLabel54.setText("Correo");
+
+        jLabel55.setText("Contraseña");
+
+        correoDA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                correoDAActionPerformed(evt);
+            }
+        });
+
+        ButtonCrearDA.setText("Crear");
+        ButtonCrearDA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonCrearDAActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
+        jPanel17.setLayout(jPanel17Layout);
+        jPanel17Layout.setHorizontalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 618, Short.MAX_VALUE)
+            .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel17Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel17Layout.createSequentialGroup()
+                            .addGap(0, 0, Short.MAX_VALUE)
+                            .addComponent(ButtonCrearDA))
+                        .addGroup(jPanel17Layout.createSequentialGroup()
+                            .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel51)
+                                .addComponent(jLabel54)
+                                .addComponent(jLabel55)
+                                .addComponent(jLabel53)
+                                .addComponent(jLabel52))
+                            .addGap(58, 58, 58)
+                            .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(correoDA)
+                                .addComponent(nombreDA)
+                                .addComponent(identificacionDA, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(pswDA))
+                            .addGap(124, 124, 124)))
+                    .addContainerGap()))
+        );
+        jPanel17Layout.setVerticalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 537, Short.MAX_VALUE)
+            .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel17Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jLabel51)
+                    .addGap(29, 29, 29)
+                    .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel52)
+                        .addComponent(identificacionDA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel53)
+                        .addComponent(nombreDA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel54)
+                        .addComponent(correoDA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel55)
+                        .addComponent(pswDA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(315, 315, 315)
+                    .addComponent(ButtonCrearDA)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+
+        AO.addTab("Director Administrativo", jPanel17);
 
         javax.swing.GroupLayout crearUsuarioLayout = new javax.swing.GroupLayout(crearUsuario);
         crearUsuario.setLayout(crearUsuarioLayout);
@@ -1909,6 +2002,31 @@ public class administrador extends javax.swing.JFrame {
             Logger.getLogger(administrador.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void correoDAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_correoDAActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_correoDAActionPerformed
+
+    private void ButtonCrearDAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCrearDAActionPerformed
+        Usuario u = cliente.Cliente.conectarU();
+        boolean crearDA =false;
+        try {
+            if(!this.identificacionDA.getText().equalsIgnoreCase("")
+               && !this.nombreDA.getText().equalsIgnoreCase("")
+               && !this.correoDA.getText().equalsIgnoreCase("")
+               && !this.pswDA.getText().equalsIgnoreCase(""))
+            crearDA = u.crearDA(this.identificacionDA.getText(), this.nombreDA.getText(), this.correoDA.getText(), this.pswDA.getText());
+            if(crearDA)
+            {
+                JOptionPane.showMessageDialog(null, "Director Administrativo Creado");
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "No se pudo crear el Director Administrativo, por favor revise los datos ingresados");
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(administrador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_ButtonCrearDAActionPerformed
     
     public boolean validar(String correo) {
         pattern = Pattern.compile(this.emailValid);
@@ -1972,6 +2090,7 @@ public class administrador extends javax.swing.JFrame {
     private javax.swing.JButton ButtonCrearAO;
     private javax.swing.JButton ButtonCrearAO2;
     private javax.swing.JButton ButtonCrearAO_act;
+    private javax.swing.JButton ButtonCrearDA;
     private javax.swing.JButton ButtonCrearRA;
     private javax.swing.JButton ButtonCrearRA2;
     private javax.swing.JButton ButtonCrearRA_act;
@@ -1995,6 +2114,7 @@ public class administrador extends javax.swing.JFrame {
     private javax.swing.JTextField correoAO;
     private javax.swing.JTextField correoAO2;
     private javax.swing.JTextField correoAO_act;
+    private javax.swing.JTextField correoDA;
     private javax.swing.JTextField correoRA;
     private javax.swing.JTextField correoRA_act;
     private javax.swing.JTextField correoRA_eli;
@@ -2006,6 +2126,7 @@ public class administrador extends javax.swing.JFrame {
     private javax.swing.JTextField identificacionAO;
     private javax.swing.JTextField identificacionAO2;
     private javax.swing.JTextField identificacionAO_act;
+    private javax.swing.JTextField identificacionDA;
     private javax.swing.JTextField identificacionRA;
     private javax.swing.JTextField identificacionRA_act;
     private javax.swing.JTextField identificacionRA_eli;
@@ -2062,6 +2183,11 @@ public class administrador extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel50;
+    private javax.swing.JLabel jLabel51;
+    private javax.swing.JLabel jLabel52;
+    private javax.swing.JLabel jLabel53;
+    private javax.swing.JLabel jLabel54;
+    private javax.swing.JLabel jLabel55;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -2074,6 +2200,7 @@ public class administrador extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -2098,12 +2225,14 @@ public class administrador extends javax.swing.JFrame {
     private javax.swing.JTextField nombreAO;
     private javax.swing.JTextField nombreAO2;
     private javax.swing.JTextField nombreAO_act;
+    private javax.swing.JTextField nombreDA;
     private javax.swing.JTextField nombreRA;
     private javax.swing.JTextField nombreRA_act;
     private javax.swing.JTextField nombreRA_eli;
     private javax.swing.JPasswordField pswAO;
     private javax.swing.JPasswordField pswAO2;
     private javax.swing.JPasswordField pswAO_act;
+    private javax.swing.JPasswordField pswDA;
     private javax.swing.JPasswordField pswRA;
     private javax.swing.JPasswordField pswRA_act;
     private javax.swing.JPasswordField pswRA_eli;

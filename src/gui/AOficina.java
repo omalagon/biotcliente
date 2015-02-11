@@ -5,6 +5,7 @@
  */
 package gui;
 
+import inicioSesion.InicioSesion;
 import EstructurasAux.ItemInventario;
 import EstructurasAux.cotizaciones;
 import EstructurasAux.itemsOrdenCompra;
@@ -120,7 +121,6 @@ public class AOficina extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         tabbedReportes = new javax.swing.JTabbedPane();
         jPanel3 = new javax.swing.JPanel();
@@ -425,19 +425,6 @@ public class AOficina extends javax.swing.JFrame {
         );
 
         jTabbedPane2.addTab("Pedido", jPanel1);
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 683, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 680, Short.MAX_VALUE)
-        );
-
-        jTabbedPane2.addTab("Servicio", jPanel5);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -1626,7 +1613,6 @@ public class AOficina extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;

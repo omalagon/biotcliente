@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package inicioSesion;
 
+import gui.AOficina;
+import gui.RArea;
+import gui.administrador;
 import interfaces.Usuario;
 import java.awt.Color;
 import java.awt.Toolkit;

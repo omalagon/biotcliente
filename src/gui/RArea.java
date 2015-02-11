@@ -5,6 +5,7 @@
  */
 package gui;
 
+import inicioSesion.InicioSesion;
 import EstructurasAux.solicitudPr;
 import EstructurasAux.ItemInventario;
 import EstructurasAux.itemRecep;
@@ -277,7 +278,6 @@ public class RArea extends javax.swing.JFrame {
             tablaIngresarItems.getColumnModel().getColumn(0).setMaxWidth(45);
             tablaIngresarItems.getColumnModel().getColumn(1).setMinWidth(20);
             tablaIngresarItems.getColumnModel().getColumn(1).setPreferredWidth(70);
-            tablaIngresarItems.getColumnModel().getColumn(5).setHeaderValue("Cantidad Solicitada");
         }
 
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
@@ -652,7 +652,15 @@ public class RArea extends javax.swing.JFrame {
             new String [] {
                 "Codigo", "Descripción", "Presentación", "Cantidad"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane3.setViewportView(tablaInventario);
 
         VolverASol.setText("Volver a Solicitudes");
