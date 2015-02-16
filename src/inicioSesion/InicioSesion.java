@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import responsableArea.VentanaInicio_RA;
 
 /**
  *
@@ -223,7 +224,9 @@ public class InicioSesion extends javax.swing.JFrame {
                 this.setVisible(false);
             }
             if (validarTipoUsuario == true && tipo.equalsIgnoreCase("ra")) {
-                RArea responsable = new RArea(usuario);
+                //RArea responsable = new RArea(usuario);
+                //responsable.setVisible(true);
+                VentanaInicio_RA responsable = new VentanaInicio_RA(usuario);
                 responsable.setVisible(true);
                 this.labelError.setText("Correcto");
                 this.labelError.setForeground(Color.BLUE);

@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package responsableArea;
 
 import EstructurasAux.ItemInventario;
 import EstructurasAux.descargo;
 import interfaces.Usuario;
+import java.awt.Toolkit;
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -21,39 +22,43 @@ import javax.swing.JOptionPane;
  *
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
-public class descargoConsumos extends javax.swing.JFrame {
+public class DescargoConsumos extends javax.swing.JFrame {
 
-        private static GregorianCalendar hoy = new GregorianCalendar();
-        private static String cadenaFecha=  hoy.get(Calendar.DAY_OF_MONTH) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/" + hoy.get(Calendar.YEAR);
-        private static ArrayList<ItemInventario> itemInventarioAdmin = null;
-        private static BigDecimal ide = null;
+    private static GregorianCalendar hoy = new GregorianCalendar();
+    private static String cadenaFecha = hoy.get(Calendar.DAY_OF_MONTH) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/" + hoy.get(Calendar.YEAR);
+    private static ArrayList<ItemInventario> itemInventarioAdmin = null;
+    private static BigDecimal ide = null;
+
     /**
      * Creates new form descargoConsumos
      */
-    public descargoConsumos(BigDecimal ide) {
+    public DescargoConsumos(BigDecimal ide) {
         initComponents();
         this.ide = ide;
         Usuario u = cliente.Cliente.conectarU();
         String User = "";
-        String area ="";
-            try {
-                User=u.getUsuario(ide);
-                area = u.area(ide);
-                itemInventarioAdmin = u.itemInventario(ide);
-            } catch (RemoteException ex) {
-                Logger.getLogger(descargoConsumos.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        String area = "";
+        setIcon();
+        this.setLocation(600, 200);
+        this.setSize(415, this.getHeight());
+
+        try {
+            User = u.getUsuario(ide);
+            area = u.area(ide);
+            itemInventarioAdmin = u.itemInventario(ide);
+        } catch (RemoteException ex) {
+            Logger.getLogger(DescargoConsumos.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.desc_Fecha.setText(cadenaFecha);
         this.desc_nombre.setText(User);
         this.desc_area.setText(area);
         for (ItemInventario i : itemInventarioAdmin) {
-            this.desc_items.addItem(i.getInventario() +"-" + i.getNumero());
+            this.desc_items.addItem(i.getInventario() + "-" + i.getNumero());
         }
-        
-        
+
     }
 
-    private descargoConsumos() {
+    private DescargoConsumos() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -139,7 +144,7 @@ public class descargoConsumos extends javax.swing.JFrame {
                             .addComponent(desc_nombre, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
                             .addComponent(desc_area, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(desc_cantidad))))
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(cerrar)
@@ -184,27 +189,24 @@ public class descargoConsumos extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int selectedIndex = this.desc_items.getSelectedIndex();
-        descargo d = new descargo(hoy, this.ide, this.desc_area.getText(), new Float (this.desc_cantidad.getText()),new BigDecimal(this.itemInventarioAdmin.get(selectedIndex).getNumero()));
+        descargo d = new descargo(hoy, this.ide, this.desc_area.getText(), new Float(this.desc_cantidad.getText()), new BigDecimal(this.itemInventarioAdmin.get(selectedIndex).getNumero()));
         Usuario u = cliente.Cliente.conectarU();
         boolean valido = false;
         try {
-                valido = u.realizarDescargo(d);
-                if(valido)
-                {
-                    if(JOptionPane.showConfirmDialog(null, "Descargo realizado exitosamente. ¿Desea realizar otro?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
-                    {
-                        this.desc_cantidad.setText("");
-                        this.desc_items.setSelectedIndex(0);
-                    }
-                    else{
-                        this.setVisible(false);
-                    }
-                }else{
-                    JOptionPane.showMessageDialog(null, "Ocurrió un error en el proceso.");
+            valido = u.realizarDescargo(d);
+            if (valido) {
+                if (JOptionPane.showConfirmDialog(null, "Descargo realizado exitosamente. ¿Desea realizar otro?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    this.desc_cantidad.setText("");
+                    this.desc_items.setSelectedIndex(0);
+                } else {
+                    this.setVisible(false);
                 }
-            } catch (RemoteException ex) {
-                Logger.getLogger(descargoConsumos.class.getName()).log(Level.SEVERE, null, ex);
+            } else {
+                JOptionPane.showMessageDialog(null, "Ocurrió un error en el proceso.");
             }
+        } catch (RemoteException ex) {
+            Logger.getLogger(DescargoConsumos.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarActionPerformed
@@ -228,20 +230,21 @@ public class descargoConsumos extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(descargoConsumos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DescargoConsumos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(descargoConsumos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DescargoConsumos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(descargoConsumos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DescargoConsumos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(descargoConsumos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DescargoConsumos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new descargoConsumos().setVisible(true);
+                new DescargoConsumos().setVisible(true);
             }
         });
     }
@@ -262,5 +265,8 @@ public class descargoConsumos extends javax.swing.JFrame {
     private javax.swing.JLabel labelAdministrador;
     // End of variables declaration//GEN-END:variables
 
+    private void setIcon() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+    }
 
 }

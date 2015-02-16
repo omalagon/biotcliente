@@ -5,6 +5,8 @@
  */
 package gui;
 
+import responsableArea.anexo1;
+import responsableArea.DescargoConsumos;
 import inicioSesion.InicioSesion;
 import EstructurasAux.solicitudPr;
 import EstructurasAux.ItemInventario;
@@ -50,6 +52,8 @@ public class RArea extends javax.swing.JFrame {
         this.setSize(this.getMaximumSize());
         initComponents();
         setIcon();
+        this.setSize(840, this.getHeight());
+        this.setLocation(400, 200);
         id = new BigDecimal(ide);
         this.fecha.setText(cadenaFecha);
         this.fecha1.setText(cadenaFecha);
@@ -1382,7 +1386,7 @@ public class RArea extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEnviarRecActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        descargoConsumos d = new descargoConsumos(this.id);
+        DescargoConsumos d = new DescargoConsumos(this.id);
         d.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
