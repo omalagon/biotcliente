@@ -5,9 +5,9 @@
  */
 package inicioSesion;
 
+import administrador.VentanaInicio_Adm;
 import gui.AOficina;
 import gui.RArea;
-import gui.administrador;
 import interfaces.Usuario;
 import java.awt.Color;
 import java.awt.Toolkit;
@@ -33,10 +33,11 @@ public class InicioSesion extends javax.swing.JFrame {
         this.buttonGroupTipo.add(RButtonRA);
         this.buttonGroupTipo.add(RButtonAO);
         this.setSize(280, 351);
-        this.setLocation(200, 200);
+        this.setLocation(600, 200);
         setIcon();
 
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -213,8 +214,10 @@ public class InicioSesion extends javax.swing.JFrame {
                 Logger.getLogger(InicioSesion.class.getName()).log(Level.SEVERE, null, ex);
             }
             if (validarTipoUsuario == true && tipo.equalsIgnoreCase("da")) {
-                administrador adm = new administrador(usuario);
+                VentanaInicio_Adm adm = new VentanaInicio_Adm(usuario);
                 adm.setVisible(true);
+                //administrador adm = new administrador(usuario);
+                //adm.setVisible(true);
                 this.labelError.setText("Correcto");
                 this.labelError.setForeground(Color.BLUE);
                 this.setVisible(false);

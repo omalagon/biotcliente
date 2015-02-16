@@ -1392,8 +1392,8 @@ public class AOficina extends javax.swing.JFrame {
 
     private void BotonRefrescarSolRevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonRefrescarSolRevActionPerformed
         DefaultTableModel df = (DefaultTableModel) this.TablaSolicitudesRev.getModel();
-        Usuario u = cliente.Cliente.conectarU();
-        for (int i = df.getRowCount() - 1; i >= 0; i--) {
+Usuario u = cliente.Cliente.conectarU();
+for (int i = df.getRowCount() - 1; i >= 0; i--) {
             df.removeRow(i);
         }
         ArrayList<cotizaciones> cotizacione = null;
@@ -1414,7 +1414,7 @@ public class AOficina extends javax.swing.JFrame {
                 df.addRow(datos);
             }
         } catch (RemoteException ex) {
-            Logger.getLogger(administrador.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AOficina.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_BotonRefrescarSolRevActionPerformed
 

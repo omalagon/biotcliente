@@ -27,12 +27,12 @@ public class Cliente {
      * @param args the command line arguments
      */
     public static Usuario conectarU() {
-        
+
         Usuario u = null;
-                try {
+        try {
             Registry registry = LocateRegistry.getRegistry("192.168.0.6", 222);
             u = (Usuario) registry.lookup("Test");
-            
+
         } catch (RemoteException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NotBoundException ex) {
@@ -40,5 +40,5 @@ public class Cliente {
         }
         return u;
     }
-    
+
 }
