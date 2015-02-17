@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package administrador;
+package auxiliarOficina;
 
+import gui.AOficina;
+import responsableArea.*;
 import inicioSesion.InicioSesion;
 import interfaces.Usuario;
 import java.awt.Toolkit;
@@ -17,32 +19,31 @@ import java.util.logging.Logger;
  *
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
-public class VentanaInicio_Adm extends javax.swing.JFrame {
+public class VentanaInicio_AO extends javax.swing.JFrame {
 
     private static BigDecimal id = null;
 
     /**
      * Creates new form VentanaInicio
      */
-    public VentanaInicio_Adm() {
+    public VentanaInicio_AO() {
         initComponents();
     }
 
-    public VentanaInicio_Adm(String usuario) {
+    public VentanaInicio_AO(String usuario) {
         try {
             initComponents();
             id = new BigDecimal(usuario);
             Usuario u = cliente.Cliente.conectarU();
-            this.lbl_NombreDA.setText(u.getNombreDA(usuario));
+            this.lbl_NombreAO.setText(u.getNombreAO(usuario));
             setIcon();
-            this.btnCrear.setToolTipText("Abre una ventana para crear usuarios e ítems");
-            this.btnReportes.setToolTipText("Vea, gestione y genere reportes de: Usuarios, Inventario,Solicitudes y Descargos");
-            this.btnRevisar.setToolTipText("Gestione solicitudes de productos");
+            this.btnGestionarSol.setToolTipText("Procese solicitudes hechas por un responsable de área");
+            this.btnDescargos.setToolTipText("Procese las solicitudes aprobadas por un director administrativo");
             this.setLocation(600, 200);
             this.setSize(443, this.getHeight());
             this.setResizable(false);
         } catch (RemoteException ex) {
-            Logger.getLogger(VentanaInicio_Adm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(VentanaInicio_AO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -56,48 +57,40 @@ public class VentanaInicio_Adm extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        lbl_NombreDA = new javax.swing.JLabel();
+        lbl_NombreAO = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        btnCrear = new javax.swing.JButton();
-        btnReportes = new javax.swing.JButton();
-        btnRevisar = new javax.swing.JButton();
+        btnGestionarSol = new javax.swing.JButton();
+        btnDescargos = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         btnCerrarSesion = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel1.setText("Bienvenido, ");
 
-        lbl_NombreDA.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
-        lbl_NombreDA.setText("jLabel2");
+        lbl_NombreAO.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
+        lbl_NombreAO.setText("jLabel2");
 
         jLabel2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel2.setText("¿Qué desea hacer?");
 
-        btnCrear.setText("Gestionar Usuarios e Ítems");
-        btnCrear.addActionListener(new java.awt.event.ActionListener() {
+        btnGestionarSol.setText("Procesar Solicitudes");
+        btnGestionarSol.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCrearActionPerformed(evt);
+                btnGestionarSolActionPerformed(evt);
             }
         });
 
-        btnReportes.setText("Generar Reportes");
-        btnReportes.addActionListener(new java.awt.event.ActionListener() {
+        btnDescargos.setText("Ver Reportes");
+        btnDescargos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReportesActionPerformed(evt);
-            }
-        });
-
-        btnRevisar.setText("Revisar Solicitudes");
-        btnRevisar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRevisarActionPerformed(evt);
+                btnDescargosActionPerformed(evt);
             }
         });
 
         jLabel3.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        jLabel3.setText("Menú del Director Administrativo");
+        jLabel3.setText("Menú del Auxiliar de Oficina");
 
         btnCerrarSesion.setText("Cerrar Sesión");
         btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
@@ -118,22 +111,20 @@ public class VentanaInicio_Adm extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lbl_NombreDA))
+                                .addComponent(lbl_NombreAO))
                             .addComponent(jLabel3)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 137, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 127, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(btnCrear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnReportes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnRevisar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(138, 138, 138))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(btnCerrarSesion)
-                                .addContainerGap())))))
+                        .addGap(0, 323, Short.MAX_VALUE)
+                        .addComponent(btnCerrarSesion)))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(128, 128, 128)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnDescargos, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGestionarSol, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -141,18 +132,16 @@ public class VentanaInicio_Adm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(lbl_NombreDA))
+                    .addComponent(lbl_NombreAO))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCrear)
-                .addGap(14, 14, 14)
-                .addComponent(btnRevisar)
+                .addComponent(btnGestionarSol)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnReportes)
-                .addGap(23, 23, 23)
+                .addComponent(btnDescargos)
+                .addGap(60, 60, 60)
                 .addComponent(btnCerrarSesion)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -160,27 +149,22 @@ public class VentanaInicio_Adm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
-        Creaciones cre = new Creaciones(this.id);
-        cre.setVisible(true);
+    private void btnGestionarSolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionarSolActionPerformed
+        AOficina AO = new AOficina(this.id.toString());
+        AO.setVisible(true);
         this.setVisible(false);
-    }//GEN-LAST:event_btnCrearActionPerformed
+    }//GEN-LAST:event_btnGestionarSolActionPerformed
 
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
         InicioSesion i = new InicioSesion();
         i.setVisible(true);
         this.setVisible(false);    }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
-    private void btnRevisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRevisarActionPerformed
-        RevisarSolicitudes rev = new RevisarSolicitudes(this.id);
-        rev.setVisible(true);
-    }//GEN-LAST:event_btnRevisarActionPerformed
-
-    private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
+    private void btnDescargosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescargosActionPerformed
         Reportes rep = new Reportes(this.id);
         rep.setVisible(true);
         this.setVisible(false);
-    }//GEN-LAST:event_btnReportesActionPerformed
+    }//GEN-LAST:event_btnDescargosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -199,21 +183,27 @@ public class VentanaInicio_Adm extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VentanaInicio_Adm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaInicio_AO.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VentanaInicio_Adm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaInicio_AO.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VentanaInicio_Adm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaInicio_AO.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VentanaInicio_Adm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaInicio_AO.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VentanaInicio_Adm().setVisible(true);
+                new VentanaInicio_AO().setVisible(true);
             }
         });
     }
@@ -223,12 +213,11 @@ public class VentanaInicio_Adm extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCerrarSesion;
-    private javax.swing.JButton btnCrear;
-    private javax.swing.JButton btnReportes;
-    private javax.swing.JButton btnRevisar;
+    private javax.swing.JButton btnDescargos;
+    private javax.swing.JButton btnGestionarSol;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel lbl_NombreDA;
+    private javax.swing.JLabel lbl_NombreAO;
     // End of variables declaration//GEN-END:variables
 }

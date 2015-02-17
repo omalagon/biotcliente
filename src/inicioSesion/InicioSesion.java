@@ -6,6 +6,7 @@
 package inicioSesion;
 
 import administrador.VentanaInicio_Adm;
+import auxiliarOficina.VentanaInicio_AO;
 import gui.AOficina;
 import gui.RArea;
 import interfaces.Usuario;
@@ -233,8 +234,10 @@ public class InicioSesion extends javax.swing.JFrame {
                 this.setVisible(false);
             }
             if (validarTipoUsuario == true && tipo.equalsIgnoreCase("ao")) {
-                AOficina auxiliar = new AOficina(usuario);
-                auxiliar.setVisible(true);
+                //AOficina auxiliar = new AOficina(usuario);
+                //auxiliar.setVisible(true);
+                VentanaInicio_AO vent= new VentanaInicio_AO(usuario);
+                vent.setVisible(true);
                 this.labelError.setText("Correcto");
                 this.labelError.setForeground(Color.BLUE);
                 this.setVisible(false);

@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package responsableArea;
+package auxiliarOficina;
 
-import EstructurasAux.ItemInventario;
+import EstructurasAux.proveedor;
+import gui.AOficina;
 import interfaces.Usuario;
-import java.awt.Toolkit;
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -20,25 +20,36 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
-public class VerInventario extends javax.swing.JFrame {
-
+public class verProveedores extends javax.swing.JFrame {
     private static BigDecimal id = null;
 
     /**
-     * Creates new form VerInventario
+     * Creates new form verProveedores
      */
-    public VerInventario() {
-        initComponents();
-    }
-    
-    VerInventario(BigDecimal id) {
+    public verProveedores() {
         initComponents();
         this.id = id;
-        setIcon();
-        this.setLocation(400, 200);
-        this.setSize(740, this.getHeight());
-        
+        Usuario u = cliente.Cliente.conectarU();
+        try {
+            ArrayList<proveedor> todosProveedores = u.todosProveedores();
+            ArrayList<Vector> tabla = new ArrayList<>();
+            for (proveedor t : todosProveedores) {
+                Vector datos = new Vector();
+                datos.add(t.getNIT());
+                datos.add(t.getNombre());
+                tabla.add(datos);
+            }
+            
+        DefaultTableModel df = (DefaultTableModel)this.jTable1.getModel();
+        for (Vector t : tabla) {
+            
+        df.addRow(t);
+        }    
+        } catch (RemoteException ex) {
+            Logger.getLogger(verProveedores.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -49,41 +60,28 @@ public class VerInventario extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        labelAdministrador = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tablaInventario = new javax.swing.JTable();
-        RefrescarInven = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         btnCerrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
-        jLabel1.setText("Inventario");
+        labelAdministrador.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        labelAdministrador.setText("Listado de Proveedores");
 
-        tablaInventario.setModel(new javax.swing.table.DefaultTableModel(
+        jLabel1.setText("A continuación encontrará la información de los proveedores");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Codigo", "Descripción", "Presentación", "Cantidad"
+                "NIT", "NOMBRE"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, true, true
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane3.setViewportView(tablaInventario);
-
-        RefrescarInven.setText("Refrescar");
-        RefrescarInven.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RefrescarInvenActionPerformed(evt);
-            }
-        });
+        ));
+        jScrollPane1.setViewportView(jTable1);
 
         btnCerrar.setText("Cerrar");
         btnCerrar.addActionListener(new java.awt.event.ActionListener() {
@@ -99,61 +97,33 @@ public class VerInventario extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 579, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelAdministrador)
+                            .addComponent(jLabel1))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnCerrar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(RefrescarInven))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE))
+                        .addComponent(btnCerrar)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(labelAdministrador)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(RefrescarInven)
-                    .addComponent(btnCerrar))
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnCerrar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void RefrescarInvenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefrescarInvenActionPerformed
-        DefaultTableModel df = (DefaultTableModel) this.tablaInventario.getModel();
-        for (int i = df.getRowCount() - 1; i >= 0; i--) {
-            df.removeRow(i);
-        }
-        Usuario u = cliente.Cliente.conectarU();
-        
-        ArrayList<ItemInventario> itemInventario = null;
-        try {
-            itemInventario = u.itemInventario(this.id);
-        } catch (RemoteException ex) {
-            Logger.getLogger(VerInventario.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        for (ItemInventario i : itemInventario) {
-            Vector<Object> aux = new Vector<>();
-            try {
-                aux.add(0, u.area(this.id) + "-" + i.getNumero());
-            } catch (RemoteException ex) {
-                Logger.getLogger(VerInventario.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            aux.add(1, i.getDescripcion());
-            aux.add(2, i.getPresentacion());
-            aux.add(3, i.getCantidad());
-            df.addRow(aux);
-        }
-    }//GEN-LAST:event_RefrescarInvenActionPerformed
 
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
         this.setVisible(false);
@@ -176,33 +146,29 @@ public class VerInventario extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VerInventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(verProveedores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VerInventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(verProveedores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VerInventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(verProveedores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VerInventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(verProveedores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VerInventario().setVisible(true);
+                new verProveedores().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton RefrescarInven;
     private javax.swing.JButton btnCerrar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable tablaInventario;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel labelAdministrador;
     // End of variables declaration//GEN-END:variables
-
-    private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
-    }
 }

@@ -26,7 +26,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
 public class Solicitudes extends javax.swing.JFrame {
-
+    
     private static BigDecimal id = null;
     private static GregorianCalendar hoy = new GregorianCalendar();
     private ArrayList<ItemInventario> itemsSolicitud = new ArrayList<>();
@@ -41,14 +41,14 @@ public class Solicitudes extends javax.swing.JFrame {
     public Solicitudes() {
         initComponents();
     }
-
+    
     Solicitudes(BigDecimal id) {
         initComponents();
         setIcon();
         Usuario u = cliente.Cliente.conectarU();
         this.id = id;
         this.setLocation(600, 200);
-
+        
         this.setSize(840, this.getHeight());
         try {
             this.area = u.area(id);
@@ -99,12 +99,13 @@ public class Solicitudes extends javax.swing.JFrame {
         jSeparator4 = new javax.swing.JSeparator();
         jLabel4 = new javax.swing.JLabel();
         jcboxAgregarItem = new javax.swing.JComboBox();
+        btnVolver = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaVerSolicitudes = new javax.swing.JTable();
         btnRefrescarSolicitudes = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         labelAdministrador.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         labelAdministrador.setText("Menú de Solicitudes");
@@ -191,6 +192,13 @@ public class Solicitudes extends javax.swing.JFrame {
 
         jLabel4.setText("Agregar/eliminar Ítem");
 
+        btnVolver.setText("Volver");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -226,6 +234,8 @@ public class Solicitudes extends javax.swing.JFrame {
                                     .addComponent(jLabel1)
                                     .addComponent(jLabel10))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnVolver)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(BotonVerItems)
@@ -292,7 +302,8 @@ public class Solicitudes extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(BotonEnviar)
-                        .addComponent(BotonVerItems))
+                        .addComponent(BotonVerItems)
+                        .addComponent(btnVolver))
                     .addComponent(jLabel10))
                 .addContainerGap())
         );
@@ -374,24 +385,22 @@ public class Solicitudes extends javax.swing.JFrame {
         DefaultTableModel df = (DefaultTableModel) this.jTableIngresarItems.getModel();
         solicitudPr sol = new solicitudPr(hoy, this.Observaciones.getText(), null, this.id, null, null);
         Usuario u = cliente.Cliente.conectarU();
-
+        
         BigDecimal numSol = null;
         int ite = 0;
         boolean aceptado = true;
         for (ItemInventario i : itemsSolicitud) {
             if (df.getValueAt(ite, 5) != null) {
-                if(new Float(df.getValueAt(ite, 5).toString()) >0)
-                {
-                i.setCantidadSolicitada(new Float(df.getValueAt(ite, 5).toString()));
-                ite++;
-                }else
-                {
+                if (new Float(df.getValueAt(ite, 5).toString()) > 0) {
+                    i.setCantidadSolicitada(new Float(df.getValueAt(ite, 5).toString()));
+                    ite++;
+                } else {
                     JOptionPane.showMessageDialog(null, "El valor de la cantidad solicitada debe ser mayor a cero");
                     df.setValueAt("", ite, 5);
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Ingrese la cantidad solicitada");
-
+                
             }
         }
         for (ItemInventario ii : itemsSolicitud) {
@@ -403,7 +412,7 @@ public class Solicitudes extends javax.swing.JFrame {
             try {
                 u.crearSolicitud(sol);
                 numSol = u.solicitudValida(this.id);
-
+                
             } catch (RemoteException ex) {
                 Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -416,7 +425,7 @@ public class Solicitudes extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "El número de la solicitud hecha es:  " + numSol);
             } else {
                 JOptionPane.showMessageDialog(null, "No fue posible realizar la solicitud");
-
+                
             }
         }
         this.btnRefrescarSolicitudes.doClick();
@@ -431,9 +440,9 @@ public class Solicitudes extends javax.swing.JFrame {
         Usuario u = cliente.Cliente.conectarU();
         DefaultTableModel df = (DefaultTableModel) this.jTableIngresarItems.getModel();
         /*df.addRow(new Object[]{Boolean.FALSE, null, null});
-        for (int i = 0; i < df.getRowCount(); i++) {
-            df.setValueAt(this.jTFieldAreaProcesoSolicitante.getText() + "-", i, 0);
-        }*/
+         for (int i = 0; i < df.getRowCount(); i++) {
+         df.setValueAt(this.jTFieldAreaProcesoSolicitante.getText() + "-", i, 0);
+         }*/
         Vector datos = new Vector();
         int selectedIndex = this.jcboxAgregarItem.getSelectedIndex();
         ItemInventario i = this.aux.get(selectedIndex);
@@ -461,7 +470,7 @@ public class Solicitudes extends javax.swing.JFrame {
     private void btnRefrescarSolicitudesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarSolicitudesActionPerformed
         DefaultTableModel df = (DefaultTableModel) this.tablaVerSolicitudes.getModel();
         Usuario u = cliente.Cliente.conectarU();
-
+        
         for (int i = df.getRowCount() - 1; i >= 0; i--) {
             df.removeRow(i);
         }
@@ -481,6 +490,12 @@ public class Solicitudes extends javax.swing.JFrame {
             df.addRow(datos);
         }
     }//GEN-LAST:event_btnRefrescarSolicitudesActionPerformed
+
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        VentanaInicio_RA vent = new VentanaInicio_RA(this.id.toString());
+        vent.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnVolverActionPerformed
 
     /**
      * @param args the command line arguments
@@ -523,6 +538,7 @@ public class Solicitudes extends javax.swing.JFrame {
     private javax.swing.JTextField Observaciones;
     private javax.swing.JButton botonAgregar;
     private javax.swing.JButton btnRefrescarSolicitudes;
+    private javax.swing.JButton btnVolver;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -552,7 +568,7 @@ public class Solicitudes extends javax.swing.JFrame {
     private void setIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
-
+    
     private void llenarItems(String area) {
         if (this.jcboxAgregarItem.getItemCount() != 0) {
             this.jcboxAgregarItem.removeAllItems();
@@ -562,7 +578,7 @@ public class Solicitudes extends javax.swing.JFrame {
         try {
             itemInventario = u.itemInventario(this.id);
             aux = itemInventario;
-            } catch (RemoteException ex) {
+        } catch (RemoteException ex) {
             Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
         }
         for (ItemInventario i : itemInventario) {

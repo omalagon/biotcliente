@@ -102,8 +102,9 @@ public class Recepciones extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         btnProcesarRec = new javax.swing.JButton();
         btnEnviarRec = new javax.swing.JButton();
+        btnVolver = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         labelInicioSesion.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         labelInicioSesion.setText("Recepción de Pedidos");
@@ -314,6 +315,13 @@ public class Recepciones extends javax.swing.JFrame {
             }
         });
 
+        btnVolver.setText("Volver");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -327,6 +335,8 @@ public class Recepciones extends javax.swing.JFrame {
                     .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnVolver)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnEnviarRec)))
                 .addContainerGap())
         );
@@ -338,7 +348,9 @@ public class Recepciones extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnEnviarRec)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEnviarRec)
+                    .addComponent(btnVolver))
                 .addContainerGap())
         );
 
@@ -442,9 +454,18 @@ public class Recepciones extends javax.swing.JFrame {
             if (recibirPedido) {
                 JOptionPane.showMessageDialog(null, "Hecho");
             }
+            else{
+                JOptionPane.showMessageDialog(null, "Probablemente el pedido ya fue recibido");                
+            }
         } catch (RemoteException ex) {
-            Logger.getLogger(RArea.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Recepciones.class.getName()).log(Level.SEVERE, null, ex);
         }    }//GEN-LAST:event_btnEnviarRecActionPerformed
+
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        VentanaInicio_RA vent = new VentanaInicio_RA(this.id.toString());
+        vent.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnVolverActionPerformed
 
     /**
      * @param args the command line arguments
@@ -484,6 +505,7 @@ public class Recepciones extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEnviarRec;
     private javax.swing.JButton btnProcesarRec;
+    private javax.swing.JButton btnVolver;
     private javax.swing.JLabel iva;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel20;

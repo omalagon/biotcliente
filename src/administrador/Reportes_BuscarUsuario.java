@@ -62,7 +62,7 @@ public class Reportes_BuscarUsuario extends javax.swing.JFrame {
         jTFieldIdentificacion = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel1.setText("Buscar Usuario");

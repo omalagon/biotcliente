@@ -105,7 +105,7 @@ public class ReporteDescargos extends javax.swing.JFrame {
         jButton7 = new javax.swing.JButton();
         btnVolver = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         jlb_titulo.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jlb_titulo.setText("Menú de Descargos");

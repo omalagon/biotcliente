@@ -83,7 +83,7 @@ public class DescargoConsumos extends javax.swing.JFrame {
         jLabel33 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         desc_cantidad = new javax.swing.JTextField();
-        cerrar = new javax.swing.JButton();
+        btnVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -115,10 +115,10 @@ public class DescargoConsumos extends javax.swing.JFrame {
             }
         });
 
-        cerrar.setText("Cerrar");
-        cerrar.addActionListener(new java.awt.event.ActionListener() {
+        btnVolver.setText("Volver");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cerrarActionPerformed(evt);
+                btnVolverActionPerformed(evt);
             }
         });
 
@@ -147,7 +147,7 @@ public class DescargoConsumos extends javax.swing.JFrame {
                 .addContainerGap(52, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(cerrar)
+                .addComponent(btnVolver)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addContainerGap())
@@ -180,7 +180,7 @@ public class DescargoConsumos extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(cerrar))
+                    .addComponent(btnVolver))
                 .addContainerGap())
         );
 
@@ -209,9 +209,9 @@ public class DescargoConsumos extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarActionPerformed
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         this.setVisible(false);
-    }//GEN-LAST:event_cerrarActionPerformed
+    }//GEN-LAST:event_btnVolverActionPerformed
 
     /**
      * @param args the command line arguments
@@ -250,7 +250,7 @@ public class DescargoConsumos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton cerrar;
+    private javax.swing.JButton btnVolver;
     private javax.swing.JLabel desc_Fecha;
     private javax.swing.JLabel desc_area;
     private javax.swing.JTextField desc_cantidad;

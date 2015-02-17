@@ -5,6 +5,7 @@
  */
 package gui;
 
+import auxiliarOficina.verProveedores;
 import inicioSesion.InicioSesion;
 import EstructurasAux.ItemInventario;
 import EstructurasAux.cotizaciones;
@@ -12,6 +13,7 @@ import EstructurasAux.itemsOrdenCompra;
 import EstructurasAux.itemxproveedor;
 import EstructurasAux.proveedor;
 import EstructurasAux.solicitudPr;
+import com.toedter.calendar.JDateChooserCellEditor;
 import interfaces.Usuario;
 import java.awt.Desktop;
 import java.awt.Toolkit;
@@ -36,6 +38,7 @@ public class AOficina extends javax.swing.JFrame {
     private static BigDecimal id = null;
     private static String area = null;
     private static GregorianCalendar hoy = new GregorianCalendar();
+    private static String cadenaFecha = hoy.get(Calendar.DAY_OF_MONTH) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/" + hoy.get(Calendar.YEAR);
 
     /**
      * Creates new form administrador
@@ -48,8 +51,6 @@ public class AOficina extends javax.swing.JFrame {
         initComponents();
         setIcon();
         id = new BigDecimal(ide);
-
-        this.fecha.setText(hoy.get(Calendar.DAY_OF_MONTH) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/" + hoy.get(Calendar.YEAR));
         Usuario u = cliente.Cliente.conectarU();
         String user = null;
         try {
@@ -66,17 +67,6 @@ public class AOficina extends javax.swing.JFrame {
         } catch (RemoteException ex) {
             Logger.getLogger(AOficina.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.AreaProcesoSolicitante.setText(area);
-        this.AreaProcesoSolicitante.setEditable(false);
-        this.NombreSolicitante.setText(user);
-        this.NombreSolicitante.setEditable(false);
-        this.RefrescarInven.doClick();
-        this.BotonRefrescarSolRev.doClick();
-//Función desactivada temporalmente
-        this.TabbedPaneUsuarios.setSelectedIndex(0);
-        this.jTabbedPane2.disable();
-//---
-        this.BotonRefrescarSol.doClick();
 
     }
 
@@ -96,38 +86,8 @@ public class AOficina extends javax.swing.JFrame {
         labelAdministrador = new javax.swing.JLabel();
         ButtonCerrarSesion = new javax.swing.JButton();
         TabbedPaneUsuarios = new javax.swing.JTabbedPane();
-        jPanel4 = new javax.swing.JPanel();
-        jTabbedPane2 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        BotonEnviar = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        fecha = new javax.swing.JLabel();
-        BotonVerItems = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        Observaciones = new javax.swing.JTextField();
-        jSeparator1 = new javax.swing.JSeparator();
-        jLabel6 = new javax.swing.JLabel();
-        AreaProcesoSolicitante = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        NombreSolicitante = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tablaVerProveedores = new javax.swing.JTable();
-        botonAgregar = new javax.swing.JButton();
-        jLabel8 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tablaIngresarItems = new javax.swing.JTable();
-        jLabel9 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jLabel10 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         tabbedReportes = new javax.swing.JTabbedPane();
-        jPanel3 = new javax.swing.JPanel();
-        RefrescarInven = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tablaInventario = new javax.swing.JTable();
-        VolverASol = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -216,281 +176,6 @@ public class AOficina extends javax.swing.JFrame {
         });
 
         TabbedPaneUsuarios.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        BotonEnviar.setText("Enviar Solicitud");
-
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel1.setText("Diligencie el siguiente formato");
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel2.setText("Fecha");
-
-        fecha.setText("jLabel3");
-
-        BotonVerItems.setText("Ver Inventario");
-        BotonVerItems.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BotonVerItemsActionPerformed(evt);
-            }
-        });
-
-        jLabel3.setText("Nota: Si necesita algún ítem que no se encuentre en el inventario,");
-
-        jLabel5.setText("Observaciones");
-
-        jLabel6.setText("Area o Proceso solicitante");
-
-        AreaProcesoSolicitante.setText("jTextField1");
-        AreaProcesoSolicitante.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AreaProcesoSolicitanteActionPerformed(evt);
-            }
-        });
-
-        jLabel7.setText("Nombre del Solicitante");
-
-        NombreSolicitante.setText("jTextField2");
-
-        tablaVerProveedores.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Nombre", "Precio", "Disponibilidad", "Observación"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, true, true, true
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(tablaVerProveedores);
-        if (tablaVerProveedores.getColumnModel().getColumnCount() > 0) {
-            tablaVerProveedores.getColumnModel().getColumn(1).setMinWidth(20);
-            tablaVerProveedores.getColumnModel().getColumn(1).setPreferredWidth(70);
-        }
-
-        botonAgregar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        botonAgregar.setForeground(new java.awt.Color(0, 0, 255));
-        botonAgregar.setText("+");
-        botonAgregar.setMaximumSize(new java.awt.Dimension(50, 25));
-        botonAgregar.setMinimumSize(new java.awt.Dimension(50, 25));
-        botonAgregar.setPreferredSize(new java.awt.Dimension(50, 25));
-        botonAgregar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonAgregarActionPerformed(evt);
-            }
-        });
-
-        jLabel8.setText("Items");
-
-        tablaIngresarItems.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Lab", "Codigo", "Descripción", "Cantidad", "Presentación"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane2.setViewportView(tablaIngresarItems);
-        if (tablaIngresarItems.getColumnModel().getColumnCount() > 0) {
-            tablaIngresarItems.getColumnModel().getColumn(0).setMaxWidth(45);
-            tablaIngresarItems.getColumnModel().getColumn(1).setMinWidth(20);
-            tablaIngresarItems.getColumnModel().getColumn(1).setPreferredWidth(70);
-        }
-
-        jLabel9.setText("Proveedores");
-
-        jButton2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 0, 0));
-        jButton2.setText("-");
-        jButton2.setMaximumSize(new java.awt.Dimension(50, 25));
-        jButton2.setMinimumSize(new java.awt.Dimension(50, 25));
-        jButton2.setPreferredSize(new java.awt.Dimension(50, 25));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        jLabel10.setText(" debe comunicarse directamente con el Director Administrativo. ");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSeparator1)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel2))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel10)
-                                        .addGap(0, 0, Short.MAX_VALUE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(fecha)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(BotonVerItems)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(BotonEnviar))))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel9))
-                        .addGap(28, 28, 28)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Observaciones)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(NombreSolicitante, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(AreaProcesoSolicitante, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(botonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 521, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 521, Short.MAX_VALUE))))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(fecha))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(AreaProcesoSolicitante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
-                    .addComponent(botonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(NombreSolicitante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(4, 4, 4)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 144, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addComponent(jLabel5))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addComponent(Observaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(BotonEnviar)
-                        .addComponent(BotonVerItems))
-                    .addComponent(jLabel10))
-                .addContainerGap())
-        );
-
-        jTabbedPane2.addTab("Pedido", jPanel1);
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2)
-        );
-
-        TabbedPaneUsuarios.addTab("RealizarSolicitudes", jPanel4);
-
-        RefrescarInven.setText("Refrescar");
-        RefrescarInven.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RefrescarInvenActionPerformed(evt);
-            }
-        });
-
-        tablaInventario.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Codigo", "Descripción", "Presentación", "Cantidad"
-            }
-        ));
-        jScrollPane3.setViewportView(tablaInventario);
-
-        VolverASol.setText("Volver a Solicitudes");
-        VolverASol.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                VolverASolActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 663, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(RefrescarInven)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(VolverASol)))
-                .addContainerGap())
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(RefrescarInven)
-                    .addComponent(VolverASol))
-                .addContainerGap())
-        );
-
-        tabbedReportes.addTab("Ver Inventario", jPanel3);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setText("Solicitudes no revisadas");
@@ -738,11 +423,11 @@ public class AOficina extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Inv Actual", "Lab", "Código", "Descripción", "Cantidad Solicitada", "Presentación", "Precio Unitario"
+                "Inv Actual", "Lab", "Código", "Descripción", "Cantidad Solicitada", "Presentación", "Precio Unitario", "Proveedor"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, true
+                false, false, false, false, false, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -772,7 +457,7 @@ public class AOficina extends javax.swing.JFrame {
         nombreCot.setText("jLabel19");
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel13.setText("Seleccione el proveedor.");
+        jLabel13.setText("Vista de proveedor.");
 
         tablaProveedoresCot.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1157,7 +842,7 @@ public class AOficina extends javax.swing.JFrame {
             precio = new Float(df_itemsCot.getValueAt(ite, 6).toString());
             try {
                 System.out.println(id + " " + codigo + " " + lab + " " + numSol + " " + precio);
-                actPrecio = u.generarCotizacion(id, "1", codigo, lab, numSol, precio);
+                actPrecio = u.generarCotizacion(id, df_itemsCot.getValueAt(ite, 7).toString(), codigo, lab, numSol, precio);
             } catch (RemoteException ex) {
                 Logger.getLogger(AOficina.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -1182,6 +867,7 @@ public class AOficina extends javax.swing.JFrame {
         DefaultTableModel df = (DefaultTableModel) this.tablaSolicitudesNoRev.getModel();
         DefaultTableModel df_items = (DefaultTableModel) this.tablaitemsCot.getModel();
         DefaultTableModel df_proveedores = (DefaultTableModel) this.tablaProveedoresCot.getModel();
+        TableColumn cCalidadCell = this.tablaitemsCot.getColumnModel().getColumn(7);
         int filaSeleccionada = this.tablaSolicitudesNoRev.getSelectedRow();
         BigDecimal numSol = (BigDecimal) df.getValueAt(filaSeleccionada, 0);
         solicitudPr solicitud_NumSol = null;
@@ -1206,7 +892,7 @@ public class AOficina extends javax.swing.JFrame {
         this.fechaCot.setText(fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR));
         this.areaCot.setText(solicitud_NumSol.getArea());
         this.nombreCot.setText(solicitud_NumSol.getNombreRA());
-        this.TabbedPaneUsuarios.setSelectedIndex(2);
+        this.TabbedPaneUsuarios.setSelectedIndex(1);
         for (ItemInventario i : items_numSol) {
             Vector datos = new Vector();
             datos.add(i.getCantidad());
@@ -1216,6 +902,7 @@ public class AOficina extends javax.swing.JFrame {
             datos.add(i.getCantidadSolicitada());
             datos.add(i.getPresentacion());
             df_items.addRow(datos);
+            
             try {
                 itemxproveedor = u.getItemxproveedor(i.getInventario(), new BigDecimal(i.getNumero()));
             } catch (RemoteException ex) {
@@ -1223,6 +910,7 @@ public class AOficina extends javax.swing.JFrame {
             }
             aux.add(itemxproveedor);
         }
+        cCalidadCell.setCellEditor(new DefaultCellEditor(Apro_NITProv));
         for (ArrayList<itemxproveedor> iter : aux) {
             for (itemxproveedor i : iter) {
                 Vector datos = new Vector();
@@ -1307,93 +995,10 @@ public class AOficina extends javax.swing.JFrame {
 
     }//GEN-LAST:event_BotonRefrescarSolActionPerformed
 
-    private void VolverASolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VolverASolActionPerformed
-        this.TabbedPaneUsuarios.setSelectedIndex(0);
-        this.jTabbedPane2.setSelectedIndex(0);
-    }//GEN-LAST:event_VolverASolActionPerformed
-
-    private void RefrescarInvenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefrescarInvenActionPerformed
-        DefaultTableModel df = (DefaultTableModel) this.tablaInventario.getModel();
-        for (int i = df.getRowCount() - 1; i >= 0; i--) {
-            df.removeRow(i);
-        }
-        Usuario u = cliente.Cliente.conectarU();
-
-        ArrayList<ItemInventario> itemInventario = null;
-        try {
-            itemInventario = u.itemInventario(this.id);
-        } catch (RemoteException ex) {
-            Logger.getLogger(AOficina.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        for (ItemInventario i : itemInventario) {
-            Vector<Object> aux = new Vector<>();
-            try {
-                aux.add(0, u.area(this.id) + "-" + i.getNumero());
-            } catch (RemoteException ex) {
-                Logger.getLogger(AOficina.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            aux.add(1, i.getDescripcion());
-            aux.add(2, i.getPresentacion());
-            aux.add(3, i.getCantidad());
-            df.addRow(aux);
-        }
-    }//GEN-LAST:event_RefrescarInvenActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        DefaultTableModel df = (DefaultTableModel) this.tablaIngresarItems.getModel();
-        if (df.getRowCount() > 0) {
-            df.removeRow(this.tablaIngresarItems.getSelectedRow());
-        }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void botonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarActionPerformed
-        Usuario u = cliente.Cliente.conectarU();
-
-        ArrayList<ItemInventario> itemInventario = null;
-        try {
-            itemInventario = u.itemInventario(this.id);
-        } catch (RemoteException ex) {
-            Logger.getLogger(AOficina.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Vector elementos = new Vector();
-        JList list;
-        DefaultTableModel df;
-        for (ItemInventario i : itemInventario) {
-            elementos.add(i.getNumero());
-        }
-        list = new JList(elementos);
-        JOptionPane elegir = new JOptionPane();
-        elegir.showConfirmDialog(null, list, "Seleccione el código del ítem", elegir.PLAIN_MESSAGE);
-        if (list.getSelectedIndex() != -1) {
-            df = (DefaultTableModel) this.tablaIngresarItems.getModel();
-            df.addRow(new Object[]{Boolean.FALSE, null, null});
-            for (int i = 0; i < df.getRowCount(); i++) {
-                df.setValueAt(this.AreaProcesoSolicitante.getText() + "-", i, 0);
-            }
-
-            ItemInventario i = itemInventario.get(list.getSelectedIndex());
-            df.setValueAt(i.getNumero(), df.getRowCount() - 1, 1);
-            df.setValueAt(i.getDescripcion(), df.getRowCount() - 1, 2);
-            df.setValueAt(i.getPresentacion(), df.getRowCount() - 1, 3);
-            df.setValueAt(i.getCantidad(), df.getRowCount() - 1, 4);
-        }
-    }//GEN-LAST:event_botonAgregarActionPerformed
-
-    private void AreaProcesoSolicitanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AreaProcesoSolicitanteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_AreaProcesoSolicitanteActionPerformed
-
-    private void BotonVerItemsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonVerItemsActionPerformed
-        this.RefrescarInven.doClick();
-        this.TabbedPaneUsuarios.setSelectedIndex(1);
-        this.tabbedReportes.setSelectedIndex(0);
-    }//GEN-LAST:event_BotonVerItemsActionPerformed
-
     private void BotonRefrescarSolRevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonRefrescarSolRevActionPerformed
         DefaultTableModel df = (DefaultTableModel) this.TablaSolicitudesRev.getModel();
-Usuario u = cliente.Cliente.conectarU();
-for (int i = df.getRowCount() - 1; i >= 0; i--) {
+        Usuario u = cliente.Cliente.conectarU();
+        for (int i = df.getRowCount() - 1; i >= 0; i--) {
             df.removeRow(i);
         }
         ArrayList<cotizaciones> cotizacione = null;
@@ -1409,6 +1014,7 @@ for (int i = df.getRowCount() - 1; i >= 0; i--) {
                 datos.add(c.getCinterno());
                 datos.add(c.getCantSol());
                 datos.add(new Float(u.getCantAprobada(c).toString()));
+                c.setCantApr(new Float(u.getCantAprobada(c).toString()));
                 datos.add(c.getPrecioUnitario());
                 datos.add(c.getNumSol());
                 df.addRow(datos);
@@ -1420,11 +1026,12 @@ for (int i = df.getRowCount() - 1; i >= 0; i--) {
 
     private void btnRealizarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarOrdenActionPerformed
         Usuario u = cliente.Cliente.conectarU();
-        this.TabbedPaneUsuarios.setSelectedIndex(3);
         this.fechaOrden.setText(hoy.get(Calendar.DAY_OF_MONTH) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/" + hoy.get(Calendar.YEAR));
-        int selectedRow = this.TablaSolicitudesRev.getSelectedRow();
         String proveedor = this.Apro_NITProv.getSelectedItem().toString();
         DefaultTableModel df = (DefaultTableModel) this.tablaDatosPedido.getModel();
+        for (int i = df.getRowCount() - 1; i >= 0; i--) {
+            df.removeRow(i);
+        }
         float total = 0;
         String com = "";
         ArrayList<itemsOrdenCompra> pedidoOrdenCompra = new ArrayList<>();
@@ -1483,7 +1090,7 @@ for (int i = df.getRowCount() - 1; i >= 0; i--) {
                 datos.add(t.getNombre());
                 tabla.add(datos);
             }
-            verProveedores ver = new verProveedores(tabla);
+            verProveedores ver = new verProveedores();
             ver.setVisible(true);
         } catch (RemoteException ex) {
             Logger.getLogger(AOficina.class.getName()).log(Level.SEVERE, null, ex);
@@ -1551,34 +1158,22 @@ for (int i = df.getRowCount() - 1; i >= 0; i--) {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox Apro_NITProv;
-    private javax.swing.JTextField AreaProcesoSolicitante;
     private javax.swing.JButton BotonAyudaCot;
     private javax.swing.JButton BotonCotizar;
-    private javax.swing.JButton BotonEnviar;
     private javax.swing.JButton BotonRefrescarSol;
     private javax.swing.JButton BotonRefrescarSolRev;
     private javax.swing.JButton BotonRevisar;
     private javax.swing.JButton BotonRevisar1;
-    private javax.swing.JButton BotonVerItems;
     private javax.swing.JButton ButtonCerrarSesion;
-    private javax.swing.JTextField NombreSolicitante;
-    private javax.swing.JTextField Observaciones;
-    private javax.swing.JButton RefrescarInven;
     private javax.swing.JTabbedPane TabbedPaneUsuarios;
     private javax.swing.JTable TablaSolicitudesRev;
-    private javax.swing.JButton VolverASol;
     private javax.swing.JLabel areaCot;
-    private javax.swing.JButton botonAgregar;
     private javax.swing.JButton btnAyudaOrden;
     private javax.swing.JButton btnRealizarOrden;
     private javax.swing.JButton btnVerProv;
-    private javax.swing.JLabel fecha;
     private javax.swing.JLabel fechaCot;
     private javax.swing.JLabel fechaOrden;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -1588,7 +1183,6 @@ for (int i = df.getRowCount() - 1; i >= 0; i--) {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
@@ -1598,36 +1192,23 @@ for (int i = df.getRowCount() - 1; i >= 0; i--) {
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel42;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
-    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
@@ -1636,7 +1217,6 @@ for (int i = df.getRowCount() - 1; i >= 0; i--) {
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
-    private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JLabel labelAdministrador;
     private javax.swing.JLabel nombreCot;
     private javax.swing.JLabel numeroSolicitudCot;
@@ -1651,12 +1231,9 @@ for (int i = df.getRowCount() - 1; i >= 0; i--) {
     private javax.swing.JLabel subtotal;
     private javax.swing.JTabbedPane tabbedReportes;
     private javax.swing.JTable tablaDatosPedido;
-    private javax.swing.JTable tablaIngresarItems;
-    private javax.swing.JTable tablaInventario;
     private javax.swing.JTable tablaProveedoresCot;
     private javax.swing.JTable tablaSolicitudesNoRev;
     private javax.swing.JTable tablaSolicitudesRev;
-    private javax.swing.JTable tablaVerProveedores;
     private javax.swing.JTable tablaitemsCot;
     private javax.swing.JLabel total;
     // End of variables declaration//GEN-END:variables
