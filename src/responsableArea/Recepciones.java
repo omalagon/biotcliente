@@ -9,7 +9,6 @@ import EstructurasAux.ItemInventario;
 import EstructurasAux.itemRecep;
 import EstructurasAux.recepcionProd;
 import com.toedter.calendar.JDateChooserCellEditor;
-import gui.RArea;
 import interfaces.Usuario;
 import java.awt.Toolkit;
 import java.math.BigDecimal;

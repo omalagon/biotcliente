@@ -8,7 +8,6 @@ package inicioSesion;
 import administrador.VentanaInicio_Adm;
 import auxiliarOficina.VentanaInicio_AO;
 import gui.AOficina;
-import gui.RArea;
 import interfaces.Usuario;
 import java.awt.Color;
 import java.awt.Toolkit;
