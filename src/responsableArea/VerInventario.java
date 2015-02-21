@@ -35,7 +35,7 @@ public class VerInventario extends javax.swing.JFrame {
         initComponents();
         this.id = id;
         setIcon();
-        this.setLocation(400, 200);
+        this.setLocationRelativeTo(null);
         this.setSize(740, this.getHeight());
         
     }

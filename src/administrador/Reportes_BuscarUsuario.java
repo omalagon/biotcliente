@@ -35,7 +35,7 @@ public class Reportes_BuscarUsuario extends javax.swing.JFrame {
     Reportes_BuscarUsuario(BigDecimal id) {
         initComponents();
         this.id = id;
-        this.setLocation(600, 200);
+        this.setLocationRelativeTo(null);
         this.setSize(753, this.getHeight());
         setIcon();
     }
@@ -63,6 +63,7 @@ public class Reportes_BuscarUsuario extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel1.setText("Buscar Usuario");

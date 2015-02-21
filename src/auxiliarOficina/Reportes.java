@@ -29,7 +29,7 @@ public class Reportes extends javax.swing.JFrame {
     Reportes(BigDecimal id) {
         initComponents();
         setIcon();
-        this.setLocation(600, 200);
+        this.setLocationRelativeTo(null);
         this.setSize(420, this.getHeight());
     }
 
@@ -49,6 +49,7 @@ public class Reportes extends javax.swing.JFrame {
         btnVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel1.setText("Menú de Reportes");

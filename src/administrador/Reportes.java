@@ -27,7 +27,7 @@ public class Reportes extends javax.swing.JFrame {
         initComponents();
         this.id = id;
         setIcon();
-        this.setLocation(600, 200);
+        this.setLocationRelativeTo(null);
         this.setSize(443, this.getHeight());
     }
 
@@ -145,6 +145,7 @@ public class Reportes extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jlb_titulo.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jlb_titulo.setText("Menú de Reportes");

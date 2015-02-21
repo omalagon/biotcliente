@@ -34,7 +34,7 @@ public class InicioSesion extends javax.swing.JFrame {
         this.buttonGroupTipo.add(RButtonRA);
         this.buttonGroupTipo.add(RButtonAO);
         this.setSize(280, 351);
-        this.setLocation(600, 200);
+        this.setLocationRelativeTo(null);
         setIcon();
 
     }

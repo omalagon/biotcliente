@@ -39,7 +39,7 @@ public class VentanaInicio_AO extends javax.swing.JFrame {
             setIcon();
             this.btnGestionarSol.setToolTipText("Procese solicitudes hechas por un responsable de área");
             this.btnDescargos.setToolTipText("Procese las solicitudes aprobadas por un director administrativo");
-            this.setLocation(600, 200);
+            this.setLocationRelativeTo(null);
             this.setSize(443, this.getHeight());
             this.setResizable(false);
         } catch (RemoteException ex) {
@@ -65,6 +65,7 @@ public class VentanaInicio_AO extends javax.swing.JFrame {
         btnCerrarSesion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel1.setText("Bienvenido, ");

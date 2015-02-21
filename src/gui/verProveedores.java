@@ -30,6 +30,7 @@ public class verProveedores extends javax.swing.JFrame {
     public verProveedores() {
         initComponents();
         this.id = id;
+        this.setLocationRelativeTo(null);
         Usuario u = cliente.Cliente.conectarU();
         try {
             ArrayList<proveedor> todosProveedores = u.todosProveedores();
@@ -68,6 +69,7 @@ public class verProveedores extends javax.swing.JFrame {
         btnCerrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setResizable(false);
 
         labelAdministrador.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         labelAdministrador.setText("Listado de Proveedores");
@@ -81,7 +83,15 @@ public class verProveedores extends javax.swing.JFrame {
             new String [] {
                 "NIT", "NOMBRE"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         btnCerrar.setText("Cerrar");

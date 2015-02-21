@@ -42,7 +42,7 @@ public class ReporteDescargos extends javax.swing.JFrame {
     ReporteDescargos(BigDecimal id) {
         initComponents();
         this.id = id;
-        this.setLocation(600, 200);
+        this.setLocationRelativeTo(null);
         this.setSize(753, this.getHeight());
         setIcon();
     }

@@ -35,7 +35,7 @@ public class Creaciones extends javax.swing.JFrame {
 
     Creaciones(BigDecimal id) {
         initComponents();
-        this.setLocation(600, 200);
+        this.setLocationRelativeTo(null);
         this.id = id;
         this.ocultarElementos();
         setIcon();
@@ -75,27 +75,6 @@ public class Creaciones extends javax.swing.JFrame {
         jlb_creacion6 = new javax.swing.JLabel();
         jlb_creacion7 = new javax.swing.JLabel();
         jlb_creacion8 = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
-        btnOkEdicion = new javax.swing.JButton();
-        jcbbxEdicion = new javax.swing.JComboBox();
-        jPanel6 = new javax.swing.JPanel();
-        jTFieldEdicion1 = new javax.swing.JTextField();
-        jTFieldEdicion2 = new javax.swing.JTextField();
-        jTFieldEdicion3 = new javax.swing.JTextField();
-        jTFieldEdicion4 = new javax.swing.JTextField();
-        jTFieldEdicion5 = new javax.swing.JTextField();
-        jcbbxAreaEdicion = new javax.swing.JComboBox();
-        jTFieldEdicion7 = new javax.swing.JTextField();
-        jTFieldEdicion8 = new javax.swing.JTextField();
-        jPanel7 = new javax.swing.JPanel();
-        jlb_edicion1 = new javax.swing.JLabel();
-        jlb_edicion2 = new javax.swing.JLabel();
-        jlb_edicion3 = new javax.swing.JLabel();
-        jlb_edicion4 = new javax.swing.JLabel();
-        jlb_edicion5 = new javax.swing.JLabel();
-        jlb_edicion6 = new javax.swing.JLabel();
-        jlb_edicion7 = new javax.swing.JLabel();
-        jlb_edicion8 = new javax.swing.JLabel();
         btnAceptar = new javax.swing.JButton();
         btnCerrar = new javax.swing.JButton();
 
@@ -244,146 +223,6 @@ public class Creaciones extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Creación", jPanel1);
 
-        btnOkEdicion.setText("Ok");
-        btnOkEdicion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOkEdicionActionPerformed(evt);
-            }
-        });
-
-        jcbbxEdicion.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Editar Responsable de Área", "Editar Auxiliar de Oficina", "Editar Director Administrativo", "Editar Proveedor", "Editar Ítem" }));
-
-        jTFieldEdicion1.setMaximumSize(new java.awt.Dimension(6, 20));
-
-        jcbbxAreaEdicion.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Lab Microbiológico", "Lab Físicoquímico", "Lab Medio ambiental", "Equipo de Oficina" }));
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTFieldEdicion1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTFieldEdicion2)
-                    .addComponent(jTFieldEdicion3)
-                    .addComponent(jTFieldEdicion4)
-                    .addComponent(jTFieldEdicion5)
-                    .addComponent(jcbbxAreaEdicion, 0, 248, Short.MAX_VALUE)
-                    .addComponent(jTFieldEdicion7)
-                    .addComponent(jTFieldEdicion8))
-                .addContainerGap())
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTFieldEdicion1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTFieldEdicion2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTFieldEdicion3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTFieldEdicion4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTFieldEdicion5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jcbbxAreaEdicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTFieldEdicion7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTFieldEdicion8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jlb_edicion1.setText("jLabel1");
-
-        jlb_edicion2.setText("jLabel2");
-
-        jlb_edicion3.setText("jLabel3");
-
-        jlb_edicion4.setText("jLabel4");
-
-        jlb_edicion5.setText("jLabel5");
-
-        jlb_edicion6.setText("jLabel6");
-
-        jlb_edicion7.setText("jLabel7");
-
-        jlb_edicion8.setText("jLabel8");
-
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jlb_edicion1)
-                    .addComponent(jlb_edicion8)
-                    .addComponent(jlb_edicion7)
-                    .addComponent(jlb_edicion5)
-                    .addComponent(jlb_edicion2)
-                    .addComponent(jlb_edicion3)
-                    .addComponent(jlb_edicion4)
-                    .addComponent(jlb_edicion6))
-                .addContainerGap(89, Short.MAX_VALUE))
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jlb_edicion1)
-                .addGap(18, 18, 18)
-                .addComponent(jlb_edicion2)
-                .addGap(18, 18, 18)
-                .addComponent(jlb_edicion3)
-                .addGap(18, 18, 18)
-                .addComponent(jlb_edicion4)
-                .addGap(18, 18, 18)
-                .addComponent(jlb_edicion5)
-                .addGap(18, 18, 18)
-                .addComponent(jlb_edicion6)
-                .addGap(18, 18, 18)
-                .addComponent(jlb_edicion7)
-                .addGap(18, 18, 18)
-                .addComponent(jlb_edicion8)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jcbbxEdicion, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnOkEdicion))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
-                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jcbbxEdicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnOkEdicion))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(22, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("Editar", jPanel5);
-
         btnAceptar.setText("Aceptar");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -464,11 +303,6 @@ public class Creaciones extends javax.swing.JFrame {
         vent.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnCerrarActionPerformed
-
-    private void btnOkEdicionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkEdicionActionPerformed
-        JOptionPane.showMessageDialog(null, "Funciones de edición no disponibles aún");
-
-    }//GEN-LAST:event_btnOkEdicionActionPerformed
 
     private void btnOkCreacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkCreacionActionPerformed
         String creacion = this.jcbbxCreacion.getSelectedItem().toString();
@@ -633,14 +467,10 @@ public class Creaciones extends javax.swing.JFrame {
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnCerrar;
     private javax.swing.JButton btnOkCreacion;
-    private javax.swing.JButton btnOkEdicion;
     private javax.swing.Box.Filler filler1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JTextField jTFieldCreacion1;
     private javax.swing.JTextField jTFieldCreacion2;
     private javax.swing.JTextField jTFieldCreacion3;
@@ -648,18 +478,9 @@ public class Creaciones extends javax.swing.JFrame {
     private javax.swing.JTextField jTFieldCreacion5;
     private javax.swing.JTextField jTFieldCreacion7;
     private javax.swing.JTextField jTFieldCreacion8;
-    private javax.swing.JTextField jTFieldEdicion1;
-    private javax.swing.JTextField jTFieldEdicion2;
-    private javax.swing.JTextField jTFieldEdicion3;
-    private javax.swing.JTextField jTFieldEdicion4;
-    private javax.swing.JTextField jTFieldEdicion5;
-    private javax.swing.JTextField jTFieldEdicion7;
-    private javax.swing.JTextField jTFieldEdicion8;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JComboBox jcbbxArea;
-    private javax.swing.JComboBox jcbbxAreaEdicion;
     private javax.swing.JComboBox jcbbxCreacion;
-    private javax.swing.JComboBox jcbbxEdicion;
     private javax.swing.JLabel jlb_creacion1;
     private javax.swing.JLabel jlb_creacion2;
     private javax.swing.JLabel jlb_creacion3;
@@ -668,14 +489,6 @@ public class Creaciones extends javax.swing.JFrame {
     private javax.swing.JLabel jlb_creacion6;
     private javax.swing.JLabel jlb_creacion7;
     private javax.swing.JLabel jlb_creacion8;
-    private javax.swing.JLabel jlb_edicion1;
-    private javax.swing.JLabel jlb_edicion2;
-    private javax.swing.JLabel jlb_edicion3;
-    private javax.swing.JLabel jlb_edicion4;
-    private javax.swing.JLabel jlb_edicion5;
-    private javax.swing.JLabel jlb_edicion6;
-    private javax.swing.JLabel jlb_edicion7;
-    private javax.swing.JLabel jlb_edicion8;
     private javax.swing.JLabel jlb_titulo;
     // End of variables declaration//GEN-END:variables
 

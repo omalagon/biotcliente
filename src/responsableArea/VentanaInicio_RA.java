@@ -40,7 +40,7 @@ public class VentanaInicio_RA extends javax.swing.JFrame {
             this.btnGestionarSol.setToolTipText("Gestione solicitudes de productos");
             this.btnDescargos.setToolTipText("Realice descargo de inventarios de su laboratorio");
             this.btnRecibirPedidos.setToolTipText("Reciba pedidos");
-            this.setLocation(600, 200);
+            this.setLocationRelativeTo(null);
             this.setSize(443, this.getHeight());
             this.setResizable(false);
         } catch (RemoteException ex) {
@@ -182,7 +182,6 @@ public class VentanaInicio_RA extends javax.swing.JFrame {
     private void btnDescargosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescargosActionPerformed
         DescargoConsumos des = new DescargoConsumos(id);
         des.setVisible(true);
-        this.setVisible(false);
     }//GEN-LAST:event_btnDescargosActionPerformed
 
     /**

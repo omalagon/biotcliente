@@ -35,7 +35,7 @@ public class ReporteInventario extends javax.swing.JFrame {
         initComponents();
         this.id = id;
         setIcon();
-        this.setLocation(600, 200);
+        this.setLocationRelativeTo(null);
         this.setSize(654, this.getHeight());
 
     }

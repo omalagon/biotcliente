@@ -20,6 +20,7 @@ public class anexo1 extends javax.swing.JFrame {
     public anexo1() {
         initComponents();
         DefaultTableModel df = (DefaultTableModel)this.jTable1.getModel();
+        this.setLocationRelativeTo(null);
         this.jTable1.setRowHeight(this.jTable1.getRowHeight()+70);
         this.setSize(1725,780);
         String [] fila1 = {"1", "Medios \n\n\n\nde cultivo", "Afecta Significativamente","ECOMETRICOS,Certificado de calidad", "Pruebas de productividad y selectividad antes del uso y certificados de calidad", "Por lote recibido"};

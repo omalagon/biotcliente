@@ -46,6 +46,7 @@ public class Recepciones extends javax.swing.JFrame {
 
     Recepciones(BigDecimal id, String area) {
         initComponents();
+        this.setLocationRelativeTo(null);
         this.id = id;
         this.area = area;
         TableColumn fecRec = this.tablaDatosPedido.getColumnModel().getColumn(7);
@@ -86,10 +87,6 @@ public class Recepciones extends javax.swing.JFrame {
         jScrollPane9 = new javax.swing.JScrollPane();
         tablaDatosPedido = new javax.swing.JTable();
         jLabel35 = new javax.swing.JLabel();
-        jLabel36 = new javax.swing.JLabel();
-        subtotal = new javax.swing.JLabel();
-        jLabel38 = new javax.swing.JLabel();
-        iva = new javax.swing.JLabel();
         jLabel40 = new javax.swing.JLabel();
         total = new javax.swing.JLabel();
         jLabel42 = new javax.swing.JLabel();
@@ -145,14 +142,6 @@ public class Recepciones extends javax.swing.JFrame {
 
         jLabel35.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel35.setText("Datos Pedido");
-
-        jLabel36.setText("Subtotal");
-
-        subtotal.setText("jLabel37");
-
-        jLabel38.setText("IVA");
-
-        iva.setText("jLabel39");
 
         jLabel40.setText("Total");
 
@@ -229,15 +218,9 @@ public class Recepciones extends javax.swing.JFrame {
                             .addComponent(rec_cel)
                             .addComponent(rec_fax)))
                     .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel36)
-                            .addComponent(jLabel38)
-                            .addComponent(jLabel40))
-                        .addGap(50, 50, 50)
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(subtotal)
-                            .addComponent(total)
-                            .addComponent(iva))))
+                        .addComponent(jLabel40)
+                        .addGap(66, 66, 66)
+                        .addComponent(total)))
                 .addContainerGap())
         );
         jPanel9Layout.setVerticalGroup(
@@ -281,15 +264,7 @@ public class Recepciones extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel35)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel36)
-                    .addComponent(subtotal))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel38)
-                    .addComponent(iva))
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel40)
@@ -417,8 +392,6 @@ public class Recepciones extends javax.swing.JFrame {
                     float tot = 0;
                     tot += articulo.getcAprobada() * articulo.getPrecio();
                     this.total.setText(new Float(tot).toString());
-                    this.subtotal.setText(new Float(tot * 0.84).toString());
-                    this.iva.setText(new Float(tot * 0.16).toString());
                 }
                 cCalidadCell.setCellEditor(new DefaultCellEditor(calidad));
                 cEspe.setCellEditor(new DefaultCellEditor(cEspecificaciones));
@@ -505,7 +478,6 @@ public class Recepciones extends javax.swing.JFrame {
     private javax.swing.JButton btnEnviarRec;
     private javax.swing.JButton btnProcesarRec;
     private javax.swing.JButton btnVolver;
-    private javax.swing.JLabel iva;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
@@ -516,8 +488,6 @@ public class Recepciones extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel35;
-    private javax.swing.JLabel jLabel36;
-    private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel42;
     private javax.swing.JPanel jPanel9;
@@ -535,7 +505,6 @@ public class Recepciones extends javax.swing.JFrame {
     private javax.swing.JLabel rec_nit;
     private javax.swing.JLabel rec_nomProv;
     private javax.swing.JTextArea recobs;
-    private javax.swing.JLabel subtotal;
     private javax.swing.JTable tablaDatosPedido;
     private javax.swing.JLabel total;
     // End of variables declaration//GEN-END:variables

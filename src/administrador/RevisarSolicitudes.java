@@ -42,6 +42,7 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
     RevisarSolicitudes(BigDecimal id) {
         initComponents();
         this.id = id;
+        this.setLocationRelativeTo(null);
         this.setExtendedState(MAXIMIZED_BOTH);
         setIcon();
         this.btnRefrescarSolRev.doClick();
@@ -386,7 +387,7 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
                 datos.add(c.getLab());
                 datos.add(c.getCinterno());
                 datos.add(c.getCantSol());
-                datos.add(new Float(u.getCantAprobada(c).toString()));
+                datos.add(u.getCantAprobada(c));
                 datos.add(c.getPrecioUnitario());
                 datos.add(c.getNumSol());
                 df.addRow(datos);

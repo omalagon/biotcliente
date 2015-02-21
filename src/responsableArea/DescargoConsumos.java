@@ -39,7 +39,7 @@ public class DescargoConsumos extends javax.swing.JFrame {
         String User = "";
         String area = "";
         setIcon();
-        this.setLocation(600, 200);
+        this.setLocationRelativeTo(null);
         this.setSize(415, this.getHeight());
 
         try {
@@ -86,6 +86,7 @@ public class DescargoConsumos extends javax.swing.JFrame {
         btnVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setResizable(false);
 
         labelAdministrador.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         labelAdministrador.setText("Descargo de Consumos");
@@ -177,7 +178,7 @@ public class DescargoConsumos extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel33)
                     .addComponent(desc_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(btnVolver))
@@ -189,6 +190,11 @@ public class DescargoConsumos extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int selectedIndex = this.desc_items.getSelectedIndex();
+        if(new Float (this.desc_cantidad.getText().toString()) <=0)
+        {
+            JOptionPane.showMessageDialog(null, "La cantidad ingresada debe ser mayor a cero");
+            this.desc_cantidad.setText("");
+        }else{
         descargo d = new descargo(hoy, this.ide, this.desc_area.getText(), new Float(this.desc_cantidad.getText()), new BigDecimal(this.itemInventarioAdmin.get(selectedIndex).getNumero()));
         Usuario u = cliente.Cliente.conectarU();
         boolean valido = false;
@@ -204,8 +210,10 @@ public class DescargoConsumos extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Ocurrió un error en el proceso.");
             }
+        
         } catch (RemoteException ex) {
             Logger.getLogger(DescargoConsumos.class.getName()).log(Level.SEVERE, null, ex);
+        }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

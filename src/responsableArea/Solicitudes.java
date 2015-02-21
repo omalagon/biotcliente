@@ -47,7 +47,7 @@ public class Solicitudes extends javax.swing.JFrame {
         setIcon();
         Usuario u = cliente.Cliente.conectarU();
         this.id = id;
-        this.setLocation(600, 200);
+        this.setLocationRelativeTo(null);
         
         this.setSize(840, this.getHeight());
         try {

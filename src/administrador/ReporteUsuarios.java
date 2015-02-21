@@ -36,7 +36,7 @@ public class ReporteUsuarios extends javax.swing.JFrame {
         this.id = id;
         this.btnRefrescar.doClick();
         setIcon();
-        this.setLocation(600, 200);
+        this.setLocationRelativeTo(null);
         this.setSize(712, this.getHeight());
     }
 
@@ -70,7 +70,15 @@ public class ReporteUsuarios extends javax.swing.JFrame {
             new String [] {
                 "Id", "Nombre", "Correo", "Cargo", "Lab"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane3.setViewportView(tablaVerUsuarios);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
