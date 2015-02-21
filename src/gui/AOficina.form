@@ -134,10 +134,9 @@
                                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="1" attributes="0">
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                      <EmptySpace min="0" pref="540" max="32767" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="BotonRefrescarSol" alignment="1" min="-2" max="-2" attributes="0"/>
-                                          <Component id="BotonRevisar1" alignment="1" min="-2" max="-2" attributes="0"/>
                                           <Component id="BotonCotizar" alignment="1" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
@@ -165,10 +164,8 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jScrollPane4" min="-2" pref="206" max="-2" attributes="0"/>
+                              <Component id="jScrollPane4" min="-2" pref="245" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="BotonRevisar1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                               <Component id="BotonRefrescarSol" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
@@ -301,14 +298,6 @@
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BotonRefrescarSolActionPerformed"/>
-                      </Events>
-                    </Component>
-                    <Component class="javax.swing.JButton" name="BotonRevisar1">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="Marcar como no revisada"/>
-                      </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BotonRevisar1ActionPerformed"/>
                       </Events>
                     </Component>
                     <Component class="javax.swing.JSeparator" name="jSeparator6">

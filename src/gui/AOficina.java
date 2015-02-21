@@ -96,7 +96,6 @@ public class AOficina extends javax.swing.JFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         tablaSolicitudesNoRev = new javax.swing.JTable();
         BotonRefrescarSol = new javax.swing.JButton();
-        BotonRevisar1 = new javax.swing.JButton();
         jSeparator6 = new javax.swing.JSeparator();
         BotonCotizar = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
@@ -226,13 +225,6 @@ public class AOficina extends javax.swing.JFrame {
             }
         });
 
-        BotonRevisar1.setText("Marcar como no revisada");
-        BotonRevisar1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BotonRevisar1ActionPerformed(evt);
-            }
-        });
-
         BotonCotizar.setText("Realizar Cotizacion");
         BotonCotizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -257,10 +249,9 @@ public class AOficina extends javax.swing.JFrame {
                                 .addComponent(jLabel11)))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 540, Short.MAX_VALUE)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(BotonRefrescarSol, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(BotonRevisar1, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(BotonCotizar, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -281,10 +272,8 @@ public class AOficina extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BotonRevisar1)
-                .addGap(16, 16, 16)
                 .addComponent(BotonRefrescarSol)
                 .addContainerGap())
             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -916,31 +905,6 @@ public class AOficina extends javax.swing.JFrame {
         this.obsCot.setText(solicitud_NumSol.getObservaciones());
     }//GEN-LAST:event_BotonCotizarActionPerformed
 
-    private void BotonRevisar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonRevisar1ActionPerformed
-        Usuario u = cliente.Cliente.conectarU();
-        boolean act = false;
-        DefaultTableModel df = (DefaultTableModel) this.tablaSolicitudesRev.getModel();
-        int filaSeleccionadas[] = this.tablaSolicitudesRev.getSelectedRows();
-        for (int filaSeleccionada : filaSeleccionadas) {
-            if (filaSeleccionada == -1) {
-                JOptionPane.showMessageDialog(rootPane, "Seleccione una fila");
-            } else {
-                BigDecimal numSol = (BigDecimal) df.getValueAt(filaSeleccionada, 0);
-                try {
-                    act = u.RevisarSolicitud(null, numSol, "NO");
-                } catch (RemoteException ex) {
-                    Logger.getLogger(AOficina.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        if (act == true) {
-            JOptionPane.showMessageDialog(rootPane, "Hecho!");
-        } else {
-            JOptionPane.showMessageDialog(rootPane, "Error Actualizando");
-        }
-        this.BotonRefrescarSol.doClick();
-    }//GEN-LAST:event_BotonRevisar1ActionPerformed
-
     private void BotonRefrescarSolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonRefrescarSolActionPerformed
         DefaultTableModel df_NoRevisadas = (DefaultTableModel) this.tablaSolicitudesNoRev.getModel();
         Usuario u = cliente.Cliente.conectarU();
@@ -1155,7 +1119,6 @@ public class AOficina extends javax.swing.JFrame {
     private javax.swing.JButton BotonRefrescarSol;
     private javax.swing.JButton BotonRefrescarSolRev;
     private javax.swing.JButton BotonRevisar;
-    private javax.swing.JButton BotonRevisar1;
     private javax.swing.JButton ButtonCerrarSesion;
     private javax.swing.JTabbedPane TabbedPaneUsuarios;
     private javax.swing.JTable TablaSolicitudesRev;
