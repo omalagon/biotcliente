@@ -169,6 +169,7 @@ public class VentanaInicio_Adm extends javax.swing.JFrame {
     private void btnRevisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRevisarActionPerformed
         RevisarSolicitudes rev = new RevisarSolicitudes(this.id);
         rev.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_btnRevisarActionPerformed
 
     private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
