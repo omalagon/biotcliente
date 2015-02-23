@@ -30,7 +30,7 @@ public class Cliente {
 
         Usuario u = null;
         try {
-            Registry registry = LocateRegistry.getRegistry("192.168.0.4", 222);
+            Registry registry = LocateRegistry.getRegistry("192.168.10.166", 222);
             u = (Usuario) registry.lookup("Test");
 
         } catch (RemoteException ex) {

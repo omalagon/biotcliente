@@ -66,6 +66,7 @@ public class Creaciones extends javax.swing.JFrame {
         jcbbxArea = new javax.swing.JComboBox();
         jTFieldCreacion7 = new javax.swing.JTextField();
         jTFieldCreacion8 = new javax.swing.JTextField();
+        jTFieldCreacion9 = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jlb_creacion1 = new javax.swing.JLabel();
         jlb_creacion2 = new javax.swing.JLabel();
@@ -75,6 +76,7 @@ public class Creaciones extends javax.swing.JFrame {
         jlb_creacion6 = new javax.swing.JLabel();
         jlb_creacion7 = new javax.swing.JLabel();
         jlb_creacion8 = new javax.swing.JLabel();
+        jlb_creacion9 = new javax.swing.JLabel();
         btnAceptar = new javax.swing.JButton();
         btnCerrar = new javax.swing.JButton();
 
@@ -110,7 +112,8 @@ public class Creaciones extends javax.swing.JFrame {
                     .addComponent(jTFieldCreacion5)
                     .addComponent(jcbbxArea, 0, 248, Short.MAX_VALUE)
                     .addComponent(jTFieldCreacion7)
-                    .addComponent(jTFieldCreacion8))
+                    .addComponent(jTFieldCreacion8)
+                    .addComponent(jTFieldCreacion9))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -132,7 +135,9 @@ public class Creaciones extends javax.swing.JFrame {
                 .addComponent(jTFieldCreacion7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jTFieldCreacion8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jTFieldCreacion9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jlb_creacion1.setText("jLabel1");
@@ -151,6 +156,8 @@ public class Creaciones extends javax.swing.JFrame {
 
         jlb_creacion8.setText("jLabel8");
 
+        jlb_creacion9.setText("jLabel1");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -165,7 +172,8 @@ public class Creaciones extends javax.swing.JFrame {
                     .addComponent(jlb_creacion2)
                     .addComponent(jlb_creacion3)
                     .addComponent(jlb_creacion4)
-                    .addComponent(jlb_creacion6))
+                    .addComponent(jlb_creacion6)
+                    .addComponent(jlb_creacion9))
                 .addContainerGap(89, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -187,6 +195,8 @@ public class Creaciones extends javax.swing.JFrame {
                 .addComponent(jlb_creacion7)
                 .addGap(18, 18, 18)
                 .addComponent(jlb_creacion8)
+                .addGap(18, 18, 18)
+                .addComponent(jlb_creacion9)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -200,10 +210,11 @@ public class Creaciones extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jcbbxCreacion, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnOkCreacion))
+                        .addComponent(btnOkCreacion)
+                        .addGap(0, 46, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -215,10 +226,10 @@ public class Creaciones extends javax.swing.JFrame {
                     .addComponent(jcbbxCreacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnOkCreacion))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Creación", jPanel1);
@@ -261,7 +272,7 @@ public class Creaciones extends javax.swing.JFrame {
                 .addComponent(jlb_titulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane1)
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addGap(18, 32, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnAceptar)
                     .addComponent(btnCerrar))
@@ -413,6 +424,8 @@ public class Creaciones extends javax.swing.JFrame {
                 this.jlb_creacion7.setText("Sucursal");
                 this.jlb_creacion8.setVisible(true);
                 this.jlb_creacion8.setText("C. Especificaciones");
+                this.jlb_creacion9.setVisible(true);
+                this.jlb_creacion9.setText("Proveedor Asociado");
                 this.jTFieldCreacion1.setVisible(true);
                 this.jTFieldCreacion2.setVisible(true);
                 this.jTFieldCreacion3.setVisible(true);
@@ -422,6 +435,7 @@ public class Creaciones extends javax.swing.JFrame {
                 this.jcbbxArea.setEnabled(true);
                 this.jTFieldCreacion7.setVisible(true);
                 this.jTFieldCreacion8.setVisible(true);
+                this.jTFieldCreacion9.setVisible(true);
                 this.tabla = creacion;
                 break;
         }
@@ -478,6 +492,7 @@ public class Creaciones extends javax.swing.JFrame {
     private javax.swing.JTextField jTFieldCreacion5;
     private javax.swing.JTextField jTFieldCreacion7;
     private javax.swing.JTextField jTFieldCreacion8;
+    private javax.swing.JTextField jTFieldCreacion9;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JComboBox jcbbxArea;
     private javax.swing.JComboBox jcbbxCreacion;
@@ -489,6 +504,7 @@ public class Creaciones extends javax.swing.JFrame {
     private javax.swing.JLabel jlb_creacion6;
     private javax.swing.JLabel jlb_creacion7;
     private javax.swing.JLabel jlb_creacion8;
+    private javax.swing.JLabel jlb_creacion9;
     private javax.swing.JLabel jlb_titulo;
     // End of variables declaration//GEN-END:variables
 
@@ -501,6 +517,7 @@ public class Creaciones extends javax.swing.JFrame {
         this.jlb_creacion6.setVisible(false);
         this.jlb_creacion7.setVisible(false);
         this.jlb_creacion8.setVisible(false);
+        this.jlb_creacion9.setVisible(false);
         this.jTFieldCreacion1.setVisible(false);
         this.jTFieldCreacion2.setVisible(false);
         this.jTFieldCreacion3.setVisible(false);
@@ -509,6 +526,7 @@ public class Creaciones extends javax.swing.JFrame {
         this.jcbbxArea.setVisible(false);
         this.jTFieldCreacion7.setVisible(false);
         this.jTFieldCreacion8.setVisible(false);
+        this.jTFieldCreacion9.setVisible(false);
         this.jTFieldCreacion1.setText("");
         this.jTFieldCreacion2.setText("");
         this.jTFieldCreacion3.setText("");
@@ -516,6 +534,7 @@ public class Creaciones extends javax.swing.JFrame {
         this.jTFieldCreacion5.setText("");
         this.jTFieldCreacion7.setText("");
         this.jTFieldCreacion8.setText("");
+        this.jTFieldCreacion9.setText("");
         this.jcbbxArea.removeAllItems();
         String labs[] = {"Lab Microbiológico", "Lab Físicoquímico", "Lab Medio ambiental", "Equipo de Oficina"};
         for (String lab : labs) {
@@ -581,16 +600,19 @@ public class Creaciones extends javax.swing.JFrame {
     }
 
     private void crearAO() {
-        String identificacion = this.jlb_creacion1.getText();
-        String nombre = this.jlb_creacion2.getText();
-        String correo = this.jlb_creacion3.getText();
-        String psw = this.jlb_creacion4.getText();
+        String identificacion = this.jTFieldCreacion1.getText();
+        String nombre = this.jTFieldCreacion2.getText();
+        String correo = this.jTFieldCreacion3.getText();
+        String psw = this.jTFieldCreacion4.getText();
         boolean creado = false;
         Usuario ad = cliente.Cliente.conectarU();
 
         if (identificacion.isEmpty() == false && nombre.isEmpty() == false && correo.isEmpty() == false && psw.isEmpty() == false) {
             try {
+                System.out.println(identificacion);
+                
                 creado = ad.crearAO(identificacion, nombre, correo, psw, id);
+                
             } catch (RemoteException ex) {
                 Logger.getLogger(Creaciones.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -663,6 +685,7 @@ public class Creaciones extends javax.swing.JFrame {
                 + new Float(this.jTFieldCreacion4.getText()) + this.jTFieldCreacion5.getText() + labo + this.jTFieldCreacion7.getText() + this.jTFieldCreacion8.getText());
         try {
             valido = u.crearItem(item);
+            u.asociarItem(this.jTFieldCreacion9.getText(), labo, this.jTFieldCreacion4.getText());
             if (valido) {
                 JOptionPane.showMessageDialog(null, "Item creado");
             } else {

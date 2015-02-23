@@ -574,6 +574,11 @@
                                   </Group>
                               </Group>
                           </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace min="0" pref="573" max="32767" attributes="0"/>
+                              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="jScrollPane10" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel35" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -589,35 +594,21 @@
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="oc_nit" min="-2" max="-2" attributes="0"/>
                                           <Component id="oc_dir" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="oc_cel" alignment="0" min="-2" max="-2" attributes="0"/>
                                           <Component id="oc_fax" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
-                                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="jLabel40" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="32767" attributes="0"/>
-                                          <Component id="total" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="jLabel36" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
-                                          <Component id="subtotal" min="-2" max="-2" attributes="0"/>
-                                      </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jLabel40" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="190" max="-2" attributes="0"/>
+                                      <Component id="total" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="jLabel42" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="299" max="-2" attributes="0"/>
+                                      <Component id="oc_cel" min="-2" pref="30" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jButton1" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="jLabel42" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jScrollPane10" min="-2" pref="583" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -651,14 +642,17 @@
                           <Component id="oc_nit" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel25" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="oc_dir" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel26" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="oc_cel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="jLabel25" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="jLabel26" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="oc_dir" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="oc_cel" min="-2" pref="39" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -670,25 +664,19 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel35" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane9" min="-2" pref="203" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel36" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="subtotal" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="jScrollPane9" pref="306" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel40" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="total" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jSeparator9" min="-2" pref="5" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane10" min="-2" pref="75" max="-2" attributes="0"/>
-                          <Component id="jLabel42" min="-2" pref="14" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace pref="112" max="32767" attributes="0"/>
+                      <Component id="jLabel42" min="-2" pref="14" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jScrollPane10" min="-2" pref="55" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -702,9 +690,6 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="fechaOrden">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="jLabel21"/>
-              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel22">
               <Properties>
@@ -742,29 +727,14 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="oc_nomProv">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="jLabel30"/>
-              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="oc_nit">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="jLabel31"/>
-              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="oc_dir">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="jLabel32"/>
-              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="oc_cel">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="jLabel33"/>
-              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="oc_fax">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="jLabel34"/>
-              </Properties>
             </Component>
             <Component class="javax.swing.JSeparator" name="jSeparator8">
             </Component>
@@ -836,16 +806,6 @@
                 <Property name="text" type="java.lang.String" value="Datos Pedido"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel36">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Subtotal (Antes de IVA)"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="subtotal">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="jLabel37"/>
-              </Properties>
-            </Component>
             <Component class="javax.swing.JLabel" name="jLabel40">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Total"/>
@@ -892,9 +852,6 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="numorden">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="jLabel28"/>
-              </Properties>
             </Component>
           </SubComponents>
         </Container>

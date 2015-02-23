@@ -30,6 +30,7 @@ public class Reportes extends javax.swing.JFrame {
         initComponents();
         setIcon();
         this.setLocationRelativeTo(null);
+        this.id= id;
         this.setSize(420, this.getHeight());
     }
 
@@ -129,6 +130,7 @@ public class Reportes extends javax.swing.JFrame {
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         VentanaInicio_AO vent = new VentanaInicio_AO(this.id.toString());
         vent.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_btnVolverActionPerformed
 
     /**
