@@ -31,21 +31,16 @@ public class VentanaInicio_Adm extends javax.swing.JFrame {
     }
 
     public VentanaInicio_Adm(String usuario) {
-        try {
-            initComponents();
-            id = new BigDecimal(usuario);
-            Usuario u = cliente.Cliente.conectarU();
-            this.lbl_NombreDA.setText(u.getNombreDA(usuario));
-            setIcon();
-            this.btnCrear.setToolTipText("Abre una ventana para crear usuarios e ítems");
-            this.btnReportes.setToolTipText("Vea, gestione y genere reportes de: Usuarios, Inventario,Solicitudes y Descargos");
-            this.btnRevisar.setToolTipText("Gestione solicitudes de productos");
-            this.setLocationRelativeTo(null);
-            this.setSize(530, this.getHeight());
-            this.setResizable(false);
-        } catch (RemoteException ex) {
-            Logger.getLogger(VentanaInicio_Adm.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        initComponents();
+        id = new BigDecimal(usuario);
+        Usuario u = cliente.Cliente.conectarU();
+        setIcon();
+        this.btnCrear.setToolTipText("Abre una ventana para crear usuarios e ítems");
+        this.btnReportes.setToolTipText("Vea, gestione y genere reportes de: Usuarios, Inventario,Solicitudes y Descargos");
+        this.btnRevisar.setToolTipText("Gestione solicitudes de productos");
+        this.setLocationRelativeTo(null);
+        this.setSize(530, this.getHeight());
+        this.setResizable(false);
     }
 
     /**
@@ -58,7 +53,6 @@ public class VentanaInicio_Adm extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        lbl_NombreDA = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         btnCrear = new javax.swing.JButton();
         btnReportes = new javax.swing.JButton();
@@ -72,10 +66,7 @@ public class VentanaInicio_Adm extends javax.swing.JFrame {
         setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
-        jLabel1.setText("Bienvenido, ");
-
-        lbl_NombreDA.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
-        lbl_NombreDA.setText("jLabel2");
+        jLabel1.setText("Bienvenido ");
 
         jLabel2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel2.setText("¿Qué desea hacer?");
@@ -134,13 +125,10 @@ public class VentanaInicio_Adm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lbl_NombreDA))
+                            .addComponent(jLabel1)
                             .addComponent(jLabel3)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(237, Short.MAX_VALUE))
+                        .addContainerGap(335, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,9 +148,7 @@ public class VentanaInicio_Adm extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(lbl_NombreDA))
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -269,6 +255,5 @@ public class VentanaInicio_Adm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel lbl_NombreDA;
     // End of variables declaration//GEN-END:variables
 }

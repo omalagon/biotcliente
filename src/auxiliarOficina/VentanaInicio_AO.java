@@ -7,7 +7,6 @@ package auxiliarOficina;
 
 import gui.AOficina;
 import gui.CambioClave;
-import responsableArea.*;
 import inicioSesion.InicioSesion;
 import interfaces.Usuario;
 import java.awt.Toolkit;
@@ -32,20 +31,15 @@ public class VentanaInicio_AO extends javax.swing.JFrame {
     }
 
     public VentanaInicio_AO(String usuario) {
-        try {
-            initComponents();
-            id = new BigDecimal(usuario);
-            Usuario u = cliente.Cliente.conectarU();
-            this.lbl_NombreAO.setText(u.getNombreAO(usuario));
-            setIcon();
-            this.btnGestionarSol.setToolTipText("Procese solicitudes hechas por un responsable de área");
-            this.btnDescargos.setToolTipText("Procese las solicitudes aprobadas por un director administrativo");
-            this.setLocationRelativeTo(null);
-            this.setSize(591, this.getHeight());
-            this.setResizable(false);
-        } catch (RemoteException ex) {
-            Logger.getLogger(VentanaInicio_AO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        initComponents();
+        id = new BigDecimal(usuario);
+        Usuario u = cliente.Cliente.conectarU();
+        setIcon();
+        this.btnGestionarSol.setToolTipText("Procese solicitudes hechas por un responsable de área");
+        this.btnDescargos.setToolTipText("Procese las solicitudes aprobadas por un director administrativo");
+        this.setLocationRelativeTo(null);
+        this.setSize(591, this.getHeight());
+        this.setResizable(false);
     }
 
     /**
@@ -58,7 +52,6 @@ public class VentanaInicio_AO extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        lbl_NombreAO = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         btnGestionarSol = new javax.swing.JButton();
         btnDescargos = new javax.swing.JButton();
@@ -70,10 +63,7 @@ public class VentanaInicio_AO extends javax.swing.JFrame {
         setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
-        jLabel1.setText("Bienvenido, ");
-
-        lbl_NombreAO.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
-        lbl_NombreAO.setText("jLabel2");
+        jLabel1.setText("Bienvenido ");
 
         jLabel2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel2.setText("¿Qué desea hacer?");
@@ -116,18 +106,15 @@ public class VentanaInicio_AO extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 414, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 474, Short.MAX_VALUE)
                         .addComponent(btnCerrarSesion))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lbl_NombreAO, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -142,9 +129,7 @@ public class VentanaInicio_AO extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(lbl_NombreAO))
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -238,6 +223,5 @@ public class VentanaInicio_AO extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel lbl_NombreAO;
     // End of variables declaration//GEN-END:variables
 }
