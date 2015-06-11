@@ -195,7 +195,7 @@ public class DescargoConsumos extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "La cantidad ingresada debe ser mayor a cero");
             this.desc_cantidad.setText("");
         }else{
-        descargo d = new descargo(hoy, this.ide, this.desc_area.getText(), new Float(this.desc_cantidad.getText()), new BigDecimal(this.itemInventarioAdmin.get(selectedIndex).getNumero()));
+        descargo d = new descargo(hoy, this.ide, this.desc_area.getText(), new Float(this.desc_cantidad.getText()), this.itemInventarioAdmin.get(selectedIndex).getNumero());
         Usuario u = cliente.Cliente.conectarU();
         boolean valido = false;
         try {

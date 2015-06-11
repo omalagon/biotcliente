@@ -21,18 +21,18 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
-public class Reportes_BuscarUsuario extends javax.swing.JFrame {
+public class BuscarUsuario_Bloq extends javax.swing.JFrame {
 
     private static BigDecimal id = null;
 
     /**
      * Creates new form Reportes_BuscarUsuario
      */
-    public Reportes_BuscarUsuario() {
+    public BuscarUsuario_Bloq() {
         initComponents();
     }
 
-    Reportes_BuscarUsuario(BigDecimal id) {
+    BuscarUsuario_Bloq(BigDecimal id) {
         initComponents();
         this.id = id;
         this.setLocationRelativeTo(null);
@@ -190,14 +190,14 @@ public class Reportes_BuscarUsuario extends javax.swing.JFrame {
                 buscarEmpleado = u.buscarEmpleado("nombre", nombre);
                 llenarTabla(buscarEmpleado);
             } catch (RemoteException ex) {
-                Logger.getLogger(Reportes_BuscarUsuario.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(BuscarUsuario_Bloq.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if (nombre.isEmpty() == true && id.isEmpty() == false) {
             try {
                 buscarEmpleado = u.buscarEmpleado("id", id);
                 llenarTabla(buscarEmpleado);
             } catch (RemoteException ex) {
-                Logger.getLogger(Reportes_BuscarUsuario.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(BuscarUsuario_Bloq.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Realizó mal el procedimiento, intente de nuevo");
@@ -208,14 +208,14 @@ public class Reportes_BuscarUsuario extends javax.swing.JFrame {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         BigDecimal busqueda = new BigDecimal(this.jTableEncontrados.getValueAt(this.jTableEncontrados.getSelectedRow(), 0).toString());
-        ReporteDescargos rep = new ReporteDescargos(id, busqueda);
-        rep.setVisible(true);
+        BloquearUsuario bloq = new BloquearUsuario(this.id, busqueda);
+        bloq.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        ReporteDescargos rep = new ReporteDescargos(id);
-        rep.setVisible(true);
+        BloquearUsuario bloq = new BloquearUsuario(this.id);
+        bloq.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -236,20 +236,21 @@ public class Reportes_BuscarUsuario extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Reportes_BuscarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BuscarUsuario_Bloq.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Reportes_BuscarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BuscarUsuario_Bloq.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Reportes_BuscarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BuscarUsuario_Bloq.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Reportes_BuscarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BuscarUsuario_Bloq.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Reportes_BuscarUsuario().setVisible(true);
+                new BuscarUsuario_Bloq().setVisible(true);
             }
         });
     }

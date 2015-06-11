@@ -9,7 +9,12 @@ import EstructurasAux.BuscarUsuario;
 import EstructurasAux.informeDescargos;
 import EstructurasAux.users;
 import interfaces.Usuario;
+import java.awt.List;
 import java.awt.Toolkit;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -21,8 +26,8 @@ import java.util.logging.Logger;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-
 /**
  *
  * @author Sammy Guergachi <sguergachi at gmail.com>
@@ -102,7 +107,6 @@ public class ReporteDescargos extends javax.swing.JFrame {
         btnBuscarConEmp = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         tablaInformes = new javax.swing.JTable();
-        jButton7 = new javax.swing.JButton();
         btnVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -171,13 +175,6 @@ public class ReporteDescargos extends javax.swing.JFrame {
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE))
         );
 
-        jButton7.setText("Generar .pdf");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
-            }
-        });
-
         btnVolver.setText("Volver");
         btnVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -191,17 +188,13 @@ public class ReporteDescargos extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jlb_titulo)
-                        .addGap(0, 447, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnVolver)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton7)))
-                .addContainerGap())
+                .addComponent(jlb_titulo)
+                .addContainerGap(457, Short.MAX_VALUE))
             .addComponent(jPanel16, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnVolver)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -211,9 +204,7 @@ public class ReporteDescargos extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton7)
-                    .addComponent(btnVolver))
+                .addComponent(btnVolver)
                 .addContainerGap())
         );
 
@@ -345,10 +336,6 @@ public class ReporteDescargos extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_btnBuscarConEmpActionPerformed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        JOptionPane.showMessageDialog(null, "Lo siento, función no disponible aún");
-    }//GEN-LAST:event_jButton7ActionPerformed
-
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         Reportes rep = new Reportes(id);
         rep.setVisible(true);
@@ -395,7 +382,6 @@ public class ReporteDescargos extends javax.swing.JFrame {
     private javax.swing.JButton btnVerConsumoPorLab;
     private javax.swing.JButton btnVerInforme;
     private javax.swing.JButton btnVolver;
-    private javax.swing.JButton jButton7;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel jlb_titulo;

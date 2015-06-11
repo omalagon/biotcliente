@@ -39,6 +39,9 @@
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="btnInventario" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnCerrar" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="btnAceptar" min="-2" max="-2" attributes="0"/>
@@ -58,7 +61,10 @@
               <EmptySpace type="separate" pref="32" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="btnAceptar" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnCerrar" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="btnCerrar" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnInventario" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -92,35 +98,32 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="jcbbxCreacion" min="-2" pref="388" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="btnOkCreacion" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="46" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
+                      <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="15" max="32767" attributes="0"/>
+                      <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="156" max="-2" attributes="0"/>
+                      <Component id="jtfield_cInt" min="-2" pref="248" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jcbbxCreacion" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnOkCreacion" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jtfield_cInt" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jPanel4" max="32767" attributes="0"/>
                           <Component id="jPanel3" max="32767" attributes="0"/>
+                          <Component id="jPanel4" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -128,27 +131,6 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JButton" name="btnOkCreacion">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Ok"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOkCreacionActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JComboBox" name="jcbbxCreacion">
-              <Properties>
-                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="5">
-                    <StringItem index="0" value="Crear Responsable de &#xc1;rea"/>
-                    <StringItem index="1" value="Crear Auxiliar de Oficina"/>
-                    <StringItem index="2" value="Crear Director Administrativo"/>
-                    <StringItem index="3" value="Crear Proveedor"/>
-                    <StringItem index="4" value="Crear &#xcd;tem"/>
-                  </StringArray>
-                </Property>
-              </Properties>
-            </Component>
             <Container class="javax.swing.JPanel" name="jPanel3">
 
               <Layout>
@@ -157,15 +139,15 @@
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jTFieldCreacion1" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jTFieldCreacion2" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jTFieldCreacion3" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jTFieldCreacion4" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jTFieldCreacion5" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jtfield_desc" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jtfield_pres" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jtfield_cant" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jtfield_precio" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jtfield_cCalidad" alignment="0" max="32767" attributes="0"/>
                               <Component id="jcbbxArea" alignment="0" pref="248" max="32767" attributes="0"/>
-                              <Component id="jTFieldCreacion7" max="32767" attributes="0"/>
-                              <Component id="jTFieldCreacion8" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jTFieldCreacion9" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jtfield_suc" max="32767" attributes="0"/>
+                              <Component id="jtfield_cEspc" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jtfield_provAs" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -175,43 +157,43 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jTFieldCreacion1" min="-2" max="-2" attributes="0"/>
+                          <Component id="jtfield_desc" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="jTFieldCreacion2" min="-2" max="-2" attributes="0"/>
+                          <Component id="jtfield_pres" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="jTFieldCreacion3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jtfield_cant" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="jTFieldCreacion4" min="-2" max="-2" attributes="0"/>
+                          <Component id="jtfield_precio" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="jTFieldCreacion5" min="-2" max="-2" attributes="0"/>
+                          <Component id="jtfield_cCalidad" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="jcbbxArea" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="jTFieldCreacion7" min="-2" max="-2" attributes="0"/>
+                          <Component id="jtfield_suc" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="jTFieldCreacion8" min="-2" max="-2" attributes="0"/>
+                          <Component id="jtfield_cEspc" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Component id="jTFieldCreacion9" min="-2" max="-2" attributes="0"/>
+                          <Component id="jtfield_provAs" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JTextField" name="jTFieldCreacion1">
+                <Component class="javax.swing.JTextField" name="jtfield_desc">
                   <Properties>
                     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[6, 20]"/>
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jTFieldCreacion2">
+                <Component class="javax.swing.JTextField" name="jtfield_pres">
                 </Component>
-                <Component class="javax.swing.JTextField" name="jTFieldCreacion3">
+                <Component class="javax.swing.JTextField" name="jtfield_cant">
                 </Component>
-                <Component class="javax.swing.JTextField" name="jTFieldCreacion4">
+                <Component class="javax.swing.JTextField" name="jtfield_precio">
                 </Component>
-                <Component class="javax.swing.JTextField" name="jTFieldCreacion5">
+                <Component class="javax.swing.JTextField" name="jtfield_cCalidad">
                 </Component>
                 <Component class="javax.swing.JComboBox" name="jcbbxArea">
                   <Properties>
@@ -225,11 +207,11 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jTFieldCreacion7">
+                <Component class="javax.swing.JTextField" name="jtfield_suc">
                 </Component>
-                <Component class="javax.swing.JTextField" name="jTFieldCreacion8">
+                <Component class="javax.swing.JTextField" name="jtfield_cEspc">
                 </Component>
-                <Component class="javax.swing.JTextField" name="jTFieldCreacion9">
+                <Component class="javax.swing.JTextField" name="jtfield_provAs">
                 </Component>
               </SubComponents>
             </Container>
@@ -241,15 +223,15 @@
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jlb_creacion1" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jlb_creacion8" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jlb_creacion7" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jlb_creacion5" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jlb_creacion2" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jlb_creacion3" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jlb_creacion4" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jlb_creacion6" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jlb_creacion9" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_desc" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_cEsp" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_suc" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_cCalidad" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_pres" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_cantidad" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_precio" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_inv" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_provAs" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="89" max="32767" attributes="0"/>
                       </Group>
@@ -259,76 +241,83 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jlb_creacion1" min="-2" max="-2" attributes="0"/>
+                          <Component id="lbl_desc" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jlb_creacion2" min="-2" max="-2" attributes="0"/>
+                          <Component id="lbl_pres" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jlb_creacion3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lbl_cantidad" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jlb_creacion4" min="-2" max="-2" attributes="0"/>
+                          <Component id="lbl_precio" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jlb_creacion5" min="-2" max="-2" attributes="0"/>
+                          <Component id="lbl_cCalidad" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jlb_creacion6" min="-2" max="-2" attributes="0"/>
+                          <Component id="lbl_inv" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jlb_creacion7" min="-2" max="-2" attributes="0"/>
+                          <Component id="lbl_suc" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jlb_creacion8" min="-2" max="-2" attributes="0"/>
+                          <Component id="lbl_cEsp" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jlb_creacion9" min="-2" max="-2" attributes="0"/>
+                          <Component id="lbl_provAs" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JLabel" name="jlb_creacion1">
+                <Component class="javax.swing.JLabel" name="lbl_desc">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="jLabel1"/>
+                    <Property name="text" type="java.lang.String" value="Descripci&#xf3;n"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jlb_creacion2">
+                <Component class="javax.swing.JLabel" name="lbl_pres">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="jLabel2"/>
+                    <Property name="text" type="java.lang.String" value="Presentaci&#xf3;n"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jlb_creacion3">
+                <Component class="javax.swing.JLabel" name="lbl_cantidad">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="jLabel3"/>
+                    <Property name="text" type="java.lang.String" value="Cantidad"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jlb_creacion4">
+                <Component class="javax.swing.JLabel" name="lbl_precio">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="jLabel4"/>
+                    <Property name="text" type="java.lang.String" value="Precio"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jlb_creacion5">
+                <Component class="javax.swing.JLabel" name="lbl_cCalidad">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="jLabel5"/>
+                    <Property name="text" type="java.lang.String" value="Cert Calidad"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jlb_creacion6">
+                <Component class="javax.swing.JLabel" name="lbl_inv">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="jLabel6"/>
+                    <Property name="text" type="java.lang.String" value="Inventario"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jlb_creacion7">
+                <Component class="javax.swing.JLabel" name="lbl_suc">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="jLabel7"/>
+                    <Property name="text" type="java.lang.String" value="Sucursal"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jlb_creacion8">
+                <Component class="javax.swing.JLabel" name="lbl_cEsp">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="jLabel8"/>
+                    <Property name="text" type="java.lang.String" value="Cumple Especificaciones"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jlb_creacion9">
+                <Component class="javax.swing.JLabel" name="lbl_provAs">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="jLabel1"/>
+                    <Property name="text" type="java.lang.String" value="Proveedor Asociado"/>
                   </Properties>
                 </Component>
               </SubComponents>
             </Container>
+            <Component class="javax.swing.JLabel" name="jLabel1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="C&#xf3;digo Interno"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="jtfield_cInt">
+            </Component>
           </SubComponents>
         </Container>
       </SubComponents>
@@ -347,6 +336,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCerrarActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnInventario">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Ver Inventario"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnInventarioActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

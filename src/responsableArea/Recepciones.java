@@ -413,7 +413,7 @@ public class Recepciones extends javax.swing.JFrame {
         Usuario u = cliente.Cliente.conectarU();
         boolean recibirPedido = false;
         for (int i : selectedRows) {
-            ii = new itemRecep(new BigDecimal(df.getValueAt(i, 1).toString()), df.getValueAt(i, 0).toString(), this.recobs.getText(), new Float(df.getValueAt(i, 3).toString()), new Float(df.getValueAt(i, 5).toString()));
+            ii = new itemRecep(df.getValueAt(i, 1).toString(), df.getValueAt(i, 0).toString(), this.recobs.getText(), new Float(df.getValueAt(i, 3).toString()), new Float(df.getValueAt(i, 5).toString()));
             ii.setfLlegada((Date) df.getValueAt(i, 7));
             ii.setcCalidad(df.getValueAt(i, 8).toString());
             ii.setcEsp(df.getValueAt(i, 9).toString());

@@ -5,32 +5,30 @@
  */
 package cliente;
 
-import EstructurasAux.users;
-import exampleinterface.TestRemote;
 import interfaces.Usuario;
-import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  *
- * @author Sammy Guergachi <sguergachi at gmail.com>
+ * @author Oscar Dario Malagon Murcia
  */
 public class Cliente {
 
     /**
-     * @param args the command line arguments
+     * @return 
      */
     public static Usuario conectarU() {
 
         Usuario u = null;
         try {
-            Registry registry = LocateRegistry.getRegistry("192.168.10.166", 222);
+            //192.168.10.166
+            Registry registry = LocateRegistry.getRegistry("localhost", 222);
+            
             u = (Usuario) registry.lookup("Test");
 
         } catch (RemoteException ex) {

@@ -211,14 +211,16 @@ public class InicioSesion extends javax.swing.JFrame {
         } else {
             try {
                 validarTipoUsuario = u.validarTipoUsuario(usuario, psw, tipo);
+                System.out.println(validarTipoUsuario);
+                System.out.println(usuario);
+                System.out.println(psw);
+                System.out.println(tipo);
             } catch (RemoteException ex) {
                 Logger.getLogger(InicioSesion.class.getName()).log(Level.SEVERE, null, ex);
             }
             if (validarTipoUsuario == true && tipo.equalsIgnoreCase("da")) {
                 VentanaInicio_Adm adm = new VentanaInicio_Adm(usuario);
                 adm.setVisible(true);
-                //administrador adm = new administrador(usuario);
-                //adm.setVisible(true);
                 this.labelError.setText("Correcto");
                 this.labelError.setForeground(Color.BLUE);
                 this.setVisible(false);

@@ -8,10 +8,24 @@ package administrador;
 import EstructurasAux.aprobacion;
 import EstructurasAux.cotizaciones;
 import EstructurasAux.fdc_001;
+import EstructurasAux.itemsfdc_001;
+import EstructurasAux.itemxproveedor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import interfaces.Usuario;
 import java.awt.Desktop;
 import java.awt.Toolkit;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
@@ -253,7 +267,7 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
         int[] filasSelec = this.tblSolNoRev.getSelectedRows();
         BigDecimal noCot;
         String lab = "";
-        BigDecimal codigoInt;
+        String codigoInt;
         float cantAprobada;
         GregorianCalendar fecha = new GregorianCalendar();
         Usuario u = cliente.Cliente.conectarU();
@@ -266,7 +280,7 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
             } else {
                 noCot = new BigDecimal(this.tblSolNoRev.getValueAt(i, 0).toString());
                 lab = this.tblSolNoRev.getValueAt(i, 4).toString();
-                codigoInt = new BigDecimal(this.tblSolNoRev.getValueAt(i, 5).toString());
+                codigoInt =this.tblSolNoRev.getValueAt(i, 5).toString();
                 cantAprobada = new Float(valor);
                 ap = new aprobacion(noCot, lab, codigoInt, cantAprobada, fecha, id, 0);
 
@@ -332,7 +346,7 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
         String path = chooser.getSelectedFile().getPath();
         try {
             fdc_001 datosGenerales = u.datosGenerales(numSOl, numCot);
-            File pdf_001 = u.pdf_001(path, datosGenerales);
+            File pdf_001 = this.pdf_001(path, datosGenerales);
             if (JOptionPane.showConfirmDialog(null, "¿Desea abrir el archivo?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 Desktop.getDesktop().open(pdf_001);
             }
@@ -345,7 +359,7 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
         int[] filasSelec = this.TablaSolicitudesRev.getSelectedRows();
         BigDecimal noCot;
         String lab = "";
-        BigDecimal codigoInt;
+        String codigoInt;
         GregorianCalendar fecha = new GregorianCalendar();
         Usuario u = cliente.Cliente.conectarU();
         aprobacion ap = null;
@@ -353,7 +367,7 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
         for (int i : filasSelec) {
             noCot = new BigDecimal(this.TablaSolicitudesRev.getValueAt(i, 0).toString());
             lab = this.TablaSolicitudesRev.getValueAt(i, 4).toString();
-            codigoInt = new BigDecimal(this.TablaSolicitudesRev.getValueAt(i, 5).toString());
+            codigoInt =this.TablaSolicitudesRev.getValueAt(i, 5).toString();
             ap = new aprobacion(noCot, lab, codigoInt, -1, fecha, id, 0);
             try {
                 aprobado = u.eliminarAprobacion(ap);
@@ -458,4 +472,123 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
     private javax.swing.JLabel jlb_titulo;
     private javax.swing.JTable tblSolNoRev;
     // End of variables declaration//GEN-END:variables
+
+     public File pdf_001(String ruta, fdc_001 archivo) throws RemoteException {
+        File pdf = null;
+        Document documento = new Document(PageSize.A4);
+        System.out.println(documento.getPageSize());
+        boolean setMargins = documento.setMargins(40, 0, 40, 40);
+        Font bf_titulos = FontFactory.getFont(FontFactory.TIMES_ROMAN);//BaseFont.createFont(BaseFont.TIMES_ROMAN,BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+        bf_titulos.setStyle(Font.BOLD);
+        bf_titulos.setSize(9);
+        Font bf_titulos1 = FontFactory.getFont(FontFactory.TIMES_ROMAN);//BaseFont.createFont(BaseFont.TIMES_ROMAN,BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+        bf_titulos1.setStyle(Font.BOLD);
+        bf_titulos1.setSize(8);
+        String espaciado = "                        ";
+        String linea = "________________________________";
+        float tamanoEncabezado[] = {20, 60, 30};
+        float tamanoEncabezado1[] = {30, 40, 50};
+        float tamanoItems[] = {20, 30, 50, 15, 35, 15, 20, 30};
+        float tamanoProv[] = {40, 30, 30, 50};
+        try {
+            FileOutputStream fichero = new FileOutputStream(ruta + "\\Solicitud_" + archivo.getNumSol().toString() + ".pdf");
+            PdfWriter escribir = PdfWriter.getInstance(documento, fichero);
+            documento.open();
+            Image logo = Image.getInstance("http://www.biotrendslab.com/wp-content/uploads/2014/03/Logo_Biotrends2.png");
+            PdfPTable tabla = new PdfPTable(tamanoEncabezado);
+            PdfPTable segFila = new PdfPTable(tamanoEncabezado1);
+            PdfPTable items = new PdfPTable(tamanoItems);
+            PdfPTable proveedores = new PdfPTable(tamanoProv);
+            PdfPTable pie1 = new PdfPTable(1);
+            PdfPTable pie2 = new PdfPTable(2);
+            //el numero indica la cantidad de Columnas
+            tabla.addCell(new Paragraph("F-DC-001\nRevision 04\nFecha\nActualizacion\n03-abr-14", bf_titulos));
+            tabla.addCell(new Paragraph("\nSOLICITUD DE PROUCTOS O BIENES", bf_titulos));
+            tabla.addCell(logo);
+            segFila.addCell(new Paragraph("FECHA", bf_titulos));
+            segFila.addCell(new Paragraph("AREA O PROCESO SOLICITANTE", bf_titulos));
+            segFila.addCell(new Paragraph("NOMBRE DEL SOLICITANTE", bf_titulos));
+            segFila.addCell(new Paragraph(archivo.getFecha(), bf_titulos));
+            segFila.addCell(new Paragraph(archivo.getAreaOProceso(), bf_titulos));
+            segFila.addCell(new Paragraph(archivo.getNombreRA(), bf_titulos));
+            items.addCell(new Paragraph("INVENTARIO ACTUAL", bf_titulos1));
+            items.addCell(new Paragraph("NOMBRE DEL PRODUCTO O BIEN", bf_titulos1));
+            items.addCell(new Paragraph("DESCRIPCION DETALLADA (Especificaciones técnicas)", bf_titulos1));
+            items.addCell(new Paragraph("CANT SOLICITADA", bf_titulos1));
+            items.addCell(new Paragraph("PRESENTACION", bf_titulos1));
+            items.addCell(new Paragraph("CANT APROBADA", bf_titulos1));
+            items.addCell(new Paragraph("N° ORDEN COMPRA", bf_titulos1));
+            items.addCell(new Paragraph("PRECIO UNITARIO", bf_titulos1));
+            int numeroFilas = 128 - (archivo.getArticulos().size() * 8);
+            ArrayList<itemsfdc_001> articulos = archivo.getArticulos();
+            for (itemsfdc_001 ar : articulos) {
+                items.addCell(new Paragraph(new Float(ar.getCantidad()).toString(), bf_titulos1));
+                items.addCell(new Paragraph(ar.getLab() + "-" + ar.getCodigo(), bf_titulos1));
+                items.addCell(new Paragraph(ar.getDescr(), bf_titulos1));
+                items.addCell(new Paragraph(new Float(ar.getcSol()).toString(), bf_titulos1));
+                items.addCell(new Paragraph(ar.getPresentacion(), bf_titulos1));
+                items.addCell(new Paragraph(new Float(ar.getcApro()).toString(), bf_titulos1));
+                items.addCell(new Paragraph("", bf_titulos1));
+                items.addCell(new Paragraph(new Float(ar.getPrecio()).toString(), bf_titulos1));
+
+            }
+            for (int i = 0; i <= numeroFilas; i++) {
+                items.addCell(new Paragraph(" ", bf_titulos));
+            }
+            proveedores.addCell(new Paragraph("NOMBRE", bf_titulos));
+            proveedores.addCell(new Paragraph("PRECIO", bf_titulos));
+            proveedores.addCell(new Paragraph("DISPONIBILIDAD", bf_titulos));
+            proveedores.addCell(new Paragraph("OBSERVACION", bf_titulos));
+            int numFilasProv = 16;
+            numFilasProv -= (archivo.getProveedores().size() * 4);
+            for (ArrayList<itemxproveedor> iter : archivo.getProveedores()) {
+
+                for (itemxproveedor i : iter) {
+                    proveedores.addCell(new Paragraph(i.getNombre(), bf_titulos1));
+                    proveedores.addCell(new Paragraph(new Float(i.getPrecio()).toString(), bf_titulos1));
+                    proveedores.addCell(new Paragraph(new Float(i.getDisponibilidad()).toString(), bf_titulos1));
+                    proveedores.addCell(new Paragraph("", bf_titulos1));
+                }
+            }
+            for (int i = 0; i <= numFilasProv; i++) {
+                proveedores.addCell(new Paragraph(" ", bf_titulos1));
+
+            }
+            pie1.addCell(new Paragraph(espaciado + espaciado + espaciado + "           Biotrends Laboratorios S.A.S", bf_titulos1));
+            pie2.addCell(new Paragraph(espaciado + "REVISO: Director Administrativo Comercial", bf_titulos1));
+            pie2.addCell(new Paragraph(espaciado + "APROBO: Gerente", bf_titulos1));
+            documento.add(tabla);
+            documento.add(segFila);
+            documento.add(new Paragraph(Chunk.NEWLINE));
+            documento.add(items);
+            documento.add(new Paragraph(Chunk.NEWLINE));
+            documento.add(new Paragraph(espaciado + "PROVEEDORES-ALTERNATIVOS", bf_titulos));
+            documento.add(new Paragraph(Chunk.NEWLINE));
+            documento.add(proveedores);
+            documento.add(new Paragraph(Chunk.NEWLINE));
+            String subs1 = "";
+            String subs2 = "";
+            String subs3 = "";
+            documento.add(new Paragraph(espaciado + "OBSERVACIONES:" + espaciado + archivo.getObs(), bf_titulos));
+            documento.add(new Paragraph(" ", bf_titulos));
+            documento.add(new Paragraph(" ", bf_titulos));
+            System.out.println(archivo.getObs().length());
+            documento.add(new Paragraph(Chunk.NEWLINE));
+            documento.add(new Paragraph(espaciado + "_____" + archivo.getNombreRA() + "-" + archivo.getCargoRA() + "_____" + espaciado + espaciado + espaciado + espaciado + "    " + "____" + archivo.getRevisionAO() + "___", bf_titulos));
+            documento.add(new Paragraph(espaciado + "     " + "ELABORADO POR (Nombre -Cargo)"
+                    + espaciado + espaciado + espaciado + "REVISION- COMPRAS", bf_titulos));
+            documento.add(new Paragraph(Chunk.NEWLINE));
+            documento.add(pie1);
+            documento.add(pie2);
+
+            documento.close();
+            pdf = new File(ruta + "\\Solicitud_" + archivo.getNumSol().toString() + ".pdf");
+        } catch (DocumentException | FileNotFoundException ex) {
+            Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return pdf;
+    }
+
 }

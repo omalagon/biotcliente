@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package administrador;
+package administrador.Creaciones;
 
 import EstructurasAux.ItemInventario;
 import interfaces.Usuario;
@@ -38,7 +38,6 @@ public class ReporteInventario extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setSize(654, this.getHeight());
         this.btnRefrescar.doClick();
-
     }
 
     /**
@@ -56,7 +55,7 @@ public class ReporteInventario extends javax.swing.JFrame {
         tablaInventario = new javax.swing.JTable();
         jLabel39 = new javax.swing.JLabel();
         jLabel40 = new javax.swing.JLabel();
-        btnVolver = new javax.swing.JButton();
+        btnCerrar = new javax.swing.JButton();
         btnRefrescar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -109,10 +108,10 @@ public class ReporteInventario extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE))
         );
 
-        btnVolver.setText("Volver");
-        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+        btnCerrar.setText("Cerrar");
+        btnCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnVolverActionPerformed(evt);
+                btnCerrarActionPerformed(evt);
             }
         });
 
@@ -136,7 +135,7 @@ public class ReporteInventario extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnVolver)
+                        .addComponent(btnCerrar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnRefrescar)))
                 .addContainerGap())
@@ -151,7 +150,7 @@ public class ReporteInventario extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRefrescar)
-                    .addComponent(btnVolver))
+                    .addComponent(btnCerrar))
                 .addContainerGap())
         );
 
@@ -184,11 +183,9 @@ public class ReporteInventario extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnRefrescarActionPerformed
 
-    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        Reportes rep = new Reportes(this.id);
-        rep.setVisible(true);
+    private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
         this.setVisible(false);
-    }//GEN-LAST:event_btnVolverActionPerformed
+    }//GEN-LAST:event_btnCerrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -216,6 +213,7 @@ public class ReporteInventario extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(ReporteInventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -226,8 +224,8 @@ public class ReporteInventario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCerrar;
     private javax.swing.JButton btnRefrescar;
-    private javax.swing.JButton btnVolver;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JPanel jPanel12;
