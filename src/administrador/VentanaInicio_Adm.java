@@ -192,7 +192,7 @@ public class VentanaInicio_Adm extends javax.swing.JFrame {
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
         InicioSesion i = new InicioSesion();
         i.setVisible(true);
-        this.setVisible(false);        
+        this.setVisible(false);
     }//GEN-LAST:event_btnCerrarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -243,7 +243,7 @@ public class VentanaInicio_Adm extends javax.swing.JFrame {
     }
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCerrar;

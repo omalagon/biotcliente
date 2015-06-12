@@ -305,6 +305,6 @@ public class CrearAO extends javax.swing.JFrame {
     }
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../../Recursos/iconB.png")));
     }
 }

@@ -34,10 +34,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jTabbedPane1" max="32767" attributes="0"/>
-                  <Group type="102" attributes="0">
-                      <Component id="jlb_titulo" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  </Group>
+                  <Component id="jlb_titulo" min="-2" max="-2" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       <Component id="btnInventario" min="-2" max="-2" attributes="0"/>
@@ -58,7 +55,7 @@
               <Component id="jlb_titulo" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jTabbedPane1" max="32767" attributes="0"/>
-              <EmptySpace type="separate" pref="32" max="32767" attributes="0"/>
+              <EmptySpace type="separate" pref="34" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="btnAceptar" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -97,33 +94,37 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                       <EmptySpace pref="15" max="32767" attributes="0"/>
                       <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="156" max="-2" attributes="0"/>
-                      <Component id="jtfield_cInt" min="-2" pref="248" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jtfield_cInt" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jPanel3" max="32767" attributes="0"/>
-                          <Component id="jPanel4" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jPanel3" pref="318" max="32767" attributes="0"/>
+                              <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jPanel4" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -144,10 +145,14 @@
                               <Component id="jtfield_cant" alignment="0" max="32767" attributes="0"/>
                               <Component id="jtfield_precio" alignment="0" max="32767" attributes="0"/>
                               <Component id="jtfield_cCalidad" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jcbbxArea" alignment="0" pref="248" max="32767" attributes="0"/>
+                              <Component id="jcbbxArea" alignment="0" max="32767" attributes="0"/>
                               <Component id="jtfield_suc" max="32767" attributes="0"/>
                               <Component id="jtfield_cEspc" alignment="0" max="32767" attributes="0"/>
                               <Component id="jtfield_provAs" alignment="0" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="jtfield_cInt" min="-2" pref="248" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -156,7 +161,9 @@
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="jtfield_cInt" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="jtfield_desc" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="jtfield_pres" min="-2" max="-2" attributes="0"/>
@@ -164,7 +171,7 @@
                           <Component id="jtfield_cant" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="jtfield_precio" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="jtfield_cCalidad" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="jcbbxArea" min="-2" max="-2" attributes="0"/>
@@ -172,7 +179,7 @@
                           <Component id="jtfield_suc" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="jtfield_cEspc" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="jtfield_provAs" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -198,11 +205,12 @@
                 <Component class="javax.swing.JComboBox" name="jcbbxArea">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="4">
+                      <StringArray count="5">
                         <StringItem index="0" value="Lab Microbiol&#xf3;gico"/>
                         <StringItem index="1" value="Lab F&#xed;sicoqu&#xed;mico"/>
                         <StringItem index="2" value="Lab Medio ambiental"/>
-                        <StringItem index="3" value="Equipo de Oficina"/>
+                        <StringItem index="3" value="S.Gene."/>
+                        <StringItem index="4" value="Compras"/>
                       </StringArray>
                     </Property>
                   </Properties>
@@ -212,6 +220,8 @@
                 <Component class="javax.swing.JTextField" name="jtfield_cEspc">
                 </Component>
                 <Component class="javax.swing.JTextField" name="jtfield_provAs">
+                </Component>
+                <Component class="javax.swing.JTextField" name="jtfield_cInt">
                 </Component>
               </SubComponents>
             </Container>
@@ -258,7 +268,7 @@
                           <Component id="lbl_cEsp" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="lbl_provAs" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="12" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -316,8 +326,6 @@
                 <Property name="text" type="java.lang.String" value="C&#xf3;digo Interno"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="jtfield_cInt">
-            </Component>
           </SubComponents>
         </Container>
       </SubComponents>
@@ -340,7 +348,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnInventario">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Ver Inventario"/>
+        <Property name="text" type="java.lang.String" value="Ver &#xda;ltimos Agregados"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnInventarioActionPerformed"/>

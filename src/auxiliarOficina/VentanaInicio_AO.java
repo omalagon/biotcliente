@@ -5,7 +5,6 @@
  */
 package auxiliarOficina;
 
-import gui.AOficina;
 import gui.CambioClave;
 import inicioSesion.InicioSesion;
 import interfaces.Usuario;
@@ -151,6 +150,8 @@ public class VentanaInicio_AO extends javax.swing.JFrame {
     private void btnGestionarSolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionarSolActionPerformed
         AOficina AO = new AOficina(this.id.toString());
         AO.setVisible(true);
+        /*Solicitudes sol = new Solicitudes(this.id);
+        sol.setVisible(true);*/
         this.setVisible(false);
     }//GEN-LAST:event_btnGestionarSolActionPerformed
 
@@ -213,7 +214,7 @@ public class VentanaInicio_AO extends javax.swing.JFrame {
     }
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCerrarSesion;

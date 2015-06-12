@@ -96,10 +96,8 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace max="32767" attributes="0"/>
                                   <Component id="jlblrecFecha" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="204" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="301" max="-2" attributes="0"/>
                                   <Component id="btnProcesarRec" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jButton4" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="221" max="-2" attributes="0"/>
@@ -143,7 +141,6 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel20" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jlblrecFecha" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jButton4" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnProcesarRec" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -344,14 +341,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="numorden">
-        </Component>
-        <Component class="javax.swing.JButton" name="jButton4">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Ver Anexo 1"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton4ActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnProcesarRec">
           <Properties>

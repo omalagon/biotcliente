@@ -22,7 +22,7 @@ public class VentanaInicio_RA extends javax.swing.JFrame {
 
     private static BigDecimal id = null;
     private String area =null;
-
+    public static Solicitudes ventanaSolicitudes =null;
     /**
      * Creates new form VentanaInicio
      */
@@ -170,8 +170,8 @@ public class VentanaInicio_RA extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGestionarSolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionarSolActionPerformed
-        Solicitudes sol = new Solicitudes(this.id);
-        sol.setVisible(true);
+        ventanaSolicitudes = new Solicitudes(this.id);
+        ventanaSolicitudes.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnGestionarSolActionPerformed
 
@@ -235,7 +235,7 @@ public class VentanaInicio_RA extends javax.swing.JFrame {
     }
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCerrarSesion;

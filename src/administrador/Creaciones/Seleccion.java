@@ -174,7 +174,7 @@ public class Seleccion extends javax.swing.JFrame {
     }
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../../Recursos/iconB.png")));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

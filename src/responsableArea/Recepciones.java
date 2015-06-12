@@ -95,7 +95,6 @@ public class Recepciones extends javax.swing.JFrame {
         jSeparator9 = new javax.swing.JSeparator();
         jLabel21 = new javax.swing.JLabel();
         numorden = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
         btnProcesarRec = new javax.swing.JButton();
         btnEnviarRec = new javax.swing.JButton();
         btnVolver = new javax.swing.JButton();
@@ -155,13 +154,6 @@ public class Recepciones extends javax.swing.JFrame {
 
         jLabel21.setText("Numero de Orden");
 
-        jButton4.setText("Ver Anexo 1");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-
         btnProcesarRec.setText("Ingresar N° Orden");
         btnProcesarRec.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -194,10 +186,8 @@ public class Recepciones extends javax.swing.JFrame {
                             .addGroup(jPanel9Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jlblrecFecha)
-                                .addGap(204, 204, 204)
-                                .addComponent(btnProcesarRec)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton4))
+                                .addGap(301, 301, 301)
+                                .addComponent(btnProcesarRec))
                             .addGroup(jPanel9Layout.createSequentialGroup()
                                 .addGap(221, 221, 221)
                                 .addComponent(rec_nomProv)
@@ -230,7 +220,6 @@ public class Recepciones extends javax.swing.JFrame {
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel20)
                     .addComponent(jlblrecFecha)
-                    .addComponent(jButton4)
                     .addComponent(btnProcesarRec))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -331,13 +320,6 @@ public class Recepciones extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-
-        anexo1 a = new anexo1();
-        a.setVisible(true);
-
-    }//GEN-LAST:event_jButton4ActionPerformed
-
     private void btnProcesarRecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcesarRecActionPerformed
         String area = this.area;
         BigDecimal id = this.id;
@@ -373,8 +355,8 @@ public class Recepciones extends javax.swing.JFrame {
                 this.rec_nomProv.setText(datosRec.getP().getNombre());
                 this.rec_nit.setText(datosRec.getP().getNIT());
                 this.rec_dir.setText(datosRec.getP().getDireccion());
-                this.rec_fax.setText(new Integer(datosRec.getP().getTelefax()).toString());
-                this.rec_cel.setText(new Integer(datosRec.getP().getTelefono()).toString());
+                this.rec_fax.setText(datosRec.getP().getTelefax());
+                this.rec_cel.setText(datosRec.getP().getTelefono());
                 this.numorden.setText(ordenIngresada);
                 ArrayList<itemRecep> articulos = datosRec.getArticulos();
                 for (itemRecep articulo : articulos) {
@@ -478,7 +460,6 @@ public class Recepciones extends javax.swing.JFrame {
     private javax.swing.JButton btnEnviarRec;
     private javax.swing.JButton btnProcesarRec;
     private javax.swing.JButton btnVolver;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
@@ -510,6 +491,6 @@ public class Recepciones extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
     }
 }

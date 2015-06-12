@@ -7,8 +7,9 @@ package gui;
 
 import auxiliarOficina.*;
 import EstructurasAux.proveedor;
-import gui.AOficina;
+import auxiliarOficina.AOficina;
 import interfaces.Usuario;
+import java.awt.Toolkit;
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class verProveedores extends javax.swing.JFrame {
      */
     public verProveedores() {
         initComponents();
+        setIcon();
         this.id = id;
         this.setLocationRelativeTo(null);
         Usuario u = cliente.Cliente.conectarU();
@@ -183,4 +185,8 @@ public class verProveedores extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel labelAdministrador;
     // End of variables declaration//GEN-END:variables
+
+    private void setIcon() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
+    }
 }

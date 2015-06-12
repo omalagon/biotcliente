@@ -271,7 +271,7 @@ public class Reportes_BuscarUsuario extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
     }
 
     private void llenarTabla(ArrayList<BuscarUsuario> buscarEmpleado) {

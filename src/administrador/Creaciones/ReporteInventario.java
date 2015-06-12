@@ -165,13 +165,13 @@ public class ReporteInventario extends javax.swing.JFrame {
         Usuario ad = cliente.Cliente.conectarU();
         ArrayList<ItemInventario> itemInventario = null;
         try {
-            itemInventario = ad.itemInventarioAdmin();
+            itemInventario = ad.ultimos();
         } catch (RemoteException ex) {
             Logger.getLogger(ReporteInventario.class.getName()).log(Level.SEVERE, null, ex);
         }
         for (ItemInventario i : itemInventario) {
             Vector<Object> aux = new Vector<>();
-            aux.add(0, i.getInventario() + "-" + i.getNumero());
+            aux.add(0, i.getNumero());
             aux.add(1, i.getDescripcion());
             aux.add(2, i.getPresentacion());
             aux.add(3, i.getCantidad());
@@ -235,6 +235,6 @@ public class ReporteInventario extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../../Recursos/iconB.png")));
     }
 }

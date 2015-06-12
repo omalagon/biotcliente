@@ -17,8 +17,10 @@ import java.util.GregorianCalendar;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollBar;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -26,10 +28,10 @@ import javax.swing.table.DefaultTableModel;
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
 public class Solicitudes extends javax.swing.JFrame {
-    
+
     private static BigDecimal id = null;
     private static GregorianCalendar hoy = new GregorianCalendar();
-    private ArrayList<ItemInventario> itemsSolicitud = new ArrayList<>();
+    public static ArrayList<ItemInventario> itemsSolicitud = new ArrayList<>();
     private ArrayList<ItemInventario> aux = new ArrayList<>();
     private static String cadenaFecha = hoy.get(Calendar.DAY_OF_MONTH) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/" + hoy.get(Calendar.YEAR);
     private String area = null;
@@ -41,28 +43,32 @@ public class Solicitudes extends javax.swing.JFrame {
     public Solicitudes() {
         initComponents();
     }
-    
+
     Solicitudes(BigDecimal id) {
         initComponents();
         setIcon();
         Usuario u = cliente.Cliente.conectarU();
         this.id = id;
         this.setLocationRelativeTo(null);
-        
-        this.setSize(840, this.getHeight());
+        this.setSize(1050, this.getHeight());
         try {
             this.area = u.area(id);
             this.usuario = u.getUsuario(id);
         } catch (RemoteException ex) {
             Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.llenarItems(area);
+  
         this.jTFieldAreaProcesoSolicitante.setText(area);
         this.jTFieldAreaProcesoSolicitante.setEditable(false);
         this.jTFieldNombreSolicitante.setText(usuario);
         this.jTFieldNombreSolicitante.setEditable(false);
         this.jlbFecha.setText(cadenaFecha);
         this.btnRefrescarSolicitudes.doClick();
+        this.btnAgregar.setIcon(new ImageIcon(getClass().getResource("../Recursos/Carrito.png")));
+        this.BotonEnviar.setIcon(new ImageIcon(getClass().getResource("../Recursos/OK.png")));
+        this.btnVolver.setIcon(new ImageIcon(getClass().getResource("../Recursos/NO.png")));
+        this.btnRefrescarSolicitudes.setIcon(new ImageIcon(getClass().getResource("../Recursos/ACT.png")));
+        
     }
 
     /**
@@ -81,7 +87,6 @@ public class Solicitudes extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jlbFecha = new javax.swing.JLabel();
-        BotonVerItems = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         Observaciones = new javax.swing.JTextField();
@@ -90,27 +95,27 @@ public class Solicitudes extends javax.swing.JFrame {
         jTFieldAreaProcesoSolicitante = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jTFieldNombreSolicitante = new javax.swing.JTextField();
-        botonAgregar = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableIngresarItems = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
         jSeparator4 = new javax.swing.JSeparator();
-        jLabel4 = new javax.swing.JLabel();
-        jcboxAgregarItem = new javax.swing.JComboBox();
         btnVolver = new javax.swing.JButton();
+        btnAgregar = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaVerSolicitudes = new javax.swing.JTable();
         btnRefrescarSolicitudes = new javax.swing.JButton();
+        jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         labelAdministrador.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         labelAdministrador.setText("Menú de Solicitudes");
 
-        BotonEnviar.setText("Enviar Solicitud");
         BotonEnviar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BotonEnviarActionPerformed(evt);
@@ -125,16 +130,11 @@ public class Solicitudes extends javax.swing.JFrame {
 
         jlbFecha.setText("jLabel3");
 
-        BotonVerItems.setText("Ver Inventario");
-        BotonVerItems.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BotonVerItemsActionPerformed(evt);
-            }
-        });
-
         jLabel3.setText("Nota: Si necesita algún ítem que no se encuentre en el inventario,");
 
         jLabel5.setText("Observaciones");
+
+        Observaciones.setToolTipText("");
 
         jLabel6.setText("Area o Proceso solicitante");
 
@@ -144,18 +144,6 @@ public class Solicitudes extends javax.swing.JFrame {
 
         jTFieldNombreSolicitante.setText("jTextField2");
 
-        botonAgregar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        botonAgregar.setForeground(new java.awt.Color(0, 0, 255));
-        botonAgregar.setText("+");
-        botonAgregar.setMaximumSize(new java.awt.Dimension(50, 25));
-        botonAgregar.setMinimumSize(new java.awt.Dimension(50, 25));
-        botonAgregar.setPreferredSize(new java.awt.Dimension(50, 25));
-        botonAgregar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonAgregarActionPerformed(evt);
-            }
-        });
-
         jLabel8.setText("Items");
 
         jTableIngresarItems.setModel(new javax.swing.table.DefaultTableModel(
@@ -163,7 +151,7 @@ public class Solicitudes extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Lab", "Codigo", "Descripción", "Cantidad Actual", "Presentación", "Cantidad Solicitada"
+                "Lab Solicitante", "Codigo", "Descripción", "Cantidad Actual", "Presentación", "Cantidad Solicitada"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -176,28 +164,25 @@ public class Solicitudes extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(jTableIngresarItems);
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 0, 0));
-        jButton2.setText("-");
-        jButton2.setMaximumSize(new java.awt.Dimension(50, 25));
-        jButton2.setMinimumSize(new java.awt.Dimension(50, 25));
-        jButton2.setPreferredSize(new java.awt.Dimension(50, 25));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
         jLabel10.setText(" debe comunicarse directamente con el Director Administrativo. ");
 
-        jLabel4.setText("Agregar/eliminar Ítem");
-
-        btnVolver.setText("Volver");
         btnVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVolverActionPerformed(evt);
             }
         });
+
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Agregar/Eliminar Ítem");
+
+        jLabel9.setText("Enviar Solicitud");
+
+        jLabel11.setText("Volver");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -213,50 +198,49 @@ public class Solicitudes extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel8))))
+                                    .addComponent(jLabel8)
+                                    .addComponent(jLabel5))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Observaciones)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(10, 10, 10)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jTFieldNombreSolicitante, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
-                                    .addComponent(jTFieldAreaProcesoSolicitante))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 678, Short.MAX_VALUE)))
+                                    .addComponent(jTFieldAreaProcesoSolicitante)))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 678, Short.MAX_VALUE)
+                            .addComponent(Observaciones)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSeparator1)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel1)
                                     .addComponent(jLabel10))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnVolver)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(BotonVerItems)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(BotonEnviar))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jlbFecha))))
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jlbFecha))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jSeparator1))))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(18, 18, 18)
-                                .addComponent(jcboxAgregarItem, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(botonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap())
+                                .addGap(10, 10, 10)
+                                .addComponent(jLabel4))
+                            .addComponent(BotonEnviar, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(24, 24, 24)
+                                .addComponent(jLabel9))
+                            .addComponent(btnVolver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel11)
+                        .addGap(56, 56, 56))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -278,34 +262,35 @@ public class Solicitudes extends javax.swing.JFrame {
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel4)
-                        .addComponent(jcboxAgregarItem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(botonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(11, 11, 11)
+                        .addComponent(BotonEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addGap(11, 11, 11))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Observaciones, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 353, Short.MAX_VALUE)))
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnVolver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Observaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(BotonEnviar)
-                        .addComponent(BotonVerItems)
-                        .addComponent(btnVolver))
-                    .addComponent(jLabel10))
-                .addContainerGap())
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel11))
+                .addGap(20, 20, 20))
         );
 
         jTabbedPane1.addTab("Productos", jPanel1);
@@ -328,33 +313,42 @@ public class Solicitudes extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tablaVerSolicitudes);
 
-        btnRefrescarSolicitudes.setText("Refrescar");
         btnRefrescarSolicitudes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRefrescarSolicitudesActionPerformed(evt);
             }
         });
 
+        jLabel12.setText("Refrescar");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 801, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 806, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnRefrescarSolicitudes)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRefrescarSolicitudes, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(50, 50, 50)
+                        .addComponent(jLabel12)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 560, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRefrescarSolicitudes)
-                .addContainerGap())
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(btnRefrescarSolicitudes, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel12)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 560, Short.MAX_VALUE)
+                        .addGap(40, 40, 40))))
         );
 
         jTabbedPane1.addTab("Mis Solicitudes", jPanel2);
@@ -381,96 +375,10 @@ public class Solicitudes extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void BotonEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonEnviarActionPerformed
-        DefaultTableModel df = (DefaultTableModel) this.jTableIngresarItems.getModel();
-        solicitudPr sol = new solicitudPr(hoy, this.Observaciones.getText(), null, this.id, null, null);
-        Usuario u = cliente.Cliente.conectarU();
-        
-        BigDecimal numSol = null;
-        int ite = 0;
-        boolean aceptado = true;
-        for (ItemInventario i : itemsSolicitud) {
-            if (df.getValueAt(ite, 5) != null) {
-                if (new Float(df.getValueAt(ite, 5).toString()) > 0) {
-                    i.setCantidadSolicitada(new Float(df.getValueAt(ite, 5).toString()));
-                    ite++;
-                } else {
-                    JOptionPane.showMessageDialog(null, "El valor de la cantidad solicitada debe ser mayor a cero");
-                    df.setValueAt("", ite, 5);
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Ingrese la cantidad solicitada");
-                
-            }
-        }
-        for (ItemInventario ii : itemsSolicitud) {
-            if (ii.getCantidadSolicitada() == 0) {
-                aceptado = false;
-            }
-        }
-        if (aceptado == true) {
-            try {
-                u.crearSolicitud(sol);
-                numSol = u.solicitudValida(this.id);
-                
-            } catch (RemoteException ex) {
-                Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            if (numSol != null) {
-                try {
-                    u.itemxsolicitud(this.itemsSolicitud, numSol);
-                } catch (RemoteException ex) {
-                    Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                JOptionPane.showMessageDialog(null, "El número de la solicitud hecha es:  " + numSol);
-            } else {
-                JOptionPane.showMessageDialog(null, "No fue posible realizar la solicitud");
-                
-            }
-        }
-        this.btnRefrescarSolicitudes.doClick();
-    }//GEN-LAST:event_BotonEnviarActionPerformed
-
-    private void BotonVerItemsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonVerItemsActionPerformed
-        VerInventario inv = new VerInventario(this.id);
-        inv.setVisible(true);
-    }//GEN-LAST:event_BotonVerItemsActionPerformed
-
-    private void botonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarActionPerformed
-        Usuario u = cliente.Cliente.conectarU();
-        DefaultTableModel df = (DefaultTableModel) this.jTableIngresarItems.getModel();
-        /*df.addRow(new Object[]{Boolean.FALSE, null, null});
-         for (int i = 0; i < df.getRowCount(); i++) {
-         df.setValueAt(this.jTFieldAreaProcesoSolicitante.getText() + "-", i, 0);
-         }*/
-        Vector datos = new Vector();
-        int selectedIndex = this.jcboxAgregarItem.getSelectedIndex();
-        ItemInventario i = this.aux.get(selectedIndex);
-        datos.add(i.getInventario());
-        datos.add(i.getNumero());
-        datos.add(i.getDescripcion());
-        datos.add(i.getCantidad());
-        datos.add(i.getPresentacion());
-        df.addRow(datos);
-        this.itemsSolicitud.add(i);
-
-    }//GEN-LAST:event_botonAgregarActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        DefaultTableModel df = (DefaultTableModel) this.jTableIngresarItems.getModel();
-        if (df.getRowCount() > 0) {
-            this.itemsSolicitud.remove(this.jTableIngresarItems.getSelectedRow());
-            df.removeRow(this.jTableIngresarItems.getSelectedRow());
-        }
-        if (df.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(null, "La tabla ya está vacía");
-        }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void btnRefrescarSolicitudesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarSolicitudesActionPerformed
         DefaultTableModel df = (DefaultTableModel) this.tablaVerSolicitudes.getModel();
         Usuario u = cliente.Cliente.conectarU();
-        
+
         for (int i = df.getRowCount() - 1; i >= 0; i--) {
             df.removeRow(i);
         }
@@ -491,11 +399,76 @@ public class Solicitudes extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnRefrescarSolicitudesActionPerformed
 
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        SeleccionarDatos s = new SeleccionarDatos(this.id);
+        s.setVisible(true);
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         VentanaInicio_RA vent = new VentanaInicio_RA(this.id.toString());
         vent.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnVolverActionPerformed
+
+    private void BotonEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonEnviarActionPerformed
+        DefaultTableModel df = (DefaultTableModel) this.jTableIngresarItems.getModel();
+        solicitudPr sol = new solicitudPr(hoy, this.Observaciones.getText(), null, this.id, null, null);
+        Usuario u = cliente.Cliente.conectarU();
+        BigDecimal numSol = null;
+        int ite = 0;
+        boolean aceptado = true;
+        
+        
+        for (ItemInventario i : itemsSolicitud) {
+            if (df.getValueAt(ite, 5) != null) {
+                if (new Float(df.getValueAt(ite, 5).toString()) > 0) {
+                    i.setCantidadSolicitada(new Float(df.getValueAt(ite, 5).toString()));
+                    ite++;
+                } else {
+                    JOptionPane.showMessageDialog(null, "El valor de la cantidad solicitada debe ser mayor a cero");
+                    df.setValueAt("", ite, 5);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Ingrese la cantidad solicitada");
+
+            }
+        }
+        for (ItemInventario ii : itemsSolicitud) {
+            if (ii.getCantidadSolicitada() == 0) {
+                aceptado = false;
+            }
+        }
+        
+        
+        if (aceptado == true) {
+            try {
+                u.crearSolicitud(sol);
+                numSol = u.solicitudValida(this.id);
+
+            } catch (RemoteException ex) {
+                Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println(numSol);
+            if (numSol != null) {
+                try {
+                    u.itemxsolicitud(Solicitudes.itemsSolicitud, numSol);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                JOptionPane.showMessageDialog(null, "El número de la solicitud hecha es:  " + numSol);
+            } else {
+                JOptionPane.showMessageDialog(null, "No fue posible realizar la solicitud");
+
+            }
+        }
+        
+        
+        
+        this.btnRefrescarSolicitudes.doClick();
+        for (int i = df.getRowCount() - 1; i >= 0; i--) {
+            df.removeRow(i);
+        }
+    }//GEN-LAST:event_BotonEnviarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -534,14 +507,14 @@ public class Solicitudes extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BotonEnviar;
-    private javax.swing.JButton BotonVerItems;
     private javax.swing.JTextField Observaciones;
-    private javax.swing.JButton botonAgregar;
+    private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnRefrescarSolicitudes;
     private javax.swing.JButton btnVolver;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -549,6 +522,7 @@ public class Solicitudes extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -558,31 +532,32 @@ public class Solicitudes extends javax.swing.JFrame {
     private javax.swing.JTextField jTFieldAreaProcesoSolicitante;
     private javax.swing.JTextField jTFieldNombreSolicitante;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTableIngresarItems;
-    private javax.swing.JComboBox jcboxAgregarItem;
+    public static javax.swing.JTable jTableIngresarItems;
     private javax.swing.JLabel jlbFecha;
     private javax.swing.JLabel labelAdministrador;
     private javax.swing.JTable tablaVerSolicitudes;
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
     }
+
     
-    private void llenarItems(String area) {
-        if (this.jcboxAgregarItem.getItemCount() != 0) {
-            this.jcboxAgregarItem.removeAllItems();
+
+    public static void actTabla(ArrayList<ItemInventario> items) {
+        DefaultTableModel df = (DefaultTableModel) Solicitudes.jTableIngresarItems.getModel();
+        for (int i = df.getRowCount() - 1; i >= 0; i--) {
+            df.removeRow(i);
         }
-        Usuario u = cliente.Cliente.conectarU();
-        ArrayList<ItemInventario> itemInventario = null;
-        try {
-            itemInventario = u.itemInventario(this.id);
-            aux = itemInventario;
-        } catch (RemoteException ex) {
-            Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        for (ItemInventario i : itemInventario) {
-            this.jcboxAgregarItem.addItem(i.getInventario() + "-" + i.getNumero());
+        for (ItemInventario i : items) {
+            Vector datos = new Vector();
+            datos.add(i.getInventario());
+            datos.add(i.getNumero());
+            datos.add(i.getDescripcion());
+            datos.add(i.getCantidad());
+            datos.add(i.getPresentacion());
+            df.addRow(datos);
         }
     }
+
 }

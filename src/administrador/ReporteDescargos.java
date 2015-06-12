@@ -28,12 +28,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
 public class ReporteDescargos extends javax.swing.JFrame {
-    
+
     private static BigDecimal id = null;
     private static BigDecimal busqueda = null;
 
@@ -43,7 +44,7 @@ public class ReporteDescargos extends javax.swing.JFrame {
     public ReporteDescargos() {
         initComponents();
     }
-    
+
     ReporteDescargos(BigDecimal id) {
         initComponents();
         this.id = id;
@@ -51,7 +52,7 @@ public class ReporteDescargos extends javax.swing.JFrame {
         this.setSize(753, this.getHeight());
         setIcon();
     }
-    
+
     ReporteDescargos(BigDecimal id, BigDecimal busqueda) {
         initComponents();
         this.id = id;
@@ -236,7 +237,7 @@ public class ReporteDescargos extends javax.swing.JFrame {
                 df.removeRow(i);
             }
         }
-        
+
         try {
             if (list.getSelectedValue() != null && si_no == JOptionPane.YES_OPTION) {
                 if (aux < 10) {
@@ -255,7 +256,7 @@ public class ReporteDescargos extends javax.swing.JFrame {
                     df.addRow(datos);
                 }
             }
-            
+
         } catch (RemoteException ex) {
             Logger.getLogger(ReporteDescargos.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -284,7 +285,7 @@ public class ReporteDescargos extends javax.swing.JFrame {
         if (list.getSelectedValue() != null) {
             si_no = JOptionPane.showConfirmDialog(null, "Se generará el informe para el mes de: " + list.getSelectedValue());
             aux = list.getSelectedIndex() + 1;
-            
+
             for (int i = df.getRowCount() - 1; i >= 0; i--) {
                 df.removeRow(i);
             }
@@ -320,11 +321,11 @@ public class ReporteDescargos extends javax.swing.JFrame {
                     System.out.println(i.getEninventario());
                     System.out.println(i.getCinterno());
                     System.out.println(i.getEmpleado());
-                    
+
                 }
-                
+
             }
-            
+
         } catch (RemoteException ex) {
             Logger.getLogger(ReporteDescargos.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -389,6 +390,7 @@ public class ReporteDescargos extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
+
     }
 }

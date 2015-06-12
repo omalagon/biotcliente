@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package auxiliarOficina;
 
 import auxiliarOficina.verProveedores;
 import inicioSesion.InicioSesion;
@@ -23,7 +23,6 @@ import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.toedter.calendar.JDateChooserCellEditor;
 import interfaces.Usuario;
 import java.awt.Desktop;
 import java.awt.Toolkit;
@@ -32,14 +31,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 
 /**
@@ -527,7 +524,7 @@ public class AOficina extends javax.swing.JFrame {
                             .addComponent(jLabel42)
                             .addGroup(jPanel9Layout.createSequentialGroup()
                                 .addGap(299, 299, 299)
-                                .addComponent(oc_cel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(oc_cel, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -848,6 +845,10 @@ public class AOficina extends javax.swing.JFrame {
         ArrayList<ItemInventario> items_numSol = null;
         try {
             items_numSol = u.getItems_numSol(numSol);
+            for (ItemInventario i : items_numSol) {
+                System.out.println(i.getNumero());
+                System.out.println(i.getInventario());
+            }
         } catch (RemoteException ex) {
             Logger.getLogger(AOficina.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -985,8 +986,8 @@ public class AOficina extends javax.swing.JFrame {
                 this.oc_nomProv.setText(prov.getNombre());
                 this.oc_nit.setText(prov.getNIT());
                 this.oc_dir.setText(prov.getDireccion());
-                this.oc_cel.setText(new Integer(prov.getTelefono()).toString());
-                this.oc_fax.setText(new Integer(prov.getTelefax()).toString());
+                this.oc_cel.setText(prov.getTelefono());
+                this.oc_fax.setText(prov.getTelefax());
                 pedidoOrdenCompra = u.pedidoOrdenCompra(proveedor);
                 for (itemsOrdenCompra p : pedidoOrdenCompra) {
                     Vector datos = new Vector();
@@ -1044,7 +1045,7 @@ public class AOficina extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             Usuario u = cliente.Cliente.conectarU();
-            proveedor p = new proveedor(this.oc_nomProv.getText(), this.oc_nit.getText(), this.oc_dir.getText(), new Integer(this.oc_cel.getText()), new Integer(this.oc_fax.getText()));
+            proveedor p = new proveedor(this.oc_nomProv.getText(), this.oc_nit.getText(), this.oc_dir.getText(), this.oc_cel.getText(), this.oc_fax.getText());
             ArrayList<itemsOrdenCompra> pedidoOrdenCompra = u.pedidoOrdenCompra(this.oc_nit.getText());
             float total = new Float(this.total.getText());
             String obs = this.obsOrden.getText();
@@ -1054,6 +1055,7 @@ public class AOficina extends javax.swing.JFrame {
             chooser.showOpenDialog(this);
             String path = chooser.getSelectedFile().getPath();
             File pdf_002 = this.pdf_002(path, p, pedidoOrdenCompra, total, obs, numorden);
+            u.actualizarCotEnOrden(pedidoOrdenCompra);
             if (JOptionPane.showConfirmDialog(null, "¿Desea abrir el archivo?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 Desktop.getDesktop().open(pdf_002);
             }
@@ -1104,7 +1106,7 @@ public class AOficina extends javax.swing.JFrame {
     }
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox Apro_NITProv;
@@ -1232,8 +1234,8 @@ public class AOficina extends javax.swing.JFrame {
             datosProv.addCell(new Paragraph(p.getNombre(), bf_titulos1));
             datosProv.addCell(new Paragraph(p.getNIT(), bf_titulos1));
             datosProv.addCell(new Paragraph(p.getDireccion(), bf_titulos1));
-            datosProv.addCell(new Paragraph(new Integer(p.getTelefono()).toString(), bf_titulos1));
-            datosProv.addCell(new Paragraph(new Integer(p.getTelefax()).toString(), bf_titulos1));
+            datosProv.addCell(new Paragraph(p.getTelefono(), bf_titulos1));
+            datosProv.addCell(new Paragraph(p.getTelefax(), bf_titulos1));
 
             items.addCell(new Paragraph("C.INTERNO", bf_titulos1));
             items.addCell(new Paragraph("DESCRIPCION", bf_titulos1));
@@ -1278,7 +1280,7 @@ public class AOficina extends javax.swing.JFrame {
             documento.add(new Paragraph(" ", bf_titulos));
             documento.add(new Paragraph(" ", bf_titulos));
             documento.add(new Paragraph(Chunk.NEWLINE));
-            documento.add(new Paragraph(espaciado + "_____" + "_____" + nombreAO + "___", bf_titulos));
+            documento.add(new Paragraph(espaciado +  nombreAO , bf_titulos));
             documento.add(new Paragraph(espaciado + "REVISION- COMPRAS", bf_titulos));
             documento.add(new Paragraph(Chunk.NEWLINE));
             documento.add(pie1);

@@ -53,7 +53,7 @@ public class DescargoConsumos extends javax.swing.JFrame {
         this.desc_nombre.setText(User);
         this.desc_area.setText(area);
         for (ItemInventario i : itemInventarioAdmin) {
-            this.desc_items.addItem(i.getInventario() + "-" + i.getNumero());
+            this.desc_items.addItem(i.getNumero());
         }
 
     }
@@ -296,7 +296,7 @@ public class DescargoConsumos extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
     }
 
 }

@@ -7,7 +7,7 @@ package inicioSesion;
 
 import administrador.VentanaInicio_Adm;
 import auxiliarOficina.VentanaInicio_AO;
-import gui.AOficina;
+import auxiliarOficina.AOficina;
 import interfaces.Usuario;
 import java.awt.Color;
 import java.awt.Toolkit;
@@ -312,7 +312,7 @@ public class InicioSesion extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
     }
 
 }

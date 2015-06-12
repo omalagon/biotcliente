@@ -14,31 +14,33 @@ import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
-
 /**
  *
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
-public class VerInventario extends javax.swing.JFrame {
+public class SeleccionarDatos extends javax.swing.JFrame {
 
     private static BigDecimal id = null;
-
+    private ArrayList<ItemInventario> listado = null;
     /**
      * Creates new form VerInventario
      */
-    public VerInventario() {
+    public SeleccionarDatos() {
         initComponents();
     }
-    
-    VerInventario(BigDecimal id) {
+
+    SeleccionarDatos(BigDecimal id) {
         initComponents();
         this.id = id;
         setIcon();
         this.setLocationRelativeTo(null);
         this.setSize(740, this.getHeight());
         this.RefrescarInven.doClick();
-        
+        this.btnAgregarItms.setIcon(new ImageIcon(getClass().getResource("../Recursos/Carrito.png")));
+        this.btnCerrar.setIcon(new ImageIcon(getClass().getResource("../Recursos/NO.png")));
+        this.RefrescarInven.setIcon(new ImageIcon(getClass().getResource("../Recursos/ACT.png")));
     }
 
     /**
@@ -55,6 +57,10 @@ public class VerInventario extends javax.swing.JFrame {
         tablaInventario = new javax.swing.JTable();
         RefrescarInven = new javax.swing.JButton();
         btnCerrar = new javax.swing.JButton();
+        btnAgregarItms = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -66,12 +72,19 @@ public class VerInventario extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Codigo", "Descripción", "Presentación", "Cantidad"
+                "Codigo", "Descripción", "Presentación", "Cantidad", "Agregar"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, true, true
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, true, true, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -79,19 +92,29 @@ public class VerInventario extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(tablaInventario);
 
-        RefrescarInven.setText("Refrescar");
         RefrescarInven.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RefrescarInvenActionPerformed(evt);
             }
         });
 
-        btnCerrar.setText("Cerrar");
         btnCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCerrarActionPerformed(evt);
             }
         });
+
+        btnAgregarItms.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarItmsActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Agregar Ítems");
+
+        jLabel3.setText("Refrescar");
+
+        jLabel4.setText("Cerrar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -104,11 +127,24 @@ public class VerInventario extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnCerrar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(RefrescarInven))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE))
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(37, 37, 37)
+                                .addComponent(jLabel2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(47, 47, 47)
+                                .addComponent(jLabel3))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(RefrescarInven, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                                        .addComponent(btnAgregarItms, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(52, 52, 52)
+                                .addComponent(jLabel4)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -117,11 +153,20 @@ public class VerInventario extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(RefrescarInven)
-                    .addComponent(btnCerrar))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnAgregarItms, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(RefrescarInven, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                        .addComponent(jLabel4))
+                    .addComponent(jScrollPane3))
                 .addContainerGap())
         );
 
@@ -134,31 +179,55 @@ public class VerInventario extends javax.swing.JFrame {
             df.removeRow(i);
         }
         Usuario u = cliente.Cliente.conectarU();
-        
+
         ArrayList<ItemInventario> itemInventario = null;
         try {
             itemInventario = u.itemInventario(this.id);
         } catch (RemoteException ex) {
-            Logger.getLogger(VerInventario.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SeleccionarDatos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        int j = 0;
         for (ItemInventario i : itemInventario) {
             Vector<Object> aux = new Vector<>();
-            try {
-                aux.add(0, u.area(this.id) + "-" + i.getNumero());
-            } catch (RemoteException ex) {
-                Logger.getLogger(VerInventario.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            aux.add(0, i.getNumero());
             aux.add(1, i.getDescripcion());
             aux.add(2, i.getPresentacion());
             aux.add(3, i.getCantidad());
             df.addRow(aux);
+            df.setValueAt(false, j, 4);
+            j++;
         }
+        this.listado = itemInventario;
     }//GEN-LAST:event_RefrescarInvenActionPerformed
 
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_btnCerrarActionPerformed
+
+    private void btnAgregarItmsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarItmsActionPerformed
+        DefaultTableModel df = (DefaultTableModel) this.tablaInventario.getModel();
+        Usuario u = cliente.Cliente.conectarU();
+        boolean valido = false;
+        ItemInventario itm = null;
+        ArrayList<ItemInventario> itemsSeleccionados= new ArrayList<>();
+        if (VentanaInicio_RA.ventanaSolicitudes.isShowing()) {
+
+            for (int i = 0; i < df.getRowCount(); i++) {
+                valido = (boolean) df.getValueAt(i, 4);
+                if (valido) {
+                    itm = this.listado.get(i);
+                    itemsSeleccionados.add(itm);
+                }
+
+            }
+            Solicitudes.actTabla(itemsSeleccionados);
+            Solicitudes.itemsSolicitud = itemsSeleccionados;
+        }
+        
+        
+
+
+    }//GEN-LAST:event_btnAgregarItmsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -177,28 +246,33 @@ public class VerInventario extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VerInventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SeleccionarDatos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VerInventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SeleccionarDatos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VerInventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SeleccionarDatos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VerInventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SeleccionarDatos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VerInventario().setVisible(true);
+                new SeleccionarDatos().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton RefrescarInven;
+    private javax.swing.JButton btnAgregarItms;
     private javax.swing.JButton btnCerrar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable tablaInventario;
     // End of variables declaration//GEN-END:variables
