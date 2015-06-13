@@ -5,7 +5,6 @@
  */
 package auxiliarOficina;
 
-import auxiliarOficina.verProveedores;
 import inicioSesion.InicioSesion;
 import EstructurasAux.ItemInventario;
 import EstructurasAux.cotizaciones;
@@ -47,7 +46,7 @@ public class AOficina extends javax.swing.JFrame {
 
     private static BigDecimal id = null;
     private static String area = null;
-    private static GregorianCalendar hoy = new GregorianCalendar();
+    private static final GregorianCalendar hoy = new GregorianCalendar();
     private static String cadenaFecha = hoy.get(Calendar.DAY_OF_MONTH) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/" + hoy.get(Calendar.YEAR);
 
     /**
@@ -812,7 +811,7 @@ public class AOficina extends javax.swing.JFrame {
             }
         }
         try {
-            act = u.RevisarSolicitud(this.id, numSol, "SI");
+            act = u.RevisarSolicitud(AOficina.id, numSol, "SI");
         } catch (RemoteException ex) {
             Logger.getLogger(AOficina.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -864,17 +863,25 @@ public class AOficina extends javax.swing.JFrame {
         this.nombreCot.setText(solicitud_NumSol.getNombreRA());
         this.TabbedPaneUsuarios.setSelectedIndex(2);
         for (ItemInventario i : items_numSol) {
-            Vector datos = new Vector();
-            datos.add(i.getCantidad());
-            datos.add(i.getInventario());
-            datos.add(i.getNumero());
-            datos.add(i.getDescripcion());
-            datos.add(i.getCantidadSolicitada());
-            datos.add(i.getPresentacion());
+            Object[] datos = new Object[6];
+            datos[0] = i.getCantidad();
+            datos[1] = i.getInventario();
+            datos[2] = i.getNumero();
+            datos[3] = i.getDescripcion();
+            datos[4] = i.getCantidadSolicitada();
+            datos[5] = i.getPresentacion();
+            /*
+             Vector datos = new Vector();
+             datos.add(i.getCantidad());
+             datos.add(i.getInventario());
+             datos.add(i.getNumero());
+             datos.add(i.getDescripcion());
+             datos.add(i.getCantidadSolicitada());
+             datos.add(i.getPresentacion());*/
             df_items.addRow(datos);
 
             try {
-                itemxproveedor = u.getItemxproveedor(i.getInventario(),i.getNumero());
+                itemxproveedor = u.getItemxproveedor(i.getInventario(), i.getNumero());
             } catch (RemoteException ex) {
                 Logger.getLogger(AOficina.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -883,11 +890,18 @@ public class AOficina extends javax.swing.JFrame {
         cCalidadCell.setCellEditor(new DefaultCellEditor(Apro_NITProv));
         for (ArrayList<itemxproveedor> iter : aux) {
             for (itemxproveedor i : iter) {
-                Vector datos = new Vector();
-                datos.add(i.getNIT());
-                datos.add(i.getNombre());
-                datos.add(i.getPrecio());
-                datos.add(i.getDisponibilidad());
+                Object[] datos = new Object[4];
+                datos[0] = i.getNIT();
+                datos[1] = i.getNombre();
+                datos[2] = i.getPrecio();
+                datos[3] = i.getDisponibilidad();
+                /*
+                
+                 Vector datos = new Vector();
+                 datos.add(i.getNIT());
+                 datos.add(i.getNombre());
+                 datos.add(i.getPrecio());
+                 datos.add(i.getDisponibilidad());*/
                 df_proveedores.addRow(datos);
             }
         }
@@ -909,11 +923,19 @@ public class AOficina extends javax.swing.JFrame {
         GregorianCalendar fecha = new GregorianCalendar();
         for (solicitudPr s : solNoRev) {
             fecha = s.getFecha();
-            Vector datos = new Vector();
-            datos.add(s.getSolicitudpr_id());
-            datos.add(fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR));
-            datos.add(s.getObservaciones());
-            datos.add(s.getNombreRA());
+            Object[] datos = new Object[4];
+            datos[0] = s.getSolicitudpr_id();
+            datos[1] = fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR);
+            datos[2] = s.getObservaciones();
+            datos[3] = s.getNombreRA();
+
+            /*
+            
+             Vector datos = new Vector();
+             datos.add(s.getSolicitudpr_id());
+             datos.add(fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR));
+             datos.add(s.getObservaciones());
+             datos.add(s.getNombreRA());*/
             df_NoRevisadas.addRow(datos);
         }
         //---------------------------------------------------------------------
@@ -930,11 +952,17 @@ public class AOficina extends javax.swing.JFrame {
         GregorianCalendar fecha1 = new GregorianCalendar();
         for (solicitudPr s : solRev) {
             fecha1 = s.getFecha();
-            Vector datos = new Vector();
-            datos.add(s.getSolicitudpr_id());
-            datos.add(fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR));
-            datos.add(s.getObservaciones());
-            datos.add(s.getNombreRA());
+            Object[] datos = new Object[4];
+            datos[0] = s.getSolicitudpr_id();
+            datos[1] = fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR);
+            datos[2] = s.getObservaciones();
+            datos[3] = s.getNombreRA();
+            /*
+             Vector datos = new Vector();
+             datos.add(s.getSolicitudpr_id());
+             datos.add(fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR));
+             datos.add(s.getObservaciones());
+             datos.add(s.getNombreRA());*/
             df_Revisadas.addRow(datos);
         }
 
@@ -946,22 +974,35 @@ public class AOficina extends javax.swing.JFrame {
         for (int i = df.getRowCount() - 1; i >= 0; i--) {
             df.removeRow(i);
         }
-        ArrayList<cotizaciones> cotizacione = null;
+        ArrayList<cotizaciones> cotizacione ;
         try {
             cotizacione = u.getCotizaciones("SI");
             for (cotizaciones c : cotizacione) {
-                Vector datos = new Vector();
-                datos.add(c.getCotizacionId());
-                datos.add(c.getAO());
-                datos.add(c.getRA());
-                datos.add(c.getProveedor());
-                datos.add(c.getLab());
-                datos.add(c.getCinterno());
-                datos.add(c.getCantSol());
-                datos.add(u.getCantAprobada(c));
+                Object[] datos = new Object[10];
+                datos[0] = c.getCotizacionId();
+                datos[1] = c.getAO();
+                datos[2] = c.getRA();
+                datos[3] = c.getProveedor();
+                datos[4] = c.getLab();
+                datos[5] = c.getCinterno();
+                datos[6] = c.getCantSol();
+                datos[7] = u.getCantAprobada(c);
                 c.setCantApr(u.getCantAprobada(c));
-                datos.add(c.getPrecioUnitario());
-                datos.add(c.getNumSol());
+                datos[8] = c.getPrecioUnitario();
+                datos[9] = c.getNumSol();
+
+                /*Vector datos = new Vector();
+                 datos.add(c.getCotizacionId());
+                 datos.add(c.getAO());
+                 datos.add(c.getRA());
+                 datos.add(c.getProveedor());
+                 datos.add(c.getLab());
+                 datos.add(c.getCinterno());
+                 datos.add(c.getCantSol());
+                 datos.add(u.getCantAprobada(c));
+                 c.setCantApr(u.getCantAprobada(c));
+                 datos.add(c.getPrecioUnitario());
+                 datos.add(c.getNumSol());*/
                 df.addRow(datos);
             }
         } catch (RemoteException ex) {
@@ -970,14 +1011,14 @@ public class AOficina extends javax.swing.JFrame {
     }//GEN-LAST:event_BotonRefrescarSolRevActionPerformed
 
     private void btnRealizarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarOrdenActionPerformed
-    Usuario u = cliente.Cliente.conectarU();
+        Usuario u = cliente.Cliente.conectarU();
         this.fechaOrden.setText(hoy.get(Calendar.DAY_OF_MONTH) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/" + hoy.get(Calendar.YEAR));
         String proveedor = this.Apro_NITProv.getSelectedItem().toString();
         DefaultTableModel df = (DefaultTableModel) this.tablaDatosPedido.getModel();
         for (int i = df.getRowCount() - 1; i >= 0; i--) {
             df.removeRow(i);
         }
-        float total = 0;
+        float total1 = 0;
         String com = "";
         ArrayList<itemsOrdenCompra> pedidoOrdenCompra = new ArrayList<>();
         try {
@@ -990,21 +1031,29 @@ public class AOficina extends javax.swing.JFrame {
                 this.oc_fax.setText(prov.getTelefax());
                 pedidoOrdenCompra = u.pedidoOrdenCompra(proveedor);
                 for (itemsOrdenCompra p : pedidoOrdenCompra) {
-                    Vector datos = new Vector();
+                    Object[] datos = new Object[6];
+                    datos[0] = p.getCinterno();
+                    datos[1] = p.getInventario();
+                    datos[2] = p.getCaprobada();
+                    datos[3] = p.getPresen();
+                    datos[4] = p.getPrecioU();
+                    datos[5] = p.getvTotal();
+
+                    /*Vector datos = new Vector();
                     datos.add(p.getCinterno());
                     datos.add(p.getInventario());
                     datos.add(p.getCaprobada());
                     datos.add(p.getPresen());
                     datos.add(p.getPrecioU());
-                    datos.add(p.getvTotal());
-                    total += p.getvTotal();
+                    datos.add(p.getvTotal());*/
+                    total1 += p.getvTotal();
                     com += p.getObs() + " // ";
                     df.addRow(datos);
                 }
             }
-            this.total.setText(new Float(total).toString());
+            this.total.setText(Float.toString(total1));
             this.obsOrden.setText(com);
-            u.crearOrdenCompra(this.id);
+            u.crearOrdenCompra(AOficina.id);
             BigDecimal numOrden = u.OrdenValida(id);
             this.numorden.setText(numOrden.toString());
             boolean valido = u.itemsxorden(numOrden, proveedor, pedidoOrdenCompra, com);
@@ -1028,11 +1077,15 @@ public class AOficina extends javax.swing.JFrame {
         Usuario u = cliente.Cliente.conectarU();
         try {
             ArrayList<proveedor> todosProveedores = u.todosProveedores();
-            ArrayList<Vector> tabla = new ArrayList<>();
+            ArrayList<Object> tabla = new ArrayList<>();
             for (proveedor t : todosProveedores) {
+                Object[] datos = new Object[2];
+                datos[0] = t.getNIT();
+                datos[1] = t.getNombre();
+                /*
                 Vector datos = new Vector();
                 datos.add(t.getNIT());
-                datos.add(t.getNombre());
+                datos.add(t.getNombre());*/
                 tabla.add(datos);
             }
             verProveedores ver = new verProveedores();
@@ -1047,14 +1100,14 @@ public class AOficina extends javax.swing.JFrame {
             Usuario u = cliente.Cliente.conectarU();
             proveedor p = new proveedor(this.oc_nomProv.getText(), this.oc_nit.getText(), this.oc_dir.getText(), this.oc_cel.getText(), this.oc_fax.getText());
             ArrayList<itemsOrdenCompra> pedidoOrdenCompra = u.pedidoOrdenCompra(this.oc_nit.getText());
-            float total = new Float(this.total.getText());
+            float total1 = new Float(this.total.getText());
             String obs = this.obsOrden.getText();
-            String numorden = this.numorden.getText();
+            String numorden1 = this.numorden.getText();
             JFileChooser chooser = new JFileChooser();
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             chooser.showOpenDialog(this);
             String path = chooser.getSelectedFile().getPath();
-            File pdf_002 = this.pdf_002(path, p, pedidoOrdenCompra, total, obs, numorden);
+            File pdf_002 = this.pdf_002(path, p, pedidoOrdenCompra, total1, obs, numorden1);
             u.actualizarCotEnOrden(pedidoOrdenCompra);
             if (JOptionPane.showConfirmDialog(null, "¿Desea abrir el archivo?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 Desktop.getDesktop().open(pdf_002);
@@ -1082,15 +1135,14 @@ public class AOficina extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AOficina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AOficina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AOficina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(AOficina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -1106,7 +1158,7 @@ public class AOficina extends javax.swing.JFrame {
     }
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox Apro_NITProv;
@@ -1189,7 +1241,7 @@ public class AOficina extends javax.swing.JFrame {
 
     public File pdf_002(String ruta, proveedor p, ArrayList<itemsOrdenCompra> pedido, float total, String obs, String numorden) throws RemoteException {
         Usuario u = cliente.Cliente.conectarU();
-        String nombreAO = u.getNombreAO(this.id.toString());
+        String nombreAO = u.getNombreAO(AOficina.id.toString());
         File pdf = null;
         Document documento = new Document(PageSize.A4);
         System.out.println(documento.getPageSize());
@@ -1207,7 +1259,7 @@ public class AOficina extends javax.swing.JFrame {
         float tamanoItems[] = {20, 50, 20, 30, 30, 30};
         float tamanoProv[] = {40, 30, 30, 50};
         float tamFecha[] = {70, 30};
-        GregorianCalendar hoy = new GregorianCalendar();
+        GregorianCalendar today = new GregorianCalendar();
         try {
             FileOutputStream fichero = new FileOutputStream(ruta + "\\NumeroOrden_" + numorden + ".pdf");
             PdfWriter escribir = PdfWriter.getInstance(documento, fichero);
@@ -1223,7 +1275,7 @@ public class AOficina extends javax.swing.JFrame {
             tabla.addCell(new Paragraph("F-DC-002\nRevision 04\nFecha\nActualizacion\n01-dic-13", bf_titulos));
             tabla.addCell(new Paragraph("\nORDEN DE COMPRA", bf_titulos));
             tabla.addCell(logo);
-            fecha.addCell(new Paragraph("FECHA ELABORACION" + hoy.get(Calendar.DAY_OF_MONTH) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/" + hoy.get(Calendar.YEAR), bf_titulos));
+            fecha.addCell(new Paragraph("FECHA ELABORACION" + today.get(Calendar.DAY_OF_MONTH) + "/" + (today.get(Calendar.MONTH) + 1) + "/" + today.get(Calendar.YEAR), bf_titulos));
             fecha.addCell(new Paragraph("N° ORDEN: " + numorden));
             datosProv.addCell(new Paragraph("NOMBRE PROVEEDOR/PRESTADOR DEL SERVICIO", bf_titulos));
             datosProv.addCell(new Paragraph("NIT", bf_titulos));
@@ -1249,12 +1301,12 @@ public class AOficina extends javax.swing.JFrame {
                 System.out.println(i.getCaprobada());
             }
             for (itemsOrdenCompra i : pedido) {
-                items.addCell(new Paragraph(i.getInventario() + "-" + i.getCinterno().toString(), bf_titulos1));
+                items.addCell(new Paragraph(i.getInventario() + "-" + i.getCinterno(), bf_titulos1));
                 items.addCell(new Paragraph(i.getDesc(), bf_titulos1));
-                items.addCell(new Paragraph(new Float(i.getCaprobada()).toString(), bf_titulos1));
+                items.addCell(new Paragraph(Float.toString(i.getCaprobada()), bf_titulos1));
                 items.addCell(new Paragraph(i.getPresen(), bf_titulos1));
-                items.addCell(new Paragraph("$" + new Float(i.getPrecioU()).toString(), bf_titulos1));
-                items.addCell(new Paragraph("$" + new Float(i.getCaprobada() * i.getPrecioU()).toString(), bf_titulos1));
+                items.addCell(new Paragraph("$" + Float.toString(i.getPrecioU()), bf_titulos1));
+                items.addCell(new Paragraph("$" + Float.toString(i.getCaprobada() * i.getPrecioU()), bf_titulos1));
 
             }
             for (int i = 0; i <= numeroFilas; i++) {
@@ -1280,7 +1332,7 @@ public class AOficina extends javax.swing.JFrame {
             documento.add(new Paragraph(" ", bf_titulos));
             documento.add(new Paragraph(" ", bf_titulos));
             documento.add(new Paragraph(Chunk.NEWLINE));
-            documento.add(new Paragraph(espaciado +  nombreAO , bf_titulos));
+            documento.add(new Paragraph(espaciado + nombreAO, bf_titulos));
             documento.add(new Paragraph(espaciado + "REVISION- COMPRAS", bf_titulos));
             documento.add(new Paragraph(Chunk.NEWLINE));
             documento.add(pie1);

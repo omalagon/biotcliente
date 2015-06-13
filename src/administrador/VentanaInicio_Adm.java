@@ -11,12 +11,9 @@ import inicioSesion.InicioSesion;
 import interfaces.Usuario;
 import java.awt.Toolkit;
 import java.math.BigDecimal;
-import java.rmi.RemoteException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- *
+ * 
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
 public class VentanaInicio_Adm extends javax.swing.JFrame {
@@ -172,19 +169,19 @@ public class VentanaInicio_Adm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
-        Seleccion sel = new Seleccion(this.id);
+        Seleccion sel = new Seleccion(VentanaInicio_Adm.id);
         sel.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnCrearActionPerformed
 
     private void btnRevisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRevisarActionPerformed
-        RevisarSolicitudes rev = new RevisarSolicitudes(this.id);
+        RevisarSolicitudes rev = new RevisarSolicitudes(VentanaInicio_Adm.id);
         rev.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnRevisarActionPerformed
 
     private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
-        Reportes rep = new Reportes(this.id);
+        Reportes rep = new Reportes(VentanaInicio_Adm.id);
         rep.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnReportesActionPerformed
@@ -196,12 +193,12 @@ public class VentanaInicio_Adm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCerrarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        CambioClave c = new CambioClave(this.id, "da");
+        CambioClave c = new CambioClave(VentanaInicio_Adm.id, "da");
         c.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        BloquearUsuario bloq = new BloquearUsuario(this.id);
+        BloquearUsuario bloq = new BloquearUsuario(VentanaInicio_Adm.id);
         bloq.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -236,6 +233,7 @@ public class VentanaInicio_Adm extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new VentanaInicio_Adm().setVisible(true);
             }
@@ -243,7 +241,7 @@ public class VentanaInicio_Adm extends javax.swing.JFrame {
     }
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCerrar;

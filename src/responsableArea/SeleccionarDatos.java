@@ -11,11 +11,11 @@ import java.awt.Toolkit;
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Sammy Guergachi <sguergachi at gmail.com>
@@ -24,6 +24,7 @@ public class SeleccionarDatos extends javax.swing.JFrame {
 
     private static BigDecimal id = null;
     private ArrayList<ItemInventario> listado = null;
+
     /**
      * Creates new form VerInventario
      */
@@ -33,14 +34,14 @@ public class SeleccionarDatos extends javax.swing.JFrame {
 
     SeleccionarDatos(BigDecimal id) {
         initComponents();
-        this.id = id;
+        SeleccionarDatos.id = id;
         setIcon();
         this.setLocationRelativeTo(null);
         this.setSize(740, this.getHeight());
         this.RefrescarInven.doClick();
-        this.btnAgregarItms.setIcon(new ImageIcon(getClass().getResource("../Recursos/Carrito.png")));
-        this.btnCerrar.setIcon(new ImageIcon(getClass().getResource("../Recursos/NO.png")));
-        this.RefrescarInven.setIcon(new ImageIcon(getClass().getResource("../Recursos/ACT.png")));
+        this.btnAgregarItms.setIcon(new ImageIcon(getClass().getResource("Carrito.png")));
+        this.btnCerrar.setIcon(new ImageIcon(getClass().getResource("NO.png")));
+        this.RefrescarInven.setIcon(new ImageIcon(getClass().getResource("ACT.png")));
     }
 
     /**
@@ -172,7 +173,7 @@ public class SeleccionarDatos extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    @SuppressWarnings("unchecked")
     private void RefrescarInvenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefrescarInvenActionPerformed
         DefaultTableModel df = (DefaultTableModel) this.tablaInventario.getModel();
         for (int i = df.getRowCount() - 1; i >= 0; i--) {
@@ -182,17 +183,23 @@ public class SeleccionarDatos extends javax.swing.JFrame {
 
         ArrayList<ItemInventario> itemInventario = null;
         try {
-            itemInventario = u.itemInventario(this.id);
+            itemInventario = u.itemInventario(SeleccionarDatos.id);
         } catch (RemoteException ex) {
             Logger.getLogger(SeleccionarDatos.class.getName()).log(Level.SEVERE, null, ex);
         }
         int j = 0;
         for (ItemInventario i : itemInventario) {
-            Vector<Object> aux = new Vector<>();
+            Object[] aux = new Object[4];
+            aux[0] = i.getNumero();
+            aux[1] = i.getDescripcion();
+            aux[2] = i.getPresentacion();
+            aux[3] = i.getCantidad();
+            
+            /*Vector<Object> aux = new Vector<>();
             aux.add(0, i.getNumero());
             aux.add(1, i.getDescripcion());
             aux.add(2, i.getPresentacion());
-            aux.add(3, i.getCantidad());
+            aux.add(3, i.getCantidad());*/
             df.addRow(aux);
             df.setValueAt(false, j, 4);
             j++;
@@ -207,9 +214,9 @@ public class SeleccionarDatos extends javax.swing.JFrame {
     private void btnAgregarItmsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarItmsActionPerformed
         DefaultTableModel df = (DefaultTableModel) this.tablaInventario.getModel();
         Usuario u = cliente.Cliente.conectarU();
-        boolean valido = false;
-        ItemInventario itm = null;
-        ArrayList<ItemInventario> itemsSeleccionados= new ArrayList<>();
+        boolean valido;
+        ItemInventario itm;
+        ArrayList<ItemInventario> itemsSeleccionados = new ArrayList<>();
         if (VentanaInicio_RA.ventanaSolicitudes.isShowing()) {
 
             for (int i = 0; i < df.getRowCount(); i++) {
@@ -223,8 +230,6 @@ public class SeleccionarDatos extends javax.swing.JFrame {
             Solicitudes.actTabla(itemsSeleccionados);
             Solicitudes.itemsSolicitud = itemsSeleccionados;
         }
-        
-        
 
 
     }//GEN-LAST:event_btnAgregarItmsActionPerformed
@@ -245,20 +250,18 @@ public class SeleccionarDatos extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SeleccionarDatos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SeleccionarDatos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SeleccionarDatos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(SeleccionarDatos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
 
+        //</editor-fold>
+        //</editor-fold>
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new SeleccionarDatos().setVisible(true);
             }
@@ -278,6 +281,6 @@ public class SeleccionarDatos extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
 }

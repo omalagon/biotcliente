@@ -9,6 +9,7 @@ import interfaces.Usuario;
 import java.awt.Toolkit;
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -31,8 +32,8 @@ public class CambioClave extends javax.swing.JFrame {
 
     public CambioClave(BigDecimal id, String tipo) {
         initComponents();
-        this.id = id;
-        this.tipo = tipo;
+        CambioClave.id = id;
+        CambioClave.tipo = tipo;
         setIcon();
         this.setSize(410, this.getHeight());
         this.setLocationRelativeTo(null);
@@ -134,10 +135,10 @@ public class CambioClave extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String anterior = this.psw_antigua.getText();
-        String nueva = this.psw_nueva.getText();
+        String anterior = Arrays.toString(this.psw_antigua.getPassword());
+        String nueva = Arrays.toString(this.psw_nueva.getPassword());
         Usuario u = cliente.Cliente.conectarU();
-        boolean validar = false;
+        boolean validar ;
         try {
             validar = u.verificarClave(anterior, id, tipo);
 
@@ -208,6 +209,6 @@ public class CambioClave extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
 }

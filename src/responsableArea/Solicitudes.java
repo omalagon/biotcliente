@@ -14,13 +14,10 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollBar;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -30,7 +27,7 @@ import javax.swing.table.DefaultTableModel;
 public class Solicitudes extends javax.swing.JFrame {
 
     private static BigDecimal id = null;
-    private static GregorianCalendar hoy = new GregorianCalendar();
+    private static final GregorianCalendar hoy = new GregorianCalendar();
     public static ArrayList<ItemInventario> itemsSolicitud = new ArrayList<>();
     private ArrayList<ItemInventario> aux = new ArrayList<>();
     private static String cadenaFecha = hoy.get(Calendar.DAY_OF_MONTH) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/" + hoy.get(Calendar.YEAR);
@@ -48,7 +45,7 @@ public class Solicitudes extends javax.swing.JFrame {
         initComponents();
         setIcon();
         Usuario u = cliente.Cliente.conectarU();
-        this.id = id;
+        Solicitudes.id = id;
         this.setLocationRelativeTo(null);
         this.setSize(1050, this.getHeight());
         try {
@@ -57,18 +54,18 @@ public class Solicitudes extends javax.swing.JFrame {
         } catch (RemoteException ex) {
             Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
         }
-  
+
         this.jTFieldAreaProcesoSolicitante.setText(area);
         this.jTFieldAreaProcesoSolicitante.setEditable(false);
         this.jTFieldNombreSolicitante.setText(usuario);
         this.jTFieldNombreSolicitante.setEditable(false);
         this.jlbFecha.setText(cadenaFecha);
         this.btnRefrescarSolicitudes.doClick();
-        this.btnAgregar.setIcon(new ImageIcon(getClass().getResource("../Recursos/Carrito.png")));
-        this.BotonEnviar.setIcon(new ImageIcon(getClass().getResource("../Recursos/OK.png")));
-        this.btnVolver.setIcon(new ImageIcon(getClass().getResource("../Recursos/NO.png")));
-        this.btnRefrescarSolicitudes.setIcon(new ImageIcon(getClass().getResource("../Recursos/ACT.png")));
-        
+        this.btnAgregar.setIcon(new ImageIcon(getClass().getResource("Carrito.png")));
+        this.BotonEnviar.setIcon(new ImageIcon(getClass().getResource("OK.png")));
+        this.btnVolver.setIcon(new ImageIcon(getClass().getResource("NO.png")));
+        this.btnRefrescarSolicitudes.setIcon(new ImageIcon(getClass().getResource("ACT.png")));
+
     }
 
     /**
@@ -376,49 +373,54 @@ public class Solicitudes extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRefrescarSolicitudesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarSolicitudesActionPerformed
-        DefaultTableModel df = (DefaultTableModel) this.tablaVerSolicitudes.getModel();
-        Usuario u = cliente.Cliente.conectarU();
+    DefaultTableModel df = (DefaultTableModel) this.tablaVerSolicitudes.getModel();
+    Usuario u = cliente.Cliente.conectarU();
 
-        for (int i = df.getRowCount() - 1; i >= 0; i--) {
-            df.removeRow(i);
-        }
-        ArrayList<solicitudPr> solicitudes = null;
-        try {
-            solicitudes = u.getSolicitud_RA(this.id);
-        } catch (RemoteException ex) {
-            Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        GregorianCalendar fecha = null;
-        for (solicitudPr s : solicitudes) {
-            Vector datos = new Vector();
-            fecha = s.getFecha();
-            datos.add(s.getSolicitudpr_id());
-            datos.add(fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR));
-            datos.add(s.getObservaciones());
-            df.addRow(datos);
-        }
+    for (int i = df.getRowCount() - 1; i >= 0; i--) {
+        df.removeRow(i);
+    }
+    ArrayList<solicitudPr> solicitudes = null;
+    try {
+        solicitudes = u.getSolicitud_RA(Solicitudes.id);
+    } catch (RemoteException ex) {
+        Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    GregorianCalendar fecha;
+    for (solicitudPr s : solicitudes) {
+        fecha = s.getFecha();
+
+        Object[] datos = new Object[3];
+        datos[0] = s.getSolicitudpr_id();
+        datos[1] = fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR);
+        datos[2] = s.getObservaciones();
+        /*
+         Vector datos = new Vector();
+         datos.add(s.getSolicitudpr_id());
+         datos.add(fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR));
+         datos.add(s.getObservaciones());*/
+        df.addRow(datos);
+    }
     }//GEN-LAST:event_btnRefrescarSolicitudesActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        SeleccionarDatos s = new SeleccionarDatos(this.id);
+        SeleccionarDatos s = new SeleccionarDatos(Solicitudes.id);
         s.setVisible(true);
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        VentanaInicio_RA vent = new VentanaInicio_RA(this.id.toString());
+        VentanaInicio_RA vent = new VentanaInicio_RA(Solicitudes.id.toString());
         vent.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void BotonEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonEnviarActionPerformed
-        DefaultTableModel df = (DefaultTableModel) this.jTableIngresarItems.getModel();
-        solicitudPr sol = new solicitudPr(hoy, this.Observaciones.getText(), null, this.id, null, null);
+        DefaultTableModel df = (DefaultTableModel) Solicitudes.jTableIngresarItems.getModel();
+        solicitudPr sol = new solicitudPr(hoy, this.Observaciones.getText(), null, Solicitudes.id, null, null);
         Usuario u = cliente.Cliente.conectarU();
         BigDecimal numSol = null;
         int ite = 0;
         boolean aceptado = true;
-        
-        
+
         for (ItemInventario i : itemsSolicitud) {
             if (df.getValueAt(ite, 5) != null) {
                 if (new Float(df.getValueAt(ite, 5).toString()) > 0) {
@@ -438,12 +440,11 @@ public class Solicitudes extends javax.swing.JFrame {
                 aceptado = false;
             }
         }
-        
-        
+
         if (aceptado == true) {
             try {
                 u.crearSolicitud(sol);
-                numSol = u.solicitudValida(this.id);
+                numSol = u.solicitudValida(Solicitudes.id);
 
             } catch (RemoteException ex) {
                 Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
@@ -461,9 +462,7 @@ public class Solicitudes extends javax.swing.JFrame {
 
             }
         }
-        
-        
-        
+
         this.btnRefrescarSolicitudes.doClick();
         for (int i = df.getRowCount() - 1; i >= 0; i--) {
             df.removeRow(i);
@@ -499,6 +498,7 @@ public class Solicitudes extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new Solicitudes().setVisible(true);
             }
@@ -539,10 +539,8 @@ public class Solicitudes extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
-
-    
 
     public static void actTabla(ArrayList<ItemInventario> items) {
         DefaultTableModel df = (DefaultTableModel) Solicitudes.jTableIngresarItems.getModel();
@@ -550,12 +548,19 @@ public class Solicitudes extends javax.swing.JFrame {
             df.removeRow(i);
         }
         for (ItemInventario i : items) {
+            Object[] datos = new Object[5];
+            datos[0] = i.getInventario();
+            datos[1] = i.getNumero();
+            datos[2] = i.getDescripcion();
+            datos[3] = i.getCantidad();
+            datos[4] = i.getPresentacion();
+/*
             Vector datos = new Vector();
             datos.add(i.getInventario());
             datos.add(i.getNumero());
             datos.add(i.getDescripcion());
             datos.add(i.getCantidad());
-            datos.add(i.getPresentacion());
+            datos.add(i.getPresentacion());*/
             df.addRow(datos);
         }
     }

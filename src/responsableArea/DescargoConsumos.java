@@ -24,17 +24,18 @@ import javax.swing.JOptionPane;
  */
 public class DescargoConsumos extends javax.swing.JFrame {
 
-    private static GregorianCalendar hoy = new GregorianCalendar();
+    private static final GregorianCalendar hoy = new GregorianCalendar();
     private static String cadenaFecha = hoy.get(Calendar.DAY_OF_MONTH) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/" + hoy.get(Calendar.YEAR);
     private static ArrayList<ItemInventario> itemInventarioAdmin = null;
     private static BigDecimal ide = null;
 
     /**
      * Creates new form descargoConsumos
+     * @param ide
      */
     public DescargoConsumos(BigDecimal ide) {
         initComponents();
-        this.ide = ide;
+        DescargoConsumos.ide = ide;
         Usuario u = cliente.Cliente.conectarU();
         String User = "";
         String area = "";
@@ -206,14 +207,14 @@ public class DescargoConsumos extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int selectedIndex = this.desc_items.getSelectedIndex();
-        if(new Float (this.desc_cantidad.getText().toString()) <=0)
+        if(new Float (this.desc_cantidad.getText()) <=0)
         {
             JOptionPane.showMessageDialog(null, "La cantidad ingresada debe ser mayor a cero");
             this.desc_cantidad.setText("");
         }else{
-        descargo d = new descargo(hoy, this.ide, this.desc_area.getText(), new Float(this.desc_cantidad.getText()), this.itemInventarioAdmin.get(selectedIndex).getNumero());
+        descargo d = new descargo(hoy, DescargoConsumos.ide, this.desc_area.getText(), new Float(this.desc_cantidad.getText()), DescargoConsumos.itemInventarioAdmin.get(selectedIndex).getNumero());
         Usuario u = cliente.Cliente.conectarU();
-        boolean valido = false;
+        boolean valido;
         try {
             valido = u.realizarDescargo(d);
             if (valido) {
@@ -238,7 +239,7 @@ public class DescargoConsumos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnVerInvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerInvActionPerformed
-        VerInventario ver = new VerInventario(this.ide);
+        VerInventario ver = new VerInventario(DescargoConsumos.ide);
         ver.setVisible(true);
     }//GEN-LAST:event_btnVerInvActionPerformed
 
@@ -258,20 +259,18 @@ public class DescargoConsumos extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DescargoConsumos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DescargoConsumos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DescargoConsumos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(DescargoConsumos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new DescargoConsumos().setVisible(true);
             }
@@ -296,7 +295,7 @@ public class DescargoConsumos extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
 
 }

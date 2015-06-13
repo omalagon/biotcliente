@@ -11,7 +11,6 @@ import java.awt.Toolkit;
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -34,7 +33,7 @@ public class Reportes_BuscarUsuario extends javax.swing.JFrame {
 
     Reportes_BuscarUsuario(BigDecimal id) {
         initComponents();
-        this.id = id;
+        Reportes_BuscarUsuario.id = id;
         this.setLocationRelativeTo(null);
         this.setSize(753, this.getHeight());
         setIcon();
@@ -182,19 +181,19 @@ public class Reportes_BuscarUsuario extends javax.swing.JFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String nombre = this.jTFieldNombre.getText();
-        String id = this.jTFieldIdentificacion.getText();
+        String ide = this.jTFieldIdentificacion.getText();
         Usuario u = cliente.Cliente.conectarU();
-        ArrayList<BuscarUsuario> buscarEmpleado = null;
-        if (nombre.isEmpty() == false && id.isEmpty() == true) {
+        ArrayList<BuscarUsuario> buscarEmpleado;
+        if (nombre.isEmpty() == false && ide.isEmpty() == true) {
             try {
                 buscarEmpleado = u.buscarEmpleado("nombre", nombre);
                 llenarTabla(buscarEmpleado);
             } catch (RemoteException ex) {
                 Logger.getLogger(Reportes_BuscarUsuario.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else if (nombre.isEmpty() == true && id.isEmpty() == false) {
+        } else if (nombre.isEmpty() == true && ide.isEmpty() == false) {
             try {
-                buscarEmpleado = u.buscarEmpleado("id", id);
+                buscarEmpleado = u.buscarEmpleado("id", ide);
                 llenarTabla(buscarEmpleado);
             } catch (RemoteException ex) {
                 Logger.getLogger(Reportes_BuscarUsuario.class.getName()).log(Level.SEVERE, null, ex);
@@ -235,19 +234,16 @@ public class Reportes_BuscarUsuario extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Reportes_BuscarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Reportes_BuscarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Reportes_BuscarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Reportes_BuscarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new Reportes_BuscarUsuario().setVisible(true);
             }
@@ -271,7 +267,7 @@ public class Reportes_BuscarUsuario extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
 
     private void llenarTabla(ArrayList<BuscarUsuario> buscarEmpleado) {
@@ -281,10 +277,15 @@ public class Reportes_BuscarUsuario extends javax.swing.JFrame {
             df.removeRow(i);
         }
         for (BuscarUsuario b : buscarEmpleado) {
+            Object[] datos = new Object[3];
+            datos[0] = b.getId();
+            datos[1] = b.getNombre();
+            datos[2] = b.getLab();
+/*
             Vector datos = new Vector();
             datos.add(b.getId());
             datos.add(b.getNombre());
-            datos.add(b.getLab());
+            datos.add(b.getLab());*/
             df.addRow(datos);
         }
     }

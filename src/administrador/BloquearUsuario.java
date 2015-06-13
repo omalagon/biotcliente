@@ -31,27 +31,27 @@ public class BloquearUsuario extends javax.swing.JFrame {
 
     BloquearUsuario(BigDecimal id) {
         initComponents();
-        this.id = id;
+        BloquearUsuario.id = id;
         setIcon();
         this.setLocationRelativeTo(null);
         this.buttonGroup1.add(radioDA);
         this.buttonGroup1.add(radioAO);
         this.buttonGroup1.add(radioRA);
         this.btn_buscar.setText("");
-        this.btnBloquear.setIcon(new ImageIcon(getClass().getResource("../Recursos/BLOQ.png")));
-        this.btn_buscar.setIcon(new ImageIcon(getClass().getResource("../Recursos/Search.png")));
+        this.btnBloquear.setIcon(new ImageIcon(getClass().getResource("BLOQ.png")));
+        this.btn_buscar.setIcon(new ImageIcon(getClass().getResource("Search.png")));
     }
     BloquearUsuario(BigDecimal id, BigDecimal busqueda) {
         initComponents();
-        this.id = id;
+        BloquearUsuario.id = id;
         setIcon();
         this.setLocationRelativeTo(null);
         this.buttonGroup1.add(radioDA);
         this.buttonGroup1.add(radioAO);
         this.buttonGroup1.add(radioRA);
         this.jTextField1.setText(busqueda.toString());
-        this.btnBloquear.setIcon(new ImageIcon(getClass().getResource("../Recursos/BLOQ.png")));
-        this.btn_buscar.setIcon(new ImageIcon(getClass().getResource("../Recursos/Search.png")));
+        this.btnBloquear.setIcon(new ImageIcon(getClass().getResource("BLOQ.png")));
+        this.btn_buscar.setIcon(new ImageIcon(getClass().getResource("Search.png")));
     }
 
     /**
@@ -193,7 +193,7 @@ public class BloquearUsuario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
-        BuscarUsuario_Bloq bloq = new BuscarUsuario_Bloq(this.id);
+        BuscarUsuario_Bloq bloq = new BuscarUsuario_Bloq(BloquearUsuario.id);
         bloq.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btn_buscarActionPerformed
@@ -212,7 +212,7 @@ public class BloquearUsuario extends javax.swing.JFrame {
             boolean cambiarClave = u.cambiarClave("@1mp0s1bl3@", new BigDecimal(this.jTextField1.getText()), tipo);
             if (cambiarClave) {
                 JOptionPane.showMessageDialog(null, "Usuario Bloqueado");
-                VentanaInicio_Adm vent = new VentanaInicio_Adm(this.id.toString());
+                VentanaInicio_Adm vent = new VentanaInicio_Adm(BloquearUsuario.id.toString());
                 vent.setVisible(true);
                 this.setVisible(false);
 
@@ -243,19 +243,16 @@ public class BloquearUsuario extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BloquearUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BloquearUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BloquearUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(BloquearUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new BloquearUsuario().setVisible(true);
             }
@@ -278,6 +275,6 @@ public class BloquearUsuario extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
 }

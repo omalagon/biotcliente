@@ -7,7 +7,6 @@ package inicioSesion;
 
 import administrador.VentanaInicio_Adm;
 import auxiliarOficina.VentanaInicio_AO;
-import auxiliarOficina.AOficina;
 import interfaces.Usuario;
 import java.awt.Color;
 import java.awt.Toolkit;
@@ -15,8 +14,6 @@ import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import responsableArea.VentanaInicio_RA;
 
 /**
@@ -191,7 +188,7 @@ public class InicioSesion extends javax.swing.JFrame {
 
     private void BotonIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonIngresarActionPerformed
         String usuario = labelIdentificacion.getText();
-        String psw = contrasena.getText();
+        String psw = new String(contrasena.getPassword());//contrasena.getText();
         String tipo = new String();
         String cadenaError = "Verifique nombre, contraseña y tipo de usuario";
         boolean validarTipoUsuario = false;
@@ -237,7 +234,7 @@ public class InicioSesion extends javax.swing.JFrame {
             if (validarTipoUsuario == true && tipo.equalsIgnoreCase("ao")) {
                 //AOficina auxiliar = new AOficina(usuario);
                 //auxiliar.setVisible(true);
-                VentanaInicio_AO vent= new VentanaInicio_AO(usuario);
+                VentanaInicio_AO vent = new VentanaInicio_AO(usuario);
                 vent.setVisible(true);
                 this.labelError.setText("Correcto");
                 this.labelError.setForeground(Color.BLUE);
@@ -312,7 +309,7 @@ public class InicioSesion extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
 
 }

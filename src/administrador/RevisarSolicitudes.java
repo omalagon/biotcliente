@@ -31,7 +31,6 @@ import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -39,7 +38,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ *  
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
 public class RevisarSolicitudes extends javax.swing.JFrame {
@@ -55,7 +54,7 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
 
     RevisarSolicitudes(BigDecimal id) {
         initComponents();
-        this.id = id;
+        RevisarSolicitudes.id = id;
         this.setLocationRelativeTo(null);
         this.setExtendedState(MAXIMIZED_BOTH);
         setIcon();
@@ -266,13 +265,13 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
     private void btnAprobarSelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAprobarSelActionPerformed
         int[] filasSelec = this.tblSolNoRev.getSelectedRows();
         BigDecimal noCot;
-        String lab = "";
+        String lab ;
         String codigoInt;
         float cantAprobada;
         GregorianCalendar fecha = new GregorianCalendar();
         Usuario u = cliente.Cliente.conectarU();
-        aprobacion ap = null;
-        boolean aprobado = false;
+        aprobacion ap;
+        boolean aprobado;
         for (int i : filasSelec) {
             String valor = this.tblSolNoRev.getValueAt(i, 7).toString();
             if (valor.equalsIgnoreCase("")) {
@@ -311,13 +310,25 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
         for (int i = df.getRowCount() - 1; i >= 0; i--) {
             df.removeRow(i);
         }
-        ArrayList<cotizaciones> cotizacione = null;
+        ArrayList<cotizaciones> cotizacione;
 
         try {
             cotizacione = u.getCotizaciones("NO");
 
             for (cotizaciones c : cotizacione) {
-                Vector datos = new Vector();
+                Object[] datos = new Object[10];
+                datos[0] = c.getCotizacionId();
+                datos[1] = c.getAO();
+                datos[2] = c.getRA();
+                datos[3] = c.getProveedor();
+                datos[4] = c.getLab();
+                datos[5] = c.getCinterno();
+                datos[6] = c.getCantSol();
+                datos[7] = "";
+                datos[8] = c.getPrecioUnitario();
+                datos[9] = c.getNumSol();
+                
+                /*Vector datos = new Vector();
                 datos.add(c.getCotizacionId());
                 datos.add(c.getAO());
                 datos.add(c.getRA());
@@ -327,7 +338,7 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
                 datos.add(c.getCantSol());
                 datos.add("");
                 datos.add(c.getPrecioUnitario());
-                datos.add(c.getNumSol());
+                datos.add(c.getNumSol());*/
                 df.addRow(datos);
             }
         } catch (RemoteException ex) {
@@ -358,12 +369,12 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
     private void btnDevolverCotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDevolverCotActionPerformed
         int[] filasSelec = this.TablaSolicitudesRev.getSelectedRows();
         BigDecimal noCot;
-        String lab = "";
+        String lab;
         String codigoInt;
         GregorianCalendar fecha = new GregorianCalendar();
         Usuario u = cliente.Cliente.conectarU();
-        aprobacion ap = null;
-        boolean aprobado = false;
+        aprobacion ap;
+        boolean aprobado;
         for (int i : filasSelec) {
             noCot = new BigDecimal(this.TablaSolicitudesRev.getValueAt(i, 0).toString());
             lab = this.TablaSolicitudesRev.getValueAt(i, 4).toString();
@@ -389,11 +400,22 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
         for (int i = df.getRowCount() - 1; i >= 0; i--) {
             df.removeRow(i);
         }
-        ArrayList<cotizaciones> cotizacione = null;
+        ArrayList<cotizaciones> cotizacione;
         try {
             cotizacione = u.getCotizaciones("SI");
             for (cotizaciones c : cotizacione) {
-                Vector datos = new Vector();
+                Object[] datos = new Object[10];
+                datos[0] = c.getCotizacionId();
+                datos[1] = c.getAO();
+                datos[2] = c.getRA();
+                datos[3] = c.getProveedor();
+                datos[4] = c.getLab();
+                datos[5] = c.getCinterno();
+                datos[6] = c.getCantSol();
+                datos[7] = u.getCantAprobada(c);
+                datos[8] = c.getPrecioUnitario();
+                datos[9] = c.getNumSol();
+                /*Vector datos = new Vector();
                 datos.add(c.getCotizacionId());
                 datos.add(c.getAO());
                 datos.add(c.getRA());
@@ -403,7 +425,7 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
                 datos.add(c.getCantSol());
                 datos.add(u.getCantAprobada(c));
                 datos.add(c.getPrecioUnitario());
-                datos.add(c.getNumSol());
+                datos.add(c.getNumSol());*/
                 df.addRow(datos);
             }
         } catch (RemoteException ex) {
@@ -412,7 +434,7 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRefrescarSolRevActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        VentanaInicio_Adm vent = new VentanaInicio_Adm(this.id.toString());
+        VentanaInicio_Adm vent = new VentanaInicio_Adm(RevisarSolicitudes.id.toString());
         vent.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -433,19 +455,16 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RevisarSolicitudes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RevisarSolicitudes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RevisarSolicitudes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(RevisarSolicitudes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new RevisarSolicitudes().setVisible(true);
             }
@@ -453,7 +472,7 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
     }
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TablaSolicitudesRev;
@@ -522,14 +541,14 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
             int numeroFilas = 128 - (archivo.getArticulos().size() * 8);
             ArrayList<itemsfdc_001> articulos = archivo.getArticulos();
             for (itemsfdc_001 ar : articulos) {
-                items.addCell(new Paragraph(new Float(ar.getCantidad()).toString(), bf_titulos1));
+                items.addCell(new Paragraph(Float.toString(ar.getCantidad()), bf_titulos1));
                 items.addCell(new Paragraph(ar.getLab() + "-" + ar.getCodigo(), bf_titulos1));
                 items.addCell(new Paragraph(ar.getDescr(), bf_titulos1));
-                items.addCell(new Paragraph(new Float(ar.getcSol()).toString(), bf_titulos1));
+                items.addCell(new Paragraph(Float.toString(ar.getcSol()), bf_titulos1));
                 items.addCell(new Paragraph(ar.getPresentacion(), bf_titulos1));
-                items.addCell(new Paragraph(new Float(ar.getcApro()).toString(), bf_titulos1));
+                items.addCell(new Paragraph(Float.toString(ar.getcApro()), bf_titulos1));
                 items.addCell(new Paragraph("", bf_titulos1));
-                items.addCell(new Paragraph(new Float(ar.getPrecio()).toString(), bf_titulos1));
+                items.addCell(new Paragraph(Float.toString(ar.getPrecio()), bf_titulos1));
 
             }
             for (int i = 0; i <= numeroFilas; i++) {
@@ -545,8 +564,8 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
 
                 for (itemxproveedor i : iter) {
                     proveedores.addCell(new Paragraph(i.getNombre(), bf_titulos1));
-                    proveedores.addCell(new Paragraph(new Float(i.getPrecio()).toString(), bf_titulos1));
-                    proveedores.addCell(new Paragraph(new Float(i.getDisponibilidad()).toString(), bf_titulos1));
+                    proveedores.addCell(new Paragraph(Float.toString(i.getPrecio()), bf_titulos1));
+                    proveedores.addCell(new Paragraph(Float.toString(i.getDisponibilidad()), bf_titulos1));
                     proveedores.addCell(new Paragraph("", bf_titulos1));
                 }
             }

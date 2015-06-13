@@ -33,7 +33,7 @@ public class ReporteInventario extends javax.swing.JFrame {
 
     ReporteInventario(BigDecimal id) {
         initComponents();
-        this.id = id;
+        ReporteInventario.id = id;
         setIcon();
         this.setLocationRelativeTo(null);
         this.setSize(654, this.getHeight());
@@ -171,21 +171,31 @@ public class ReporteInventario extends javax.swing.JFrame {
             Logger.getLogger(ReporteInventario.class.getName()).log(Level.SEVERE, null, ex);
         }
         for (ItemInventario i : itemInventario) {
-            Vector<Object> aux = new Vector<>();
-            aux.add(0, i.getNumero());
-            aux.add(1, i.getDescripcion());
-            aux.add(2, i.getPresentacion());
-            aux.add(3, i.getCantidad());
-            aux.add(4, i.getPrecio());
-            aux.add(5, i.getcCalidad());
-            aux.add(6, i.getCEsp());
-            aux.add(7, i.getSucursal());
+            Object[] aux = new Object[8];
+            aux[0] = i.getNumero();
+            aux[1] = i.getDescripcion();
+            aux[2] = i.getPresentacion();
+            aux[3] = i.getCantidad();
+            aux[4] = i.getPrecio();
+            aux[5] = i.getcCalidad();
+            aux[6] = i.getCEsp();
+            aux[7] = i.getSucursal();
+
+            /*<Object> aux = new Vector<>();
+             aux.add(0, i.getNumero());
+             aux.add(1, i.getDescripcion());
+             aux.add(2, i.getPresentacion());
+             aux.add(3, i.getCantidad());
+             aux.add(4, i.getPrecio());
+             aux.add(5, i.getcCalidad());
+             aux.add(6, i.getCEsp());
+             aux.add(7, i.getSucursal());*/
             df.addRow(aux);
         }
     }//GEN-LAST:event_btnRefrescarActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        Reportes rep = new Reportes(this.id);
+        Reportes rep = new Reportes(ReporteInventario.id);
         rep.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnVolverActionPerformed
@@ -219,6 +229,7 @@ public class ReporteInventario extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new ReporteInventario().setVisible(true);
             }
@@ -237,6 +248,6 @@ public class ReporteInventario extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
 }

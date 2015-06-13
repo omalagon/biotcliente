@@ -11,7 +11,6 @@ import java.awt.Toolkit;
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
@@ -33,7 +32,7 @@ public class ReporteUsuarios extends javax.swing.JFrame {
 
     ReporteUsuarios(BigDecimal id) {
         initComponents();
-        this.id = id;
+        ReporteUsuarios.id = id;
         this.btnRefrescar.doClick();
         setIcon();
         this.setLocationRelativeTo(null);
@@ -162,16 +161,22 @@ public class ReporteUsuarios extends javax.swing.JFrame {
             df.removeRow(i);
         }
         Usuario u = cliente.Cliente.conectarU();
-        ArrayList<users> us = null;
+        ArrayList<users> us;
         try {
             us = u.getUsuarios();
             for (users uss : us) {
-                Vector<Object> aux = new Vector<>();
+                Object[] aux = new Object[5];
+                aux[0] = uss.getId();
+                aux[1] = uss.getNombre();
+                aux[2] = uss.getCorreo();
+                aux[3] = uss.getCargo();
+                aux[4] = uss.getLab();
+                /*Vector<Object> aux = new Vector<>();
                 aux.add(uss.getId());
                 aux.add(uss.getNombre());
                 aux.add(uss.getCorreo());
                 aux.add(uss.getCargo());
-                aux.add(uss.getLab());
+                aux.add(uss.getLab());*/
                 df.addRow(aux);
             }
         } catch (RemoteException ex) {
@@ -201,19 +206,16 @@ public class ReporteUsuarios extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ReporteUsuarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ReporteUsuarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ReporteUsuarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ReporteUsuarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new ReporteUsuarios().setVisible(true);
             }
@@ -221,7 +223,7 @@ public class ReporteUsuarios extends javax.swing.JFrame {
     }
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRefrescar;

@@ -25,7 +25,7 @@ public class Reportes extends javax.swing.JFrame {
 
     Reportes(BigDecimal id) {
         initComponents();
-        this.id = id;
+        Reportes.id = id;
         setIcon();
         this.setLocationRelativeTo(null);
         this.setSize(443, this.getHeight());
@@ -229,40 +229,41 @@ public class Reportes extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
-        ReporteUsuarios rep = new ReporteUsuarios(this.id);
+        ReporteUsuarios rep = new ReporteUsuarios(Reportes.id);
         rep.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnCrearActionPerformed
 
+    
     private void btnRevisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRevisarActionPerformed
 
     }//GEN-LAST:event_btnRevisarActionPerformed
 
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
-        VentanaInicio_Adm vent = new VentanaInicio_Adm(this.id.toString());
+        VentanaInicio_Adm vent = new VentanaInicio_Adm(Reportes.id.toString());
         vent.setVisible(true);
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     private void btnVerUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerUsuariosActionPerformed
-        ReporteUsuarios rep = new ReporteUsuarios(this.id);
+        ReporteUsuarios rep = new ReporteUsuarios(Reportes.id);
         rep.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnVerUsuariosActionPerformed
 
     private void btnVerInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerInventarioActionPerformed
-        ReporteInventario rep = new ReporteInventario(this.id);
+        ReporteInventario rep = new ReporteInventario(Reportes.id);
         rep.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnVerInventarioActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        VentanaInicio_Adm vent = new VentanaInicio_Adm(this.id.toString());
+        VentanaInicio_Adm vent = new VentanaInicio_Adm(Reportes.id.toString());
         vent.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnVerDescargosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerDescargosActionPerformed
-        ReporteDescargos rep = new ReporteDescargos(this.id);
+        ReporteDescargos rep = new ReporteDescargos(Reportes.id);
         rep.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnVerDescargosActionPerformed
@@ -283,19 +284,16 @@ public class Reportes extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Reportes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Reportes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Reportes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Reportes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new Reportes().setVisible(true);
             }
@@ -303,7 +301,7 @@ public class Reportes extends javax.swing.JFrame {
     }
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCerrarSesion;

@@ -35,7 +35,7 @@ public class CrearItem extends javax.swing.JFrame {
     public CrearItem(BigDecimal id) {
         initComponents();
         this.setLocationRelativeTo(null);
-        this.id = id;
+        CrearItem.id = id;
         setIcon();
         verProveedores prov = new verProveedores();
         prov.setVisible(true);
@@ -298,13 +298,13 @@ public class CrearItem extends javax.swing.JFrame {
      }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
-        VentanaInicio_Adm vent = new VentanaInicio_Adm(this.id.toString());
+        VentanaInicio_Adm vent = new VentanaInicio_Adm(CrearItem.id.toString());
         vent.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnCerrarActionPerformed
 
     private void btnInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInventarioActionPerformed
-        ReporteInventario inv = new ReporteInventario(this.id);
+        ReporteInventario inv = new ReporteInventario(CrearItem.id);
         inv.setVisible(true);
     }//GEN-LAST:event_btnInventarioActionPerformed
 
@@ -324,15 +324,14 @@ public class CrearItem extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CrearItem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CrearItem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CrearItem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(CrearItem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -340,6 +339,7 @@ public class CrearItem extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new CrearItem().setVisible(true);
             }
@@ -380,8 +380,8 @@ public class CrearItem extends javax.swing.JFrame {
 
     private void crearItem() {
         Usuario u = cliente.Cliente.conectarU();
-        boolean valido = false;
-        boolean asociado= false;
+        boolean valido;
+        boolean asociado;
         int area = this.jcbbxArea.getSelectedIndex();
         String labo = null;
         if (area == 0) {
@@ -428,6 +428,6 @@ public class CrearItem extends javax.swing.JFrame {
     }
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../../Recursos/iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
 }

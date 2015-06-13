@@ -170,7 +170,7 @@ public class VentanaInicio_RA extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGestionarSolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionarSolActionPerformed
-        ventanaSolicitudes = new Solicitudes(this.id);
+        ventanaSolicitudes = new Solicitudes(VentanaInicio_RA.id);
         ventanaSolicitudes.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnGestionarSolActionPerformed
@@ -181,7 +181,7 @@ public class VentanaInicio_RA extends javax.swing.JFrame {
         this.setVisible(false);    }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     private void btnRecibirPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecibirPedidosActionPerformed
-        Recepciones rec = new Recepciones(this.id, this.area);
+        Recepciones rec = new Recepciones(VentanaInicio_RA.id, this.area);
         rec.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnRecibirPedidosActionPerformed
@@ -192,7 +192,7 @@ public class VentanaInicio_RA extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDescargosActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        CambioClave c = new CambioClave(this.id, "ra");
+        CambioClave c = new CambioClave(VentanaInicio_RA.id, "ra");
         c.setVisible(true);     
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -212,15 +212,14 @@ public class VentanaInicio_RA extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VentanaInicio_RA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VentanaInicio_RA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VentanaInicio_RA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(VentanaInicio_RA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -228,6 +227,7 @@ public class VentanaInicio_RA extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new VentanaInicio_RA().setVisible(true);
             }
@@ -235,7 +235,7 @@ public class VentanaInicio_RA extends javax.swing.JFrame {
     }
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCerrarSesion;

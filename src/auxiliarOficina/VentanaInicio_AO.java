@@ -10,9 +10,6 @@ import inicioSesion.InicioSesion;
 import interfaces.Usuario;
 import java.awt.Toolkit;
 import java.math.BigDecimal;
-import java.rmi.RemoteException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -148,7 +145,7 @@ public class VentanaInicio_AO extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGestionarSolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionarSolActionPerformed
-        AOficina AO = new AOficina(this.id.toString());
+        AOficina AO = new AOficina(VentanaInicio_AO.id.toString());
         AO.setVisible(true);
         /*Solicitudes sol = new Solicitudes(this.id);
         sol.setVisible(true);*/
@@ -161,13 +158,13 @@ public class VentanaInicio_AO extends javax.swing.JFrame {
         this.setVisible(false);    }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     private void btnDescargosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescargosActionPerformed
-        Reportes rep = new Reportes(this.id);
+        Reportes rep = new Reportes(VentanaInicio_AO.id);
         rep.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnDescargosActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        CambioClave c = new CambioClave(this.id, "ao");
+        CambioClave c = new CambioClave(VentanaInicio_AO.id, "ao");
         c.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -187,15 +184,18 @@ public class VentanaInicio_AO extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VentanaInicio_AO.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VentanaInicio_AO.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VentanaInicio_AO.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(VentanaInicio_AO.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -207,6 +207,7 @@ public class VentanaInicio_AO extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new VentanaInicio_AO().setVisible(true);
             }
@@ -214,7 +215,7 @@ public class VentanaInicio_AO extends javax.swing.JFrame {
     }
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCerrarSesion;

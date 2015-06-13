@@ -5,7 +5,6 @@
  */
 package administrador.Creaciones;
 
-import EstructurasAux.ItemInventario;
 import administrador.VentanaInicio_Adm;
 import interfaces.Usuario;
 import java.awt.Toolkit;
@@ -36,7 +35,7 @@ public class CrearRA extends javax.swing.JFrame {
     public CrearRA(BigDecimal id) {
         initComponents();
         this.setLocationRelativeTo(null);
-        this.id = id;
+        CrearRA.id = id;
         setIcon();
 
     }
@@ -224,7 +223,7 @@ public class CrearRA extends javax.swing.JFrame {
      }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
-        VentanaInicio_Adm vent = new VentanaInicio_Adm(this.id.toString());
+        VentanaInicio_Adm vent = new VentanaInicio_Adm(CrearRA.id.toString());
         vent.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnCerrarActionPerformed
@@ -261,6 +260,7 @@ public class CrearRA extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new CrearRA().setVisible(true);
             }
@@ -347,6 +347,6 @@ public class CrearRA extends javax.swing.JFrame {
     }
     
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../../Recursos/iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
 }

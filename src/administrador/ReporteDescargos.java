@@ -7,29 +7,20 @@ package administrador;
 
 import EstructurasAux.BuscarUsuario;
 import EstructurasAux.informeDescargos;
-import EstructurasAux.users;
 import interfaces.Usuario;
-import java.awt.List;
 import java.awt.Toolkit;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-/**
+/*
  *
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
@@ -37,7 +28,7 @@ public class ReporteDescargos extends javax.swing.JFrame {
 
     private static BigDecimal id = null;
     private static BigDecimal busqueda = null;
-
+    private JList list;
     /**
      * Creates new form ReporteDescargos
      */
@@ -47,7 +38,7 @@ public class ReporteDescargos extends javax.swing.JFrame {
 
     ReporteDescargos(BigDecimal id) {
         initComponents();
-        this.id = id;
+        ReporteDescargos.id = id;
         this.setLocationRelativeTo(null);
         this.setSize(753, this.getHeight());
         setIcon();
@@ -55,14 +46,14 @@ public class ReporteDescargos extends javax.swing.JFrame {
 
     ReporteDescargos(BigDecimal id, BigDecimal busqueda) {
         initComponents();
-        this.id = id;
-        this.busqueda = busqueda;
+        ReporteDescargos.id = id;
+        ReporteDescargos.busqueda = busqueda;
         this.setLocation(600, 200);
         this.setSize(753, this.getHeight());
         setIcon();
         Usuario u = cliente.Cliente.conectarU();
         String cabecera[] = {"Código", "Descripción", "Inventario Actual", "Gastado", "Fecha"};
-        ArrayList<informeDescargos> Informe = null;
+        ArrayList<informeDescargos> Informe;
         DefaultTableModel df = (DefaultTableModel) this.tablaInformes.getModel();
         df.setColumnIdentifiers(cabecera);
         this.tablaInformes.setModel(df);
@@ -74,14 +65,14 @@ public class ReporteDescargos extends javax.swing.JFrame {
             BuscarUsuario b = buscarEmpleado.get(0);
             Informe = u.generarInformePorRA(b.getLab(), busqueda);
             for (informeDescargos i : Informe) {
-                Vector datos = new Vector();
-                datos.add(i.getInventario() + "-" + i.getCinterno());
-                datos.add(i.getDescripcion());
-                datos.add(i.getEninventario());
-                datos.add(i.getEmpleado());
+                Object[] datos = new Object[5];
+                datos[0] = i.getCinterno();
+                datos[1] = i.getDescripcion();
+                datos[2] = i.getEninventario();
+                datos[3] = i.getEmpleado();
                 GregorianCalendar hoy = i.getFecha();
                 String cadenaFecha = hoy.get(Calendar.DAY_OF_MONTH) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/" + hoy.get(Calendar.YEAR);
-                datos.add(cadenaFecha);
+                datos[4] = cadenaFecha;
                 df.addRow(datos);
             }
         } catch (RemoteException ex) {
@@ -215,18 +206,13 @@ public class ReporteDescargos extends javax.swing.JFrame {
     private void btnVerInformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerInformeActionPerformed
         Usuario u = cliente.Cliente.conectarU();
         ArrayList<informeDescargos> Informe;
-        Vector meses = new Vector();//
-        String m[] = {"ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"};
+        Object meses[] = {"ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"};
         String cabeceras[] = {"Código", "Descripción", "Inventario Actual", "Gastado", "Nombre", "Área"};
-        for (String m1 : m) {
-            meses.add(m1);
-        }
-        JList list = new JList(meses);
-        JOptionPane elegir = new JOptionPane();
+        this.list= new JList( meses);
         int si_no = -20;
         int aux = -20;
         DefaultTableModel df = null;
-        elegir.showConfirmDialog(null, list, "Seleccione el mes", elegir.PLAIN_MESSAGE);
+        JOptionPane.showConfirmDialog(null, list, "Seleccione el mes", JOptionPane.PLAIN_MESSAGE);
         if (list.getSelectedValue() != null) {
             si_no = JOptionPane.showConfirmDialog(null, "Se generará el informe para el mes de: " + list.getSelectedValue());
             aux = list.getSelectedIndex() + 1;
@@ -241,18 +227,20 @@ public class ReporteDescargos extends javax.swing.JFrame {
         try {
             if (list.getSelectedValue() != null && si_no == JOptionPane.YES_OPTION) {
                 if (aux < 10) {
-                    Informe = u.generarInforme("0".concat(new Integer(aux).toString()));
+                    Informe = u.generarInforme("0".concat(Integer.toString(aux)));
                 } else {
-                    Informe = u.generarInforme(new Integer(aux).toString());
+                    Informe = u.generarInforme(Integer.toString(aux));
                 }
+                
                 for (informeDescargos i : Informe) {
-                    Vector datos = new Vector();
-                    datos.add(i.getArea() + "-" + i.getCinterno());
-                    datos.add(i.getDescripcion());
-                    datos.add(i.getEninventario());
-                    datos.add(i.getEmpleado());
-                    datos.add(i.getNombre());
-                    datos.add(i.getArea());
+                    Object[] datos = new Object[6];
+                    datos[0] = i.getCinterno();
+                    datos[1] = i.getDescripcion();
+                    datos[2] = i.getEninventario();
+                    datos[3] = i.getEmpleado();
+                    datos[4] = i.getNombre();
+                    datos[5] = i.getArea();
+                   
                     df.addRow(datos);
                 }
             }
@@ -265,23 +253,20 @@ public class ReporteDescargos extends javax.swing.JFrame {
     private void btnVerConsumoPorLabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerConsumoPorLabActionPerformed
         Usuario u = cliente.Cliente.conectarU();
         String cabecera[] = {"Código", "Descripción", "Inventario Actual", "Gastado"};
-        ArrayList<informeDescargos> Informe = null;
+        ArrayList<informeDescargos> Informe;
         DefaultTableModel df = (DefaultTableModel) this.tablaInformes.getModel();
         df.setColumnIdentifiers(cabecera);
         this.tablaInformes.setModel(df);
-        Vector meses = new Vector();//
-        String m[] = {"ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"};
-        for (String m1 : m) {
-            meses.add(m1);
-        }
-        JList list = new JList(meses);
+        
+        String meses[] = {"ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"};
+        list = new JList(meses);
         JOptionPane elegir = new JOptionPane();
         int si_no = -20;
         int aux = -20;
         int contadorMA = 0;
         int contadorMB = 0;
         int contadorFQ = 0;
-        elegir.showConfirmDialog(null, list, "Seleccione el mes", elegir.PLAIN_MESSAGE);
+        JOptionPane.showConfirmDialog(null, list, "Seleccione el mes", JOptionPane.PLAIN_MESSAGE);
         if (list.getSelectedValue() != null) {
             si_no = JOptionPane.showConfirmDialog(null, "Se generará el informe para el mes de: " + list.getSelectedValue());
             aux = list.getSelectedIndex() + 1;
@@ -293,9 +278,9 @@ public class ReporteDescargos extends javax.swing.JFrame {
         try {
             if (list.getSelectedValue() != null && si_no == JOptionPane.YES_OPTION) {
                 if (aux < 10) {
-                    Informe = u.generarInformePorLab("0".concat(new Integer(aux).toString()));
+                    Informe = u.generarInformePorLab("0".concat(Integer.toString(aux)));
                 } else {
-                    Informe = u.generarInformePorLab(new Integer(aux).toString());
+                    Informe = u.generarInformePorLab(Integer.toString(aux));
                 }
                 for (informeDescargos i : Informe) {
                     if (i.getInventario().equalsIgnoreCase("MA")) {
@@ -309,18 +294,13 @@ public class ReporteDescargos extends javax.swing.JFrame {
                     }
                 }
                 for (informeDescargos i : Informe) {
-                    Vector datos = new Vector();
-                    datos.add(i.getInventario() + "-" + i.getCinterno());
-                    datos.add(i.getDescripcion());
-                    datos.add(i.getEninventario());
-                    datos.add(i.getEmpleado());
+                    Object[] datos = new Object[4];
+                    datos[0] = i.getCinterno();
+                    datos[1] = i.getDescripcion();
+                    datos[2] = i.getEninventario();
+                    datos[3] = i.getEmpleado();
+                    
                     df.addRow(datos);
-                    System.out.println(i.getCinterno());
-                    System.out.println(i.getInventario());
-                    System.out.println(i.getDescripcion());
-                    System.out.println(i.getEninventario());
-                    System.out.println(i.getCinterno());
-                    System.out.println(i.getEmpleado());
 
                 }
 
@@ -332,8 +312,8 @@ public class ReporteDescargos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVerConsumoPorLabActionPerformed
 
     private void btnBuscarConEmpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarConEmpActionPerformed
-        Reportes_BuscarUsuario busqueda = new Reportes_BuscarUsuario(this.id);
-        busqueda.setVisible(true);
+        Reportes_BuscarUsuario busqueda1 = new Reportes_BuscarUsuario(ReporteDescargos.id);
+        busqueda1.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnBuscarConEmpActionPerformed
 
@@ -359,19 +339,16 @@ public class ReporteDescargos extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ReporteDescargos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ReporteDescargos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ReporteDescargos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ReporteDescargos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new ReporteDescargos().setVisible(true);
             }
@@ -390,7 +367,7 @@ public class ReporteDescargos extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
 
     }
 }

@@ -5,9 +5,7 @@
  */
 package gui;
 
-import auxiliarOficina.*;
 import EstructurasAux.proveedor;
-import auxiliarOficina.AOficina;
 import interfaces.Usuario;
 import java.awt.Toolkit;
 import java.math.BigDecimal;
@@ -31,23 +29,27 @@ public class verProveedores extends javax.swing.JFrame {
     public verProveedores() {
         initComponents();
         setIcon();
-        this.id = id;
+        verProveedores.id = id;
         this.setLocationRelativeTo(null);
         Usuario u = cliente.Cliente.conectarU();
         try {
             ArrayList<proveedor> todosProveedores = u.todosProveedores();
-            ArrayList<Vector> tabla = new ArrayList<>();
+            ArrayList<Object> tabla = new ArrayList<>();
             for (proveedor t : todosProveedores) {
-                Vector datos = new Vector();
+                
+                Object[] datos = new Object[2];
+                datos[0] = t.getNIT();
+                datos[1] = t.getNombre();
+                /*Vector datos = new Vector();
                 datos.add(t.getNIT());
-                datos.add(t.getNombre());
+                datos.add(t.getNombre());*/
                 tabla.add(datos);
             }
             
         DefaultTableModel df = (DefaultTableModel)this.jTable1.getModel();
-        for (Vector t : tabla) {
+        for (Object t : tabla) {
             
-        df.addRow(t);
+        df.addRow((Object[]) t);
         }    
         } catch (RemoteException ex) {
             Logger.getLogger(verProveedores.class.getName()).log(Level.SEVERE, null, ex);
@@ -158,20 +160,18 @@ public class verProveedores extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(verProveedores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(verProveedores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(verProveedores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(verProveedores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new verProveedores().setVisible(true);
             }
@@ -187,6 +187,6 @@ public class verProveedores extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
 }

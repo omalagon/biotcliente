@@ -11,7 +11,6 @@ import java.awt.Toolkit;
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
@@ -33,7 +32,7 @@ public class VerInventario extends javax.swing.JFrame {
     
     VerInventario(BigDecimal id) {
         initComponents();
-        this.id = id;
+        VerInventario.id = id;
         setIcon();
         this.setLocationRelativeTo(null);
         this.setSize(740, this.getHeight());
@@ -137,21 +136,23 @@ public class VerInventario extends javax.swing.JFrame {
         
         ArrayList<ItemInventario> itemInventario = null;
         try {
-            itemInventario = u.itemInventario(this.id);
+            itemInventario = u.itemInventario(VerInventario.id);
         } catch (RemoteException ex) {
             Logger.getLogger(VerInventario.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         for (ItemInventario i : itemInventario) {
-            Vector<Object> aux = new Vector<>();
-            try {
-                aux.add(0, u.area(this.id) + "-" + i.getNumero());
-            } catch (RemoteException ex) {
-                Logger.getLogger(VerInventario.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            aux.add(1, i.getDescripcion());
+            Object[] aux = new Object[4];
+            
+            aux[0] =i.getNumero();
+            aux[1]= i.getDescripcion();
+            aux[2] = i.getPresentacion();
+            aux[3] = i.getCantidad();
+            
+            
+            /*aux.add(1, i.getDescripcion());
             aux.add(2, i.getPresentacion());
-            aux.add(3, i.getCantidad());
+            aux.add(3, i.getCantidad());*/
             df.addRow(aux);
         }
     }//GEN-LAST:event_RefrescarInvenActionPerformed
@@ -176,19 +177,16 @@ public class VerInventario extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VerInventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VerInventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VerInventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(VerInventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new VerInventario().setVisible(true);
             }
@@ -204,6 +202,6 @@ public class VerInventario extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
 }

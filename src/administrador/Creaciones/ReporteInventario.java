@@ -11,7 +11,6 @@ import java.awt.Toolkit;
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
@@ -33,7 +32,7 @@ public class ReporteInventario extends javax.swing.JFrame {
 
     ReporteInventario(BigDecimal id) {
         initComponents();
-        this.id = id;
+        ReporteInventario.id = id;
         setIcon();
         this.setLocationRelativeTo(null);
         this.setSize(654, this.getHeight());
@@ -170,6 +169,16 @@ public class ReporteInventario extends javax.swing.JFrame {
             Logger.getLogger(ReporteInventario.class.getName()).log(Level.SEVERE, null, ex);
         }
         for (ItemInventario i : itemInventario) {
+            Object[] aux = new Object[8];
+            aux[0] = i.getNumero();
+            aux[1] = i.getDescripcion();
+            aux[2] = i.getPresentacion();
+            aux[3] = i.getCantidad();
+            aux[4] = i.getPrecio();
+            aux[5] = i.getcCalidad();
+            aux[6] = i.getCEsp();
+            aux[7] = i.getSucursal();
+            /*
             Vector<Object> aux = new Vector<>();
             aux.add(0, i.getNumero());
             aux.add(1, i.getDescripcion());
@@ -178,7 +187,7 @@ public class ReporteInventario extends javax.swing.JFrame {
             aux.add(4, i.getPrecio());
             aux.add(5, i.getcCalidad());
             aux.add(6, i.getCEsp());
-            aux.add(7, i.getSucursal());
+            aux.add(7, i.getSucursal());*/
             df.addRow(aux);
         }
     }//GEN-LAST:event_btnRefrescarActionPerformed
@@ -203,20 +212,18 @@ public class ReporteInventario extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ReporteInventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ReporteInventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ReporteInventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ReporteInventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new ReporteInventario().setVisible(true);
             }
@@ -235,6 +242,6 @@ public class ReporteInventario extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../../Recursos/iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
 }

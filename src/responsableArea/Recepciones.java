@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
@@ -34,7 +33,7 @@ public class Recepciones extends javax.swing.JFrame {
 
     private static BigDecimal id = null;
     private static String area = null;
-    private static GregorianCalendar hoy = new GregorianCalendar();
+    private static final GregorianCalendar hoy = new GregorianCalendar();
     private static String cadenaFecha = hoy.get(Calendar.DAY_OF_MONTH) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/" + hoy.get(Calendar.YEAR);
 
     /**
@@ -47,8 +46,8 @@ public class Recepciones extends javax.swing.JFrame {
     Recepciones(BigDecimal id, String area) {
         initComponents();
         this.setLocationRelativeTo(null);
-        this.id = id;
-        this.area = area;
+        Recepciones.id = id;
+        Recepciones.area = area;
         TableColumn fecRec = this.tablaDatosPedido.getColumnModel().getColumn(7);
         fecRec.setCellEditor(new JDateChooserCellEditor());
         TableColumn fecVen = this.tablaDatosPedido.getColumnModel().getColumn(10);
@@ -321,9 +320,9 @@ public class Recepciones extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnProcesarRecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcesarRecActionPerformed
-        String area = this.area;
-        BigDecimal id = this.id;
-        BigDecimal orden = null;
+        String area1 = Recepciones.area;
+        BigDecimal id1 = Recepciones.id;
+        BigDecimal orden;
         Usuario u = cliente.Cliente.conectarU();
         DefaultTableModel df = (DefaultTableModel) this.tablaDatosPedido.getModel();
         TableColumn cCalidadCell = this.tablaDatosPedido.getColumnModel().getColumn(8);
@@ -340,16 +339,16 @@ public class Recepciones extends javax.swing.JFrame {
             df.removeRow(i);
         }
         JOptionPane j = new JOptionPane();
-        String ordenIngresada = j.showInputDialog("Ingrese el número de orden");
+        String ordenIngresada = JOptionPane.showInputDialog("Ingrese el número de orden");
         while (!ordenIngresada.matches("^[0-9][0-9]*") || ordenIngresada.equalsIgnoreCase("")) {
-            ordenIngresada = j.showInputDialog("Numero de Orden inválido. Ingreselo nuevamente");
-            if (j.CANCEL_OPTION == 2) {
+            ordenIngresada = JOptionPane.showInputDialog("Numero de Orden inválido. Ingreselo nuevamente");
+            if (JOptionPane.CANCEL_OPTION == 2) {
                 j.setVisible(false);
             }
         }
         orden = new BigDecimal(ordenIngresada);
         try {
-            recepcionProd datosRec = u.getDatosRec(orden, id, area);
+            recepcionProd datosRec = u.getDatosRec(orden, id1, area1);
             if (datosRec != null) {
 
                 this.rec_nomProv.setText(datosRec.getP().getNombre());
@@ -360,20 +359,29 @@ public class Recepciones extends javax.swing.JFrame {
                 this.numorden.setText(ordenIngresada);
                 ArrayList<itemRecep> articulos = datosRec.getArticulos();
                 for (itemRecep articulo : articulos) {
-                    Vector datos = new Vector();
-                    ItemInventario datosCompletosItem = u.datosCompletosItem(articulo.getCinterno(), articulo.getLab());
-                    datos.add(datosCompletosItem.getInventario());
-                    datos.add(datosCompletosItem.getNumero());
-                    datos.add(datosCompletosItem.getDescripcion());
+                    ItemInventario d = u.datosCompletosItem(articulo.getCinterno(), articulo.getLab());
+                    Object[] datos = new Object[7];
+                    datos[0] = d.getInventario();
+                    datos[1] = d.getNumero();
+                    datos[2] = d.getDescripcion();
+                    datos[3] = articulo.getcAprobada();
+                    datos[4] = d.getPresentacion();
+                    datos[5] = articulo.getPrecio();
+                    datos[6] = articulo.getcAprobada() * articulo.getPrecio();
+
+                    /*Vector datos = new Vector();
+                    datos.add(d.getInventario());
+                    datos.add(d.getNumero());
+                    datos.add(d.getDescripcion());
                     datos.add(articulo.getcAprobada());
-                    datos.add(datosCompletosItem.getPresentacion());
+                    datos.add(d.getPresentacion());
                     datos.add(articulo.getPrecio());
-                    datos.add(articulo.getcAprobada() * articulo.getPrecio());
+                    datos.add(articulo.getcAprobada() * articulo.getPrecio());*/
                     df.addRow(datos);
                     this.recobs.setText(articulo.getObs());
                     float tot = 0;
                     tot += articulo.getcAprobada() * articulo.getPrecio();
-                    this.total.setText(new Float(tot).toString());
+                    this.total.setText(Float.toString(tot));
                 }
                 cCalidadCell.setCellEditor(new DefaultCellEditor(calidad));
                 cEspe.setCellEditor(new DefaultCellEditor(cEspecificaciones));
@@ -389,11 +397,11 @@ public class Recepciones extends javax.swing.JFrame {
     private void btnEnviarRecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarRecActionPerformed
         DefaultTableModel df = (DefaultTableModel) this.tablaDatosPedido.getModel();
         int[] selectedRows = this.tablaDatosPedido.getSelectedRows();
-        String numorden = this.numorden.getText();
+        String numorden1 = this.numorden.getText();
         ArrayList<itemRecep> articulos = new ArrayList<>();
-        itemRecep ii = null;
+        itemRecep ii;
         Usuario u = cliente.Cliente.conectarU();
-        boolean recibirPedido = false;
+        boolean recibirPedido;
         for (int i : selectedRows) {
             ii = new itemRecep(df.getValueAt(i, 1).toString(), df.getValueAt(i, 0).toString(), this.recobs.getText(), new Float(df.getValueAt(i, 3).toString()), new Float(df.getValueAt(i, 5).toString()));
             ii.setfLlegada((Date) df.getValueAt(i, 7));
@@ -404,19 +412,18 @@ public class Recepciones extends javax.swing.JFrame {
             articulos.add(ii);
         }
         try {
-            recibirPedido = u.recibirPedido(new BigDecimal(numorden), id, area, articulos);
+            recibirPedido = u.recibirPedido(new BigDecimal(numorden1), id, area, articulos);
             if (recibirPedido) {
                 JOptionPane.showMessageDialog(null, "Hecho");
-            }
-            else{
-                JOptionPane.showMessageDialog(null, "Probablemente el pedido ya fue recibido");                
+            } else {
+                JOptionPane.showMessageDialog(null, "Probablemente el pedido ya fue recibido");
             }
         } catch (RemoteException ex) {
             Logger.getLogger(Recepciones.class.getName()).log(Level.SEVERE, null, ex);
         }    }//GEN-LAST:event_btnEnviarRecActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        VentanaInicio_RA vent = new VentanaInicio_RA(this.id.toString());
+        VentanaInicio_RA vent = new VentanaInicio_RA(Recepciones.id.toString());
         vent.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnVolverActionPerformed
@@ -437,19 +444,16 @@ public class Recepciones extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Recepciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Recepciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Recepciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Recepciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new Recepciones().setVisible(true);
             }
@@ -491,6 +495,6 @@ public class Recepciones extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../Recursos/iconB.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
 }
