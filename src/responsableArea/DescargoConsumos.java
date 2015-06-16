@@ -44,7 +44,7 @@ public class DescargoConsumos extends javax.swing.JFrame {
         this.setSize(415, this.getHeight());
 
         try {
-            User = u.getUsuario(ide);
+            User = u.getUsuario(ide, "ra");
             area = u.area(ide);
             itemInventarioAdmin = u.itemInventario(ide);
         } catch (RemoteException ex) {

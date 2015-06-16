@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package administrador;
+package administrador.solicitudes;
 
 import EstructurasAux.aprobacion;
 import EstructurasAux.cotizaciones;
 import EstructurasAux.fdc_001;
 import EstructurasAux.itemsfdc_001;
 import EstructurasAux.itemxproveedor;
+import administrador.VentanaInicio_Adm;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -97,11 +98,11 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
 
             },
             new String [] {
-                "N° Cotización", "Aux Oficina", "Resp. Área", "Proveedor", "Inv", "Código", "Cant. Solicitada", "Cant. Aprobada", "Precio Unitario", "Num Solicitud"
+                "N° Cotización", "Aux Oficina", "Resp. Área", "NIT Prov", "Prov", "Inv", "Código", "Cant. Solicitada", "Cant. Aprobada", "Precio Unitario", "Num Solicitud"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, true, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -164,11 +165,11 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
 
             },
             new String [] {
-                "N° Cotización", "Aux Oficina", "Resp. Área", "Proveedor", "Inv", "Código", "Cant. Solicitada", "Cant. Aprobada", "Precio Unitario", "Num Solicitud"
+                "N° Cotización", "Aux Oficina", "Resp. Área", "NIT_Prov", "Proveedor", "Inv", "Código", "Cant. Solicitada", "Cant. Aprobada", "Precio Unitario", "Num Solicitud"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, true, false, false
+                false, false, false, true, false, false, false, false, true, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -273,13 +274,13 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
         aprobacion ap;
         boolean aprobado;
         for (int i : filasSelec) {
-            String valor = this.tblSolNoRev.getValueAt(i, 7).toString();
+            String valor = this.tblSolNoRev.getValueAt(i, 8).toString();
             if (valor.equalsIgnoreCase("")) {
                 JOptionPane.showMessageDialog(null, "Hay campos vacios");
             } else {
                 noCot = new BigDecimal(this.tblSolNoRev.getValueAt(i, 0).toString());
-                lab = this.tblSolNoRev.getValueAt(i, 4).toString();
-                codigoInt =this.tblSolNoRev.getValueAt(i, 5).toString();
+                lab = this.tblSolNoRev.getValueAt(i, 5).toString();
+                codigoInt =this.tblSolNoRev.getValueAt(i, 6).toString();
                 cantAprobada = new Float(valor);
                 ap = new aprobacion(noCot, lab, codigoInt, cantAprobada, fecha, id, 0);
 
@@ -316,29 +317,18 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
             cotizacione = u.getCotizaciones("NO");
 
             for (cotizaciones c : cotizacione) {
-                Object[] datos = new Object[10];
+                Object[] datos = new Object[11];
                 datos[0] = c.getCotizacionId();
                 datos[1] = c.getAO();
                 datos[2] = c.getRA();
                 datos[3] = c.getProveedor();
-                datos[4] = c.getLab();
-                datos[5] = c.getCinterno();
-                datos[6] = c.getCantSol();
-                datos[7] = "";
-                datos[8] = c.getPrecioUnitario();
-                datos[9] = c.getNumSol();
-                
-                /*Vector datos = new Vector();
-                datos.add(c.getCotizacionId());
-                datos.add(c.getAO());
-                datos.add(c.getRA());
-                datos.add(c.getProveedor());
-                datos.add(c.getLab());
-                datos.add(c.getCinterno());
-                datos.add(c.getCantSol());
-                datos.add("");
-                datos.add(c.getPrecioUnitario());
-                datos.add(c.getNumSol());*/
+                datos[4] = u.getDatosProveedor(c.getProveedor()).getNombre();
+                datos[5] = c.getLab();
+                datos[6] = c.getCinterno();
+                datos[7] = c.getCantSol();
+                datos[8] = "";
+                datos[9] = c.getPrecioUnitario();
+                datos[10] = c.getNumSol();
                 df.addRow(datos);
             }
         } catch (RemoteException ex) {
@@ -404,28 +394,18 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
         try {
             cotizacione = u.getCotizaciones("SI");
             for (cotizaciones c : cotizacione) {
-                Object[] datos = new Object[10];
+                Object[] datos = new Object[11];
                 datos[0] = c.getCotizacionId();
                 datos[1] = c.getAO();
                 datos[2] = c.getRA();
                 datos[3] = c.getProveedor();
-                datos[4] = c.getLab();
-                datos[5] = c.getCinterno();
-                datos[6] = c.getCantSol();
-                datos[7] = u.getCantAprobada(c);
-                datos[8] = c.getPrecioUnitario();
-                datos[9] = c.getNumSol();
-                /*Vector datos = new Vector();
-                datos.add(c.getCotizacionId());
-                datos.add(c.getAO());
-                datos.add(c.getRA());
-                datos.add(c.getProveedor());
-                datos.add(c.getLab());
-                datos.add(c.getCinterno());
-                datos.add(c.getCantSol());
-                datos.add(u.getCantAprobada(c));
-                datos.add(c.getPrecioUnitario());
-                datos.add(c.getNumSol());*/
+                datos[4] = u.getDatosProveedor(c.getProveedor()).getNombre();
+                datos[5] = c.getLab();
+                datos[6] = c.getCinterno();
+                datos[7] = c.getCantSol();
+                datos[8] = u.getCantAprobada(c);
+                datos[9] = c.getPrecioUnitario();
+                datos[10] = c.getNumSol();
                 df.addRow(datos);
             }
         } catch (RemoteException ex) {
@@ -434,8 +414,8 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRefrescarSolRevActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        VentanaInicio_Adm vent = new VentanaInicio_Adm(RevisarSolicitudes.id.toString());
-        vent.setVisible(true);
+        MenuSolicitud menu = new MenuSolicitud(this.id);
+        menu.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 

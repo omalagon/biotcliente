@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package responsableArea;
+package administrador.solicitudes;
 
+import responsableArea.*;
 import EstructurasAux.ItemInventario;
 import EstructurasAux.solicitudPr;
 import interfaces.Usuario;
@@ -49,8 +50,8 @@ public class Solicitudes extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setSize(1050, this.getHeight());
         try {
-            this.area = u.area(id);
-            this.usuario = u.getUsuario(id, "ra");
+            this.area = "DA";
+            this.usuario = u.getUsuario(id, "da");
         } catch (RemoteException ex) {
             Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -61,10 +62,6 @@ public class Solicitudes extends javax.swing.JFrame {
         this.jTFieldNombreSolicitante.setEditable(false);
         this.jlbFecha.setText(cadenaFecha);
         this.btnRefrescarSolicitudes.doClick();
-        this.btnAgregar.setIcon(new ImageIcon(getClass().getResource("Carrito.png")));
-        this.BotonEnviar.setIcon(new ImageIcon(getClass().getResource("OK.png")));
-        this.btnVolver.setIcon(new ImageIcon(getClass().getResource("NO.png")));
-        this.btnRefrescarSolicitudes.setIcon(new ImageIcon(getClass().getResource("ACT.png")));
 
     }
 
@@ -113,6 +110,7 @@ public class Solicitudes extends javax.swing.JFrame {
         labelAdministrador.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         labelAdministrador.setText("Menú de Solicitudes");
 
+        BotonEnviar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/OK.png"))); // NOI18N
         BotonEnviar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BotonEnviarActionPerformed(evt);
@@ -163,12 +161,14 @@ public class Solicitudes extends javax.swing.JFrame {
 
         jLabel10.setText(" debe comunicarse directamente con el Director Administrativo. ");
 
+        btnVolver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/NO.png"))); // NOI18N
         btnVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVolverActionPerformed(evt);
             }
         });
 
+        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Carrito.png"))); // NOI18N
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAgregarActionPerformed(evt);
@@ -229,7 +229,7 @@ public class Solicitudes extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(10, 10, 10)
                                 .addComponent(jLabel4))
-                            .addComponent(BotonEnviar, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                            .addComponent(BotonEnviar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(24, 24, 24)
                                 .addComponent(jLabel9))
@@ -310,6 +310,7 @@ public class Solicitudes extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tablaVerSolicitudes);
 
+        btnRefrescarSolicitudes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ACT.png"))); // NOI18N
         btnRefrescarSolicitudes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRefrescarSolicitudesActionPerformed(evt);
@@ -323,7 +324,7 @@ public class Solicitudes extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 801, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 814, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -408,8 +409,8 @@ public class Solicitudes extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        VentanaInicio_RA vent = new VentanaInicio_RA(Solicitudes.id.toString());
-        vent.setVisible(true);
+        MenuSolicitud menu = new MenuSolicitud(id);
+        menu.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnVolverActionPerformed
 
@@ -443,8 +444,8 @@ public class Solicitudes extends javax.swing.JFrame {
 
         if (aceptado == true) {
             try {
-                u.crearSolicitud(sol, "ra");
-                numSol = u.solicitudValida(Solicitudes.id, "ra");
+                u.crearSolicitud(sol, "da");
+                numSol = u.solicitudValida(Solicitudes.id, "da");
 
             } catch (RemoteException ex) {
                 Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
@@ -494,6 +495,7 @@ public class Solicitudes extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Solicitudes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */

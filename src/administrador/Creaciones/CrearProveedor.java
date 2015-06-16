@@ -73,7 +73,7 @@ public class CrearProveedor extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         jlb_titulo.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
-        jlb_titulo.setText("Menú de Gestión");
+        jlb_titulo.setText("Creación de Proveedor");
 
         jtfield_nit.setMaximumSize(new java.awt.Dimension(6, 20));
 

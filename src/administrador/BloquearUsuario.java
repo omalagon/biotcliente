@@ -38,8 +38,6 @@ public class BloquearUsuario extends javax.swing.JFrame {
         this.buttonGroup1.add(radioAO);
         this.buttonGroup1.add(radioRA);
         this.btn_buscar.setText("");
-        this.btnBloquear.setIcon(new ImageIcon(getClass().getResource("BLOQ.png")));
-        this.btn_buscar.setIcon(new ImageIcon(getClass().getResource("Search.png")));
     }
     BloquearUsuario(BigDecimal id, BigDecimal busqueda) {
         initComponents();
@@ -50,8 +48,6 @@ public class BloquearUsuario extends javax.swing.JFrame {
         this.buttonGroup1.add(radioAO);
         this.buttonGroup1.add(radioRA);
         this.jTextField1.setText(busqueda.toString());
-        this.btnBloquear.setIcon(new ImageIcon(getClass().getResource("BLOQ.png")));
-        this.btn_buscar.setIcon(new ImageIcon(getClass().getResource("Search.png")));
     }
 
     /**
@@ -84,6 +80,7 @@ public class BloquearUsuario extends javax.swing.JFrame {
 
         jLabel2.setText("Identificación");
 
+        btn_buscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Search.png"))); // NOI18N
         btn_buscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_buscarActionPerformed(evt);
@@ -124,6 +121,7 @@ public class BloquearUsuario extends javax.swing.JFrame {
 
         radioRA.setText("Responsable de Área");
 
+        btnBloquear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/BLOQ.png"))); // NOI18N
         btnBloquear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBloquearActionPerformed(evt);

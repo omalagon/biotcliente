@@ -71,7 +71,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial Black" size="24" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Creaci&#xf3;n Auxiliar de Oficina"/>
+        <Property name="text" type="java.lang.String" value="Creaci&#xf3;n Director Administrativo"/>
       </Properties>
     </Component>
     <Container class="javax.swing.JTabbedPane" name="jTabbedPane1">

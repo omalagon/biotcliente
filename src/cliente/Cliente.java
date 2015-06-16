@@ -27,7 +27,7 @@ public class Cliente {
         Usuario u = null;
         try {
             //192.168.10.166
-            Registry registry = LocateRegistry.getRegistry("192.168.10.166", 222);
+            Registry registry = LocateRegistry.getRegistry("localhost", 222);
             
             u = (Usuario) registry.lookup("Test");
 

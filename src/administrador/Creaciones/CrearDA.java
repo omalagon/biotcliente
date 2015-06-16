@@ -66,7 +66,7 @@ public class CrearDA extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         jlb_titulo.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
-        jlb_titulo.setText("Creación Auxiliar de Oficina");
+        jlb_titulo.setText("Creación Director Administrativo");
 
         jtField_id.setMaximumSize(new java.awt.Dimension(6, 20));
 

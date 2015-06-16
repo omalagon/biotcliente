@@ -84,7 +84,7 @@ public class CrearItem extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         jlb_titulo.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
-        jlb_titulo.setText("Menú de Gestión");
+        jlb_titulo.setText("Creación de Ítem");
 
         jtfield_desc.setMaximumSize(new java.awt.Dimension(6, 20));
 
@@ -221,7 +221,7 @@ public class CrearItem extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 318, Short.MAX_VALUE)
                         .addGap(1, 1, 1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(17, 17, 17)
@@ -262,9 +262,7 @@ public class CrearItem extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTabbedPane1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jlb_titulo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jlb_titulo)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnInventario)
@@ -304,7 +302,7 @@ public class CrearItem extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCerrarActionPerformed
 
     private void btnInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInventarioActionPerformed
-        ReporteInventario inv = new ReporteInventario(CrearItem.id);
+        Inventario_Ultimos inv = new Inventario_Ultimos(CrearItem.id);
         inv.setVisible(true);
     }//GEN-LAST:event_btnInventarioActionPerformed
 

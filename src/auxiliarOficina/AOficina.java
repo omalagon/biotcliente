@@ -63,7 +63,7 @@ public class AOficina extends javax.swing.JFrame {
         Usuario u = cliente.Cliente.conectarU();
         String user = null;
         try {
-            user = u.getUsuario(id);
+            user = u.getUsuario(id, "ao");
             area = u.area(id);
         } catch (RemoteException ex) {
             Logger.getLogger(AOficina.class.getName()).log(Level.SEVERE, null, ex);
@@ -1098,7 +1098,7 @@ public class AOficina extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             Usuario u = cliente.Cliente.conectarU();
-            proveedor p = new proveedor(this.oc_nomProv.getText(), this.oc_nit.getText(), this.oc_dir.getText(), this.oc_cel.getText(), this.oc_fax.getText());
+            proveedor p = new proveedor(this.oc_nomProv.getText(), this.oc_nit.getText(), this.oc_dir.getText(), this.oc_cel.getText(), this.oc_fax.getText(), "", "");
             ArrayList<itemsOrdenCompra> pedidoOrdenCompra = u.pedidoOrdenCompra(this.oc_nit.getText());
             float total1 = new Float(this.total.getText());
             String obs = this.obsOrden.getText();

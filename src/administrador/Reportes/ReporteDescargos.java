@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package administrador;
+package administrador.Reportes;
 
 import EstructurasAux.BuscarUsuario;
 import EstructurasAux.informeDescargos;
@@ -318,7 +318,7 @@ public class ReporteDescargos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBuscarConEmpActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        Reportes rep = new Reportes(id);
+        MenuReportes rep = new MenuReportes(id);
         rep.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnVolverActionPerformed

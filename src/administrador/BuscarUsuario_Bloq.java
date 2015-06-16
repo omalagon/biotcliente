@@ -39,10 +39,6 @@ public class BuscarUsuario_Bloq extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         setIcon();
         
-        this.btn_cancelar.setIcon(new ImageIcon(getClass().getResource("NO.png")));
-        this.btnBuscar.setIcon(new ImageIcon(getClass().getResource("Search.png")));
-        this.btnAceptar.setIcon(new ImageIcon(getClass().getResource("OK.png")));
-        
     }
 
     /**
@@ -78,6 +74,7 @@ public class BuscarUsuario_Bloq extends javax.swing.JFrame {
 
         jLabel2.setText("Ingrese el número de identificación o el nombre del usuario (pero no ambos).");
 
+        btnAceptar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/OK.png"))); // NOI18N
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAceptarActionPerformed(evt);
@@ -102,6 +99,7 @@ public class BuscarUsuario_Bloq extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTableEncontrados);
 
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Search.png"))); // NOI18N
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBuscarActionPerformed(evt);
@@ -114,6 +112,7 @@ public class BuscarUsuario_Bloq extends javax.swing.JFrame {
 
         jLabel5.setText("Identificación");
 
+        btn_cancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/NO.png"))); // NOI18N
         btn_cancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_cancelarActionPerformed(evt);
@@ -200,7 +199,7 @@ public class BuscarUsuario_Bloq extends javax.swing.JFrame {
                         .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel7)
-                        .addGap(0, 12, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
 
         pack();
@@ -297,10 +296,7 @@ public class BuscarUsuario_Bloq extends javax.swing.JFrame {
     private javax.swing.JTable jTableEncontrados;
     // End of variables declaration//GEN-END:variables
 
-    private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
-
-    }
+    
     /**
      *  
      * @param buscarEmpleado 
@@ -318,5 +314,9 @@ public class BuscarUsuario_Bloq extends javax.swing.JFrame {
             datos[2] = b.getLab();
             df.addRow(datos);
         }
+    }
+    private void setIcon() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+
     }
 }

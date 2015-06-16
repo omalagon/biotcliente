@@ -48,7 +48,6 @@
                   <Component id="btnDescargos" alignment="0" max="32767" attributes="0"/>
                   <Component id="btnRecibirPedidos" alignment="0" max="32767" attributes="0"/>
                   <Component id="jButton1" pref="165" max="32767" attributes="0"/>
-                  <Component id="btnRealizarPrestamo" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="0" pref="182" max="32767" attributes="0"/>
           </Group>
@@ -69,9 +68,7 @@
               <Component id="btnRecibirPedidos" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="btnDescargos" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
-              <Component id="btnRealizarPrestamo" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
               <Component id="jButton1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
               <Component id="btnCerrarSesion" min="-2" max="-2" attributes="0"/>
@@ -144,11 +141,6 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
       </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnRealizarPrestamo">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Realizar Pr&#xe9;stamo"/>
-      </Properties>
     </Component>
   </SubComponents>
 </Form>

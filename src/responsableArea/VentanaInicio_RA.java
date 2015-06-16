@@ -65,7 +65,6 @@ public class VentanaInicio_RA extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         btnCerrarSesion = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
-        btnRealizarPrestamo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -113,8 +112,6 @@ public class VentanaInicio_RA extends javax.swing.JFrame {
             }
         });
 
-        btnRealizarPrestamo.setText("Realizar Préstamo");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -138,8 +135,7 @@ public class VentanaInicio_RA extends javax.swing.JFrame {
                     .addComponent(btnGestionarSol, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnDescargos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnRecibirPedidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
-                    .addComponent(btnRealizarPrestamo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE))
                 .addGap(0, 182, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -157,9 +153,7 @@ public class VentanaInicio_RA extends javax.swing.JFrame {
                 .addComponent(btnRecibirPedidos)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnDescargos)
-                .addGap(13, 13, 13)
-                .addComponent(btnRealizarPrestamo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(47, 47, 47)
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnCerrarSesion)
@@ -241,7 +235,6 @@ public class VentanaInicio_RA extends javax.swing.JFrame {
     private javax.swing.JButton btnCerrarSesion;
     private javax.swing.JButton btnDescargos;
     private javax.swing.JButton btnGestionarSol;
-    private javax.swing.JButton btnRealizarPrestamo;
     private javax.swing.JButton btnRecibirPedidos;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
