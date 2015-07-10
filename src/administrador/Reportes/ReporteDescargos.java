@@ -207,7 +207,7 @@ public class ReporteDescargos extends javax.swing.JFrame {
         Usuario u = cliente.Cliente.conectarU();
         ArrayList<informeDescargos> Informe;
         Object meses[] = {"ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"};
-        String cabeceras[] = {"Código", "Descripción", "Inventario Actual", "Gastado", "Nombre", "Área"};
+        String cabeceras[] = {"Código", "Descripción", "Inventario Actual", "Consumido", "Nombre", "Área"};
         this.list= new JList( meses);
         int si_no = -20;
         int aux = -20;
@@ -252,7 +252,7 @@ public class ReporteDescargos extends javax.swing.JFrame {
 
     private void btnVerConsumoPorLabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerConsumoPorLabActionPerformed
         Usuario u = cliente.Cliente.conectarU();
-        String cabecera[] = {"Código", "Descripción", "Inventario Actual", "Gastado"};
+        String cabecera[] = {"Código", "Descripción", "Inventario Actual", "Consumido"};
         ArrayList<informeDescargos> Informe;
         DefaultTableModel df = (DefaultTableModel) this.tablaInformes.getModel();
         df.setColumnIdentifiers(cabecera);

@@ -61,10 +61,6 @@ public class Solicitudes extends javax.swing.JFrame {
         this.jTFieldNombreSolicitante.setEditable(false);
         this.jlbFecha.setText(cadenaFecha);
         this.btnRefrescarSolicitudes.doClick();
-        this.btnAgregar.setIcon(new ImageIcon(getClass().getResource("Carrito.png")));
-        this.BotonEnviar.setIcon(new ImageIcon(getClass().getResource("OK.png")));
-        this.btnVolver.setIcon(new ImageIcon(getClass().getResource("NO.png")));
-        this.btnRefrescarSolicitudes.setIcon(new ImageIcon(getClass().getResource("ACT.png")));
 
     }
 
@@ -113,6 +109,7 @@ public class Solicitudes extends javax.swing.JFrame {
         labelAdministrador.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         labelAdministrador.setText("Menú de Solicitudes");
 
+        BotonEnviar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/OK.png"))); // NOI18N
         BotonEnviar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BotonEnviarActionPerformed(evt);
@@ -163,12 +160,14 @@ public class Solicitudes extends javax.swing.JFrame {
 
         jLabel10.setText(" debe comunicarse directamente con el Director Administrativo. ");
 
+        btnVolver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/NO.png"))); // NOI18N
         btnVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVolverActionPerformed(evt);
             }
         });
 
+        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Carrito.png"))); // NOI18N
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAgregarActionPerformed(evt);
@@ -229,7 +228,7 @@ public class Solicitudes extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(10, 10, 10)
                                 .addComponent(jLabel4))
-                            .addComponent(BotonEnviar, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                            .addComponent(BotonEnviar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(24, 24, 24)
                                 .addComponent(jLabel9))
@@ -310,6 +309,7 @@ public class Solicitudes extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tablaVerSolicitudes);
 
+        btnRefrescarSolicitudes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ACT.png"))); // NOI18N
         btnRefrescarSolicitudes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRefrescarSolicitudesActionPerformed(evt);
@@ -323,7 +323,7 @@ public class Solicitudes extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 801, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 814, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -373,37 +373,37 @@ public class Solicitudes extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRefrescarSolicitudesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarSolicitudesActionPerformed
-    DefaultTableModel df = (DefaultTableModel) this.tablaVerSolicitudes.getModel();
-    Usuario u = cliente.Cliente.conectarU();
+        DefaultTableModel df = (DefaultTableModel) this.tablaVerSolicitudes.getModel();
+        Usuario u = cliente.Cliente.conectarU();
 
-    for (int i = df.getRowCount() - 1; i >= 0; i--) {
-        df.removeRow(i);
-    }
-    ArrayList<solicitudPr> solicitudes = null;
-    try {
-        solicitudes = u.getSolicitud_RA(Solicitudes.id);
-    } catch (RemoteException ex) {
-        Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    GregorianCalendar fecha;
-    for (solicitudPr s : solicitudes) {
-        fecha = s.getFecha();
+        for (int i = df.getRowCount() - 1; i >= 0; i--) {
+            df.removeRow(i);
+        }
+        ArrayList<solicitudPr> solicitudes = null;
+        try {
+            solicitudes = u.getSolicitud_RA(Solicitudes.id);
+        } catch (RemoteException ex) {
+            Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        GregorianCalendar fecha;
+        for (solicitudPr s : solicitudes) {
+            fecha = s.getFecha();
 
-        Object[] datos = new Object[3];
-        datos[0] = s.getSolicitudpr_id();
-        datos[1] = fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR);
-        datos[2] = s.getObservaciones();
-        /*
-         Vector datos = new Vector();
-         datos.add(s.getSolicitudpr_id());
-         datos.add(fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR));
-         datos.add(s.getObservaciones());*/
-        df.addRow(datos);
-    }
+            Object[] datos = new Object[3];
+            datos[0] = s.getSolicitudpr_id();
+            datos[1] = fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR);
+            datos[2] = s.getObservaciones();
+            /*
+             Vector datos = new Vector();
+             datos.add(s.getSolicitudpr_id());
+             datos.add(fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR));
+             datos.add(s.getObservaciones());*/
+            df.addRow(datos);
+        }
     }//GEN-LAST:event_btnRefrescarSolicitudesActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        SeleccionarDatos s = new SeleccionarDatos(Solicitudes.id);
+        SelDatosSolic s = new SelDatosSolic(Solicitudes.id);
         s.setVisible(true);
     }//GEN-LAST:event_btnAgregarActionPerformed
 
@@ -457,16 +457,17 @@ public class Solicitudes extends javax.swing.JFrame {
                     Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 JOptionPane.showMessageDialog(null, "El número de la solicitud hecha es:  " + numSol);
+                this.btnRefrescarSolicitudes.doClick();
+                for (int i = df.getRowCount() - 1; i >= 0; i--) {
+                    df.removeRow(i);
+                }
             } else {
                 JOptionPane.showMessageDialog(null, "No fue posible realizar la solicitud");
 
             }
         }
 
-        this.btnRefrescarSolicitudes.doClick();
-        for (int i = df.getRowCount() - 1; i >= 0; i--) {
-            df.removeRow(i);
-        }
+
     }//GEN-LAST:event_BotonEnviarActionPerformed
 
     /**
@@ -554,13 +555,13 @@ public class Solicitudes extends javax.swing.JFrame {
             datos[2] = i.getDescripcion();
             datos[3] = i.getCantidad();
             datos[4] = i.getPresentacion();
-/*
-            Vector datos = new Vector();
-            datos.add(i.getInventario());
-            datos.add(i.getNumero());
-            datos.add(i.getDescripcion());
-            datos.add(i.getCantidad());
-            datos.add(i.getPresentacion());*/
+            /*
+             Vector datos = new Vector();
+             datos.add(i.getInventario());
+             datos.add(i.getNumero());
+             datos.add(i.getDescripcion());
+             datos.add(i.getCantidad());
+             datos.add(i.getPresentacion());*/
             df.addRow(datos);
         }
     }

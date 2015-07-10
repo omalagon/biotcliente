@@ -5,14 +5,21 @@
  */
 package administrador.Creaciones;
 
+import EstructurasAux.proveedor;
 import administrador.VentanaInicio_Adm;
 import interfaces.Usuario;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -22,7 +29,7 @@ public class CrearProveedor extends javax.swing.JFrame {
 
     private static BigDecimal id = null;
     private static String tabla = "";
-
+    private static Boolean existia = false;
     /**
      * Creates new form creaciones
      */
@@ -35,7 +42,42 @@ public class CrearProveedor extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         CrearProveedor.id = id;
         setIcon();
+        jtfield_nit.getDocument().addDocumentListener(new DocumentListener() {
 
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                
+                Usuario u = cliente.Cliente.conectarU();
+                try {
+                    proveedor datosProveedor = u.getDatosProveedor(jtfield_nit.getText());
+                    if (datosProveedor != null) {
+                        jtfield_nombre.setText(datosProveedor.getNombre());
+                        jtfield_dir.setText(datosProveedor.getDireccion());
+                        jtfield_tel.setText(datosProveedor.getTelefono());
+                        jtfield_fax.setText(datosProveedor.getTelefax());
+                        existia = true;
+                    }
+                } catch (RemoteException ex) {
+                    Logger.getLogger(CrearProveedor.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                jtfield_nombre.setText("");
+                jtfield_dir.setText("");
+                jtfield_tel.setText("");
+                jtfield_fax.setText("");
+                existia=false;
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                System.out.println("cambiando el valor");
+
+            }
+        });
     }
 
     /**
@@ -235,7 +277,10 @@ public class CrearProveedor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        if(!existia)
         this.crearProv();
+        else
+        this.editarProv();
      }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
@@ -267,7 +312,7 @@ public class CrearProveedor extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
-        
+
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -325,5 +370,21 @@ public class CrearProveedor extends javax.swing.JFrame {
 
     private void setIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+    }
+
+    private void editarProv() {
+        Usuario u = cliente.Cliente.conectarU();
+        boolean valido;
+        try {
+            valido = u.EditarProveedor(this.jtfield_nit.getText(), this.jtfield_nombre.getText(), this.jtfield_dir.getText(), this.jtfield_tel.getText(), this.jtfield_fax.getText(), this.jtfield_ciudad.getText(), this.jtfield_pais.getText());
+            if (valido) {
+                JOptionPane.showMessageDialog(null, "Proveedor Editado");
+            } else {
+                JOptionPane.showMessageDialog(null, "Error creando al proveedor");
+            }
+
+        } catch (RemoteException ex) {
+            Logger.getLogger(CrearProveedor.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

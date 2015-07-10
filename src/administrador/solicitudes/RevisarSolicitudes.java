@@ -53,13 +53,12 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
         initComponents();
     }
 
-    RevisarSolicitudes(BigDecimal id) {
+    public RevisarSolicitudes(BigDecimal id) {
         initComponents();
         RevisarSolicitudes.id = id;
         this.setLocationRelativeTo(null);
         this.setExtendedState(MAXIMIZED_BOTH);
         setIcon();
-        this.btnRefrescarSolRev.doClick();
         this.btnRefrescarSolNoRev.doClick();
     }
 
@@ -399,7 +398,7 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
                 datos[1] = c.getAO();
                 datos[2] = c.getRA();
                 datos[3] = c.getProveedor();
-                datos[4] = u.getDatosProveedor(c.getProveedor()).getNombre();
+//                datos[4] = u.getDatosProveedor(c.getProveedor()).getNombre();
                 datos[5] = c.getLab();
                 datos[6] = c.getCinterno();
                 datos[7] = c.getCantSol();

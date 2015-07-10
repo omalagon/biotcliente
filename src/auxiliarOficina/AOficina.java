@@ -35,6 +35,8 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -161,14 +163,14 @@ public class AOficina extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator3 = new javax.swing.JSeparator();
         jLabel13 = new javax.swing.JLabel();
-        jScrollPane7 = new javax.swing.JScrollPane();
-        tablaProveedoresCot = new javax.swing.JTable();
         jSeparator4 = new javax.swing.JSeparator();
         jSeparator5 = new javax.swing.JSeparator();
         jLabel15 = new javax.swing.JLabel();
         obsCot = new javax.swing.JTextField();
         BotonRevisar = new javax.swing.JButton();
         BotonAyudaCot = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaIXP = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -273,7 +275,7 @@ public class AOficina extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 307, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 409, Short.MAX_VALUE)
                 .addComponent(BotonCotizar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -288,7 +290,7 @@ public class AOficina extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createSequentialGroup()
                     .addGap(44, 44, 44)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(354, Short.MAX_VALUE)))
+                    .addContainerGap(456, Short.MAX_VALUE)))
         );
 
         tabbedReportes.addTab("Solicitudes", jPanel6);
@@ -392,7 +394,7 @@ public class AOficina extends javax.swing.JFrame {
                     .addComponent(btnVerProv)
                     .addComponent(Apro_NITProv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 534, Short.MAX_VALUE)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BotonRefrescarSolRev)
@@ -568,7 +570,7 @@ public class AOficina extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel35)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel40)
@@ -617,25 +619,7 @@ public class AOficina extends javax.swing.JFrame {
         jLabel18.setText("Nombre de Solicitante");
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel13.setText("Vista de proveedor.");
-
-        tablaProveedoresCot.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "NIT", "Nombre", "Precio", "Disponibilidad", "Observación"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                true, false, false, false, true
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane7.setViewportView(tablaProveedoresCot);
+        jLabel13.setText("Item por Proveedor");
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel15.setText("Observaciones");
@@ -654,6 +638,16 @@ public class AOficina extends javax.swing.JFrame {
             }
         });
 
+        tablaIXP.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "NIT", "Nombre", "Cod Interno", "Inventario", "Precio"
+            }
+        ));
+        jScrollPane1.setViewportView(tablaIXP);
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -661,37 +655,42 @@ public class AOficina extends javax.swing.JFrame {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(obsCot, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jSeparator5, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane6)
-                    .addComponent(jSeparator2)
-                    .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 668, Short.MAX_VALUE)
+                    .addComponent(jSeparator5)
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel12)
-                            .addComponent(jLabel14))
-                        .addGap(93, 93, 93)
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(fechaCot)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 668, Short.MAX_VALUE)
+                            .addComponent(jSeparator2)
+                            .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addComponent(numeroSolicitudCot)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(BotonAyudaCot))))
+                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel12)
+                                    .addComponent(jLabel14))
+                                .addGap(93, 93, 93)
+                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(fechaCot)
+                                    .addGroup(jPanel7Layout.createSequentialGroup()
+                                        .addComponent(numeroSolicitudCot)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(BotonAyudaCot))))
+                            .addComponent(obsCot, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel7Layout.createSequentialGroup()
+                                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel16)
+                                            .addComponent(jLabel18))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(nombreCot)
+                                            .addComponent(areaCot)))
+                                    .addComponent(jLabel13)
+                                    .addComponent(BotonRevisar))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel16)
-                            .addComponent(jLabel18))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(nombreCot)
-                            .addComponent(areaCot)))
-                    .addComponent(jLabel13)
-                    .addComponent(jLabel15)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(BotonRevisar)))
-                .addContainerGap())
+                        .addComponent(jLabel15)
+                        .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel7Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -722,14 +721,14 @@ public class AOficina extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel13)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel15)
@@ -827,10 +826,8 @@ public class AOficina extends javax.swing.JFrame {
 
     private void BotonCotizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonCotizarActionPerformed
         Usuario u = cliente.Cliente.conectarU();
-
         DefaultTableModel df = (DefaultTableModel) tablaSolicitudesNoRev.getModel();
         DefaultTableModel df_items = (DefaultTableModel) this.tablaitemsCot.getModel();
-        DefaultTableModel df_proveedores = (DefaultTableModel) this.tablaProveedoresCot.getModel();
         TableColumn cCalidadCell = this.tablaitemsCot.getColumnModel().getColumn(7);
         int filaSeleccionada = this.tablaSolicitudesNoRev.getSelectedRow();
         BigDecimal numSol = (BigDecimal) df.getValueAt(filaSeleccionada, 0);
@@ -851,11 +848,9 @@ public class AOficina extends javax.swing.JFrame {
         } catch (RemoteException ex) {
             Logger.getLogger(AOficina.class.getName()).log(Level.SEVERE, null, ex);
         }
-        ArrayList<ArrayList<itemxproveedor>> aux = new ArrayList<>();
         ArrayList<itemxproveedor> itemxproveedor = null;
         for (int i = df_items.getRowCount() - 1; i >= 0; i--) {
             df_items.removeRow(i);
-            df_proveedores.removeRow(i);
         }
         this.numeroSolicitudCot.setText(numSol.toString());
         this.fechaCot.setText(fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR));
@@ -863,50 +858,55 @@ public class AOficina extends javax.swing.JFrame {
         this.nombreCot.setText(solicitud_NumSol.getNombreRA());
         this.TabbedPaneUsuarios.setSelectedIndex(2);
         for (ItemInventario i : items_numSol) {
-            Object[] datos = new Object[6];
+            Object[] datos = new Object[7];
             datos[0] = i.getCantidad();
             datos[1] = i.getInventario();
             datos[2] = i.getNumero();
             datos[3] = i.getDescripcion();
             datos[4] = i.getCantidadSolicitada();
             datos[5] = i.getPresentacion();
-            /*
-             Vector datos = new Vector();
-             datos.add(i.getCantidad());
-             datos.add(i.getInventario());
-             datos.add(i.getNumero());
-             datos.add(i.getDescripcion());
-             datos.add(i.getCantidadSolicitada());
-             datos.add(i.getPresentacion());*/
+            datos[6] = i.getPrecio();
             df_items.addRow(datos);
-
-            try {
-                itemxproveedor = u.getItemxproveedor(i.getInventario(), i.getNumero());
-            } catch (RemoteException ex) {
-                Logger.getLogger(AOficina.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            aux.add(itemxproveedor);
         }
         cCalidadCell.setCellEditor(new DefaultCellEditor(Apro_NITProv));
-        for (ArrayList<itemxproveedor> iter : aux) {
-            for (itemxproveedor i : iter) {
-                Object[] datos = new Object[4];
-                datos[0] = i.getNIT();
-                datos[1] = i.getNombre();
-                datos[2] = i.getPrecio();
-                datos[3] = i.getDisponibilidad();
-                /*
-                
-                 Vector datos = new Vector();
-                 datos.add(i.getNIT());
-                 datos.add(i.getNombre());
-                 datos.add(i.getPrecio());
-                 datos.add(i.getDisponibilidad());*/
-                df_proveedores.addRow(datos);
-            }
-        }
         this.obsCot.setText(solicitud_NumSol.getObservaciones());
+        //llenado de la tabla de ixp
+
+        tablaitemsCot.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent event) {
+                System.out.println("escucha");
+                String toString = tablaitemsCot.getValueAt(tablaitemsCot.getSelectedRow(), 2).toString();
+                llenarTablaIXP(toString);
+                
+            }
+        });
     }//GEN-LAST:event_BotonCotizarActionPerformed
+
+    private void llenarTablaIXP(String item) {
+        Usuario n = cliente.Cliente.conectarU();
+        DefaultTableModel df_ixp = (DefaultTableModel) tablaIXP.getModel();
+        ArrayList<itemxproveedor> tablaCotizacionesIXP = null;
+        /*for (int i = df_ixp.getRowCount() - 1; i >= 0; i--) {
+                    df_ixp.removeRow(i);
+                }
+        */
+        try {
+            tablaCotizacionesIXP = n.tablaCotizacionesIXP(item);
+        } catch (RemoteException ex) {
+            Logger.getLogger(AOficina.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        for (itemxproveedor i : tablaCotizacionesIXP) {
+            Object[] datos = new Object[5];
+            datos[0] = i.getNIT();
+            datos[1] = i.getNombre();
+            datos[2] = i.getCinterno();
+            datos[3] = i.getInv();
+            datos[4] = i.getPrecio();
+            df_ixp.addRow(datos);
+        }
+    }
+
 
     private void BotonRefrescarSolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonRefrescarSolActionPerformed
         DefaultTableModel df_NoRevisadas = (DefaultTableModel) this.tablaSolicitudesNoRev.getModel();
@@ -974,7 +974,7 @@ public class AOficina extends javax.swing.JFrame {
         for (int i = df.getRowCount() - 1; i >= 0; i--) {
             df.removeRow(i);
         }
-        ArrayList<cotizaciones> cotizacione ;
+        ArrayList<cotizaciones> cotizacione;
         try {
             cotizacione = u.getCotizaciones("SI");
             for (cotizaciones c : cotizacione) {
@@ -1038,14 +1038,6 @@ public class AOficina extends javax.swing.JFrame {
                     datos[3] = p.getPresen();
                     datos[4] = p.getPrecioU();
                     datos[5] = p.getvTotal();
-
-                    /*Vector datos = new Vector();
-                    datos.add(p.getCinterno());
-                    datos.add(p.getInventario());
-                    datos.add(p.getCaprobada());
-                    datos.add(p.getPresen());
-                    datos.add(p.getPrecioU());
-                    datos.add(p.getvTotal());*/
                     total1 += p.getvTotal();
                     com += p.getObs() + " // ";
                     df.addRow(datos);
@@ -1083,9 +1075,9 @@ public class AOficina extends javax.swing.JFrame {
                 datos[0] = t.getNIT();
                 datos[1] = t.getNombre();
                 /*
-                Vector datos = new Vector();
-                datos.add(t.getNIT());
-                datos.add(t.getNombre());*/
+                 Vector datos = new Vector();
+                 datos.add(t.getNIT());
+                 datos.add(t.getNombre());*/
                 tabla.add(datos);
             }
             verProveedores ver = new verProveedores();
@@ -1142,7 +1134,7 @@ public class AOficina extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
-        
+
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -1204,11 +1196,11 @@ public class AOficina extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JSeparator jSeparator2;
@@ -1232,7 +1224,7 @@ public class AOficina extends javax.swing.JFrame {
     private javax.swing.JLabel oc_nomProv;
     private javax.swing.JTabbedPane tabbedReportes;
     private javax.swing.JTable tablaDatosPedido;
-    private javax.swing.JTable tablaProveedoresCot;
+    private javax.swing.JTable tablaIXP;
     private javax.swing.JTable tablaSolicitudesNoRev;
     private javax.swing.JTable tablaSolicitudesRev;
     private javax.swing.JTable tablaitemsCot;

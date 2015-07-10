@@ -177,7 +177,7 @@ public class Inventario_Ultimos extends javax.swing.JFrame {
                             .addComponent(jLabel40)
                             .addComponent(jLabel39))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 

@@ -6,8 +6,8 @@
 package administrador.Creaciones;
 
 import EstructurasAux.ItemInventario;
+import administrador.Reportes.verProveedores;
 import administrador.VentanaInicio_Adm;
-import auxiliarOficina.verProveedores;
 import interfaces.Usuario;
 import java.awt.Toolkit;
 import java.math.BigDecimal;
@@ -15,6 +15,8 @@ import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -24,6 +26,7 @@ public class CrearItem extends javax.swing.JFrame {
 
     private static BigDecimal id = null;
     private static String tabla = "";
+    private boolean existia = false;
 
     /**
      * Creates new form creaciones
@@ -39,6 +42,49 @@ public class CrearItem extends javax.swing.JFrame {
         setIcon();
         verProveedores prov = new verProveedores();
         prov.setVisible(true);
+        jLabel2.setVisible(false);
+        jtfield_cInt.getDocument().addDocumentListener(new DocumentListener() {
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                Usuario u = cliente.Cliente.conectarU();
+                try {
+                    System.out.println("hace algo");
+                    ItemInventario aux = u.buscarInfoItem(jtfield_cInt.getText());
+                    if (aux != null) {
+                        jtfield_desc.setText(aux.getDescripcion());
+                        jtfield_pres.setText(aux.getPresentacion());
+                        jtfield_cant.setText(Float.toString(aux.getCantidad()));
+                        jtfield_precio.setText(Float.toString(aux.getPrecio()));
+                        jtfield_cCalidad.setText(aux.getcCalidad());
+                        jtfield_suc.setText(aux.getSucursal());
+                        jtfield_cEspc.setText(aux.getCEsp());
+                        existia = true;
+                        jLabel2.setVisible(existia);
+                    }
+                } catch (RemoteException ex) {
+                    Logger.getLogger(CrearProveedor.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                jtfield_desc.setText("");
+                jtfield_pres.setText("");
+                jtfield_cant.setText("");
+                jtfield_precio.setText("");
+                jtfield_cCalidad.setText("");
+                jtfield_suc.setText("");
+                jtfield_cEspc.setText("");
+                existia=false;
+                jLabel2.setVisible(existia);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
 
     }
 
@@ -76,6 +122,7 @@ public class CrearItem extends javax.swing.JFrame {
         lbl_suc = new javax.swing.JLabel();
         lbl_cEsp = new javax.swing.JLabel();
         lbl_provAs = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         btnAceptar = new javax.swing.JButton();
         btnCerrar = new javax.swing.JButton();
@@ -114,7 +161,7 @@ public class CrearItem extends javax.swing.JFrame {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(12, Short.MAX_VALUE)
                 .addComponent(jtfield_cInt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jtfield_desc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -124,17 +171,17 @@ public class CrearItem extends javax.swing.JFrame {
                 .addComponent(jtfield_cant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jtfield_precio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jtfield_cCalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jtfield_cCalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jcbbxArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jtfield_suc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jtfield_cEspc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jtfield_provAs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(6, 6, 6))
         );
 
         lbl_desc.setText("Descripción");
@@ -155,6 +202,11 @@ public class CrearItem extends javax.swing.JFrame {
 
         lbl_provAs.setText("Proveedor Asociado");
 
+        jLabel2.setForeground(new java.awt.Color(255, 0, 51));
+        jLabel2.setText("Debe seleccionar de nuevo este campo");
+
+        jLabel1.setText("Código Interno");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -162,21 +214,30 @@ public class CrearItem extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbl_desc)
-                    .addComponent(lbl_cEsp)
-                    .addComponent(lbl_suc)
-                    .addComponent(lbl_cCalidad)
-                    .addComponent(lbl_pres)
-                    .addComponent(lbl_cantidad)
-                    .addComponent(lbl_precio)
-                    .addComponent(lbl_inv)
-                    .addComponent(lbl_provAs))
-                .addContainerGap(89, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(lbl_inv)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                        .addComponent(jLabel2))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_desc)
+                            .addComponent(lbl_cEsp)
+                            .addComponent(lbl_suc)
+                            .addComponent(lbl_cCalidad)
+                            .addComponent(lbl_pres)
+                            .addComponent(lbl_cantidad)
+                            .addComponent(lbl_precio)
+                            .addComponent(lbl_provAs)
+                            .addComponent(jLabel1))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
                 .addComponent(lbl_desc)
                 .addGap(18, 18, 18)
                 .addComponent(lbl_pres)
@@ -187,48 +248,35 @@ public class CrearItem extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(lbl_cCalidad)
                 .addGap(18, 18, 18)
-                .addComponent(lbl_inv)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_inv)
+                    .addComponent(jLabel2))
                 .addGap(18, 18, 18)
                 .addComponent(lbl_suc)
                 .addGap(18, 18, 18)
                 .addComponent(lbl_cEsp)
                 .addGap(18, 18, 18)
                 .addComponent(lbl_provAs)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap())
         );
-
-        jLabel1.setText("Código Interno");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jLabel1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 318, Short.MAX_VALUE)
-                        .addGap(1, 1, 1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 25, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Creación", jPanel1);
@@ -279,7 +327,7 @@ public class CrearItem extends javax.swing.JFrame {
                 .addComponent(jlb_titulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane1)
-                .addGap(18, 34, Short.MAX_VALUE)
+                .addGap(18, 26, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnAceptar)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -292,7 +340,11 @@ public class CrearItem extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        this.crearItem();
+        if (!existia) {
+            this.crearItem();
+        } else {
+            this.editarItem();
+        }
      }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
@@ -329,7 +381,7 @@ public class CrearItem extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
-        
+
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -350,6 +402,7 @@ public class CrearItem extends javax.swing.JFrame {
     private javax.swing.JButton btnInventario;
     private javax.swing.Box.Filler filler1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -394,15 +447,14 @@ public class CrearItem extends javax.swing.JFrame {
         if (area == 3) {
             labo = "S.Gene.";
         }
-        if (area ==4){
-            labo= "Compras";
+        if (area == 4) {
+            labo = "Compras";
         }
-        
-        
+
         ItemInventario item = new ItemInventario(
                 this.jtfield_cInt.getText(),
-                this.jtfield_desc.getText(), 
-                this.jtfield_pres.getText(), 
+                this.jtfield_desc.getText(),
+                this.jtfield_pres.getText(),
                 new Float(this.jtfield_cant.getText()),
                 new Float(this.jtfield_precio.getText()),
                 this.jtfield_cCalidad.getText(),
@@ -413,7 +465,7 @@ public class CrearItem extends javax.swing.JFrame {
                 + new Float(this.jtfield_precio.getText()) + this.jtfield_cCalidad.getText() + labo + this.jtfield_suc.getText() + this.jtfield_cEspc.getText());
         try {
             valido = u.crearItem(item);
-            asociado=u.asociarItem(this.jtfield_cInt.getText(),this.jtfield_provAs.getText(), labo, this.jtfield_precio.getText());
+            asociado = u.asociarItem(this.jtfield_cInt.getText(), this.jtfield_provAs.getText(), labo, this.jtfield_precio.getText());
             if (valido && asociado) {
                 JOptionPane.showMessageDialog(null, "Item creado");
             } else {
@@ -427,5 +479,53 @@ public class CrearItem extends javax.swing.JFrame {
 
     private void setIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+    }
+
+    private void editarItem() {
+        Usuario u = cliente.Cliente.conectarU();
+        boolean valido;
+        boolean asociado;
+        int area = this.jcbbxArea.getSelectedIndex();
+        String labo = null;
+        if (area == 0) {
+            labo = "MB";
+        }
+        if (area == 1) {
+            labo = "FQ";
+        }
+        if (area == 2) {
+            labo = "MA";
+        }
+        if (area == 3) {
+            labo = "S.Gene.";
+        }
+        if (area == 4) {
+            labo = "Compras";
+        }
+
+        ItemInventario item = new ItemInventario(
+                this.jtfield_cInt.getText(),
+                this.jtfield_desc.getText(),
+                this.jtfield_pres.getText(),
+                new Float(this.jtfield_cant.getText()),
+                new Float(this.jtfield_precio.getText()),
+                this.jtfield_cCalidad.getText(),
+                labo,
+                this.jtfield_suc.getText(),
+                this.jtfield_cEspc.getText());
+        System.out.println(this.jtfield_desc.getText() + this.jtfield_pres.getText() + new Float(this.jtfield_cant.getText()) + " "
+                + new Float(this.jtfield_precio.getText()) + this.jtfield_cCalidad.getText() + labo + this.jtfield_suc.getText() + this.jtfield_cEspc.getText());
+        try {
+            valido = u.editarItem(item);
+            asociado = u.asociarItem(this.jtfield_cInt.getText(), this.jtfield_provAs.getText(), labo, this.jtfield_precio.getText());
+            if (valido && asociado) {
+                JOptionPane.showMessageDialog(null, "Item editado");
+            } else {
+                JOptionPane.showMessageDialog(null, "Error en la creación del ítem\nSugerencia: "
+                        + "Revise el inventario");
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(CrearItem.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

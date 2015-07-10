@@ -40,9 +40,6 @@ public class SeleccionarDatos extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setSize(740, this.getHeight());
         this.RefrescarInven.doClick();
-        this.btnAgregarItms.setIcon(new ImageIcon(getClass().getResource("Carrito.png")));
-        this.btnCerrar.setIcon(new ImageIcon(getClass().getResource("NO.png")));
-        this.RefrescarInven.setIcon(new ImageIcon(getClass().getResource("ACT.png")));
     }
 
     /**

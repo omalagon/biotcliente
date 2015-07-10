@@ -6,7 +6,7 @@
 package administrador;
 
 import administrador.Reportes.MenuReportes;
-import administrador.Creaciones.MenuGestion;
+import administrador.Creaciones.MenuCreaciones;
 import administrador.solicitudes.MenuSolicitud;
 import administrador.solicitudes.Solicitudes;
 import gui.CambioClave;
@@ -256,7 +256,7 @@ public class VentanaInicio_Adm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
-        MenuGestion sel = new MenuGestion(VentanaInicio_Adm.id);
+        MenuCreaciones sel = new MenuCreaciones(VentanaInicio_Adm.id);
         sel.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnCrearActionPerformed

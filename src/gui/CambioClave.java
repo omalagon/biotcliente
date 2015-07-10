@@ -135,13 +135,13 @@ public class CambioClave extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String anterior = Arrays.toString(this.psw_antigua.getPassword());
-        String nueva = Arrays.toString(this.psw_nueva.getPassword());
+        String anterior = this.psw_antigua.getText();
+        String nueva = this.psw_nueva.getText();
         Usuario u = cliente.Cliente.conectarU();
-        boolean validar ;
+        boolean validar;
         try {
             validar = u.verificarClave(anterior, id, tipo);
-
+            System.out.println(validar);
             if (validar) {
 
                 if (u.cambiarClave(nueva, id, tipo)) {
