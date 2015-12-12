@@ -484,7 +484,7 @@ public class CrearItem extends javax.swing.JFrame {
     private void editarItem() {
         Usuario u = cliente.Cliente.conectarU();
         boolean valido;
-        boolean asociado;
+        boolean asociado = false;
         int area = this.jcbbxArea.getSelectedIndex();
         String labo = null;
         if (area == 0) {
@@ -515,10 +515,22 @@ public class CrearItem extends javax.swing.JFrame {
                 this.jtf_cesp.getText());
         try {
             valido = u.editarItem(item);
-            asociado = u.asociarItem(this.jtf_cinterno.getText(), this.jtf_provAs.getText(), this.jtf_precio.getText());
+            if(jtf_provAs.getText()==null ||!jtf_provAs.getText().trim().equalsIgnoreCase(""))
+            {
+                asociado = u.asociarItem(this.jtf_cinterno.getText(), this.jtf_provAs.getText(), this.jtf_precio.getText());
+                
+            }
+            else{
+                asociado =true;
+            }
+            
             if (valido && asociado) {
                 JOptionPane.showMessageDialog(null, "Item editado");
-            } else {
+            }else if(asociado==false)
+            {
+                JOptionPane.showMessageDialog(null, "Item editado, pero ocurrió un error al asociarlo\nRevise el NIT del proveedor");
+            }
+            else {
                 JOptionPane.showMessageDialog(null, "Error en la creación del ítem\nSugerencia: "
                         + "Revise el inventario");
             }
