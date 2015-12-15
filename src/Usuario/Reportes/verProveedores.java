@@ -100,7 +100,7 @@ public class verProveedores extends javax.swing.JFrame {
 
             },
             new String [] {
-                "NIT", "NOMBRE", "Dirección", "Teléfono", "Telefax", "Celular", "Correo", "Contactol"
+                "NIT", "Nombre", "Dirección", "Teléfono", "Telefax", "Celular", "Correo", "Contactol"
             }
         ) {
             boolean[] canEdit = new boolean [] {

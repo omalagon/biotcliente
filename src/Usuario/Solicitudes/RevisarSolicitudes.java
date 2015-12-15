@@ -323,7 +323,7 @@ public class RevisarSolicitudes extends javax.swing.JFrame {
                 datos[5] = c.getLab();
                 datos[6] = c.getCinterno();
                 datos[7] = c.getCantSol();
-                datos[8] = "";
+                datos[8] = c.getCantSol();
                 datos[9] = c.getPrecioUnitario();
                 datos[10] = c.getNumSol();
                 df.addRow(datos);

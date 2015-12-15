@@ -7,9 +7,11 @@ package Usuario.Creaciones;
 
 import EstructurasAux.permisos;
 import Usuario.MenuPrincipal;
+import cliente.Cliente;
 import interfaces.Usuario;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -21,26 +23,52 @@ import javax.swing.table.DefaultTableModel;
  */
 public class PermisosUsuario extends javax.swing.JFrame {
 
-    private static String id=null;
-    private static String idUsNuevo=null;
+    private static String id = null;
+    private String idUsNuevo = "";
+
     /**
      * Creates new form PermisosUsuario
      */
     public PermisosUsuario() {
         initComponents();
     }
-    public PermisosUsuario(String id, String idUsNuevo){
+
+    public PermisosUsuario(String id, String idUsNuevo) throws RemoteException {
         initComponents();
-        PermisosUsuario.id =id;
-        PermisosUsuario.idUsNuevo =idUsNuevo;
+        PermisosUsuario.id = id;
+        this.idUsNuevo = idUsNuevo;
         this.setLocationRelativeTo(null);
         DefaultTableModel df = (DefaultTableModel) this.jTable1.getModel();
-        
+
         for (int i = 0; i < df.getRowCount(); i++) {
             df.setValueAt(false, i, 2);
+        }
+        Usuario u = Cliente.conectarU();
+        permisos lista = u.lista(idUsNuevo);
+        if (lista != null) {
+            List<Integer> lstPermisos = new ArrayList<>();
+            lstPermisos.add(lista.isCrearItem());
+            lstPermisos.add(lista.isCrearProveedor());
+            lstPermisos.add(lista.isCrearUsuario());
+            lstPermisos.add(lista.isDescargarConsumos());
+            lstPermisos.add(lista.isRecibirPedidos());
+            lstPermisos.add(lista.isGenRepDescargos());
+            lstPermisos.add(lista.isGenRepInventario());
+            lstPermisos.add(lista.isGenRepUsuarios());
+            lstPermisos.add(lista.isGenRepProveedores());
+            lstPermisos.add(lista.isGenRepItemxProveedor());
+            lstPermisos.add(lista.isSolicitarProductos());
+            lstPermisos.add(lista.isRealizarCotizaciones());
+            lstPermisos.add(lista.isAprobarCotizaciones());
+            lstPermisos.add(lista.isGenerarOrdenesCompra());
+            lstPermisos.add(lista.isBloquearUsuario());
+            lstPermisos.add(lista.getGenfdc001());
+            for (int i = 0; i < lstPermisos.size(); i++) {
+                df.setValueAt((lstPermisos.get(i) == 1 ? true : false), i, 2);
             }
+        }
     }
-            
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -81,7 +109,7 @@ public class PermisosUsuario extends javax.swing.JFrame {
                 {"13", "Aprobar Cotizaciones", null},
                 {"14", "Generar Ordenes de Compra", null},
                 {"15", "Bloquear Usuario", null},
-                {"16", null, null}
+                {"16", "Generar FDC-001", null}
             },
             new String [] {
                 "Id", "Permiso", "Asignado?"
@@ -181,36 +209,32 @@ public class PermisosUsuario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_VolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_VolverActionPerformed
-        MenuPrincipal menu = new MenuPrincipal(id);
-        menu.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btn_VolverActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         DefaultTableModel df = (DefaultTableModel) this.jTable1.getModel();
-        permisos per = new permisos();
         ArrayList<Integer> listado = new ArrayList<>();
         Usuario u = cliente.Cliente.conectarU();
         for (int i = 0; i < df.getRowCount(); i++) {
-            boolean aux = (Boolean)jTable1.getValueAt(i, 2);
-            if(aux)
-            {
+            boolean aux = (Boolean) jTable1.getValueAt(i, 2);
+            if (aux) {
                 listado.add(1);
-            }else{
+            } else {
                 listado.add(0);
             }
-            
+
         }
-        per= new permisos(idUsNuevo,listado.get(0),listado.get(1),listado.get(2),listado.get(3),
-                listado.get(4),listado.get(5),listado.get(6),
-                listado.get(7),listado.get(8),listado.get(9),
-                listado.get(10),listado.get(11),listado.get(12),
-                listado.get(13),listado.get(14),listado.get(15));
+        
+        permisos per = new permisos(this.idUsNuevo, listado.get(0), listado.get(1), listado.get(2), listado.get(3),
+                listado.get(4), listado.get(5), listado.get(6),
+                listado.get(7), listado.get(8), listado.get(9),
+                listado.get(10), listado.get(11), listado.get(12),
+                listado.get(13), listado.get(14), listado.get(15));
         try {
             boolean AsignarPermisos = u.AsignarPermisos(per);
-            if(AsignarPermisos)
-            {
-                JOptionPane.showConfirmDialog(null, "Hecho");
+            if (AsignarPermisos) {
+                JOptionPane.showMessageDialog(null, "Los permisos han sido asignados");
             }
         } catch (RemoteException ex) {
             Logger.getLogger(PermisosUsuario.class.getName()).log(Level.SEVERE, null, ex);

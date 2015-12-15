@@ -7,8 +7,11 @@ package Usuario.Descargos;
 
 import EstructurasAux.ItemInventario;
 import EstructurasAux.descargo;
+import cliente.Cliente;
 import interfaces.Usuario;
 import java.awt.Toolkit;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,9 +30,10 @@ public class DescargoConsumos extends javax.swing.JFrame {
     private static String cadenaFecha = hoy.get(Calendar.DAY_OF_MONTH) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/" + hoy.get(Calendar.YEAR);
     private static ArrayList<ItemInventario> itemInventarioAdmin = null;
     private static String ide = null;
-    
+
     /**
      * Creates new form descargoConsumos
+     *
      * @param ide
      */
     public DescargoConsumos(String ide) {
@@ -41,7 +45,9 @@ public class DescargoConsumos extends javax.swing.JFrame {
         setIcon();
         this.setLocationRelativeTo(null);
         this.setSize(415, this.getHeight());
-
+        this.lblDesc.setText("");
+        this.lblPres.setText("");
+        this.jLabel7.setText("");
         try {
             User = u.getUsuario(ide);
             area = u.area(ide);
@@ -52,10 +58,32 @@ public class DescargoConsumos extends javax.swing.JFrame {
         this.desc_Fecha.setText(cadenaFecha);
         this.desc_nombre.setText(User);
         this.desc_area.setText(area);
-        for (ItemInventario i : itemInventarioAdmin) {
-            this.desc_items.addItem(i.getNumero());
-        }
+        actualizarListado(itemInventarioAdmin);
+        this.desc_items.addItemListener(new ItemListener() {
 
+            Usuario u = cliente.Cliente.conectarU();
+
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    String item = (String) e.getItem();
+                    try {
+                        ItemInventario info = u.buscarInfoItem(item);
+                        if (info.getDescripcion().length() < 45) {
+                            lblDesc.setText(info.getDescripcion());
+                        } else {
+                            lblDesc.setText("-");
+                            JOptionPane.showMessageDialog(null, info.getDescripcion(), "Descripción del ítem", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        lblPres.setText(info.getPresentacion());
+                        jLabel7.setText(info.getInventario());
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(DescargoConsumos.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
+        verBuscador(false);
     }
 
     private DescargoConsumos() {
@@ -85,6 +113,28 @@ public class DescargoConsumos extends javax.swing.JFrame {
         desc_cantidad = new javax.swing.JTextField();
         btnVolver = new javax.swing.JButton();
         btnVerInv = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        lblDesc = new javax.swing.JLabel();
+        lblPres = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JSeparator();
+        chbox_buscador = new javax.swing.JCheckBox();
+        lblBuscarDes = new javax.swing.JLabel();
+        lblBuscarPres = new javax.swing.JLabel();
+        lblBuscarInv = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jtfPres = new javax.swing.JTextField();
+        jtfInv = new javax.swing.JTextField();
+        jtfDesc = new javax.swing.JTextField();
+        btnBuscar = new javax.swing.JButton();
+        jSeparator3 = new javax.swing.JSeparator();
+        lblBuscarInfo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setResizable(false);
@@ -131,6 +181,113 @@ public class DescargoConsumos extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setText("Información del ítem seleccionado");
+
+        jLabel2.setText("Descripción");
+
+        jLabel3.setText("Presentación");
+
+        jLabel4.setText("Inventario");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel2)
+            .addComponent(jLabel3)
+            .addComponent(jLabel4)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4))
+        );
+
+        lblDesc.setText("jLabel5");
+
+        lblPres.setText("jLabel6");
+
+        jLabel7.setText("jLabel7");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblDesc)
+                    .addComponent(lblPres)
+                    .addComponent(jLabel7))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(lblDesc)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblPres)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel7))
+        );
+
+        chbox_buscador.setText("Activar buscador");
+        chbox_buscador.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbox_buscadorActionPerformed(evt);
+            }
+        });
+
+        lblBuscarDes.setText("Descripción:");
+
+        lblBuscarPres.setText("Presentación:");
+
+        lblBuscarInv.setText("Inventario");
+
+        jtfPres.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfPresActionPerformed(evt);
+            }
+        });
+
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jtfDesc)
+            .addComponent(jtfPres)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jtfInv, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jtfDesc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jtfPres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtfInv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscar))
+                .addGap(1, 1, 1))
+        );
+
+        lblBuscarInfo.setText("Ingrese solo uno de los campos.");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -138,6 +295,9 @@ public class DescargoConsumos extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator3)
+                    .addComponent(jSeparator2)
+                    .addComponent(jSeparator1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnVerInv)
@@ -145,24 +305,44 @@ public class DescargoConsumos extends javax.swing.JFrame {
                         .addComponent(btnVolver)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1))
-                    .addComponent(labelAdministrador)
-                    .addComponent(jLabel32)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel28)
-                            .addComponent(jLabel29)
-                            .addComponent(jLabel19)
-                            .addComponent(jLabel33))
-                        .addGap(79, 79, 79)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(desc_cantidad, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(desc_Fecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(desc_nombre, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(desc_area, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(0, 0, Short.MAX_VALUE))
-                                .addComponent(desc_items, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                            .addComponent(lblBuscarInv)
+                            .addComponent(lblBuscarDes)
+                            .addComponent(lblBuscarPres))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel28)
+                                    .addComponent(jLabel29)
+                                    .addComponent(jLabel19)
+                                    .addComponent(jLabel33))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(79, 79, 79)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(desc_Fecha, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(desc_nombre, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                .addComponent(desc_area, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(0, 0, Short.MAX_VALUE))
+                                            .addComponent(desc_items, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(desc_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(labelAdministrador)
+                            .addComponent(jLabel32)
+                            .addComponent(jLabel1)
+                            .addComponent(chbox_buscador)
+                            .addComponent(lblBuscarInfo))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -186,8 +366,33 @@ public class DescargoConsumos extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel32)
                     .addComponent(desc_items, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 228, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chbox_buscador)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblBuscarDes)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblBuscarPres)
+                        .addGap(15, 15, 15)
+                        .addComponent(lblBuscarInv))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblBuscarInfo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel33)
                     .addComponent(desc_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(14, 14, 14)
@@ -203,41 +408,64 @@ public class DescargoConsumos extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int selectedIndex = this.desc_items.getSelectedIndex();
-        if(new Float (this.desc_cantidad.getText()) <=0)
-        {
+        if (new Float(this.desc_cantidad.getText()) <= 0) {
             JOptionPane.showMessageDialog(null, "La cantidad ingresada debe ser mayor a cero");
             this.desc_cantidad.setText("");
-        }else{
-        descargo d = new descargo(hoy, ide, this.desc_area.getText(), new Float(this.desc_cantidad.getText()), itemInventarioAdmin.get(selectedIndex).getNumero());
-        Usuario u = cliente.Cliente.conectarU();
-        boolean valido;
-        try {
-            valido = u.realizarDescargo(d);
-            if (valido) {
-                if (JOptionPane.showConfirmDialog(null, "Descargo realizado exitosamente. ¿Desea realizar otro?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    this.desc_cantidad.setText("");
-                    this.desc_items.setSelectedIndex(0);
+        } else {
+            descargo d = new descargo(hoy, ide, this.desc_area.getText(), new Float(this.desc_cantidad.getText()), itemInventarioAdmin.get(selectedIndex).getNumero());
+            Usuario u = cliente.Cliente.conectarU();
+            boolean valido;
+            try {
+                valido = u.realizarDescargo(d);
+                if (valido) {
+                    if (JOptionPane.showConfirmDialog(null, "Descargo realizado exitosamente. ¿Desea realizar otro?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                        this.desc_cantidad.setText("");
+                        this.desc_items.setSelectedIndex(0);
+                    } else {
+                        this.setVisible(false);
+                    }
                 } else {
-                    this.setVisible(false);
+                    JOptionPane.showMessageDialog(null, "Ocurrió un error en el proceso.");
                 }
-            } else {
-                JOptionPane.showMessageDialog(null, "Ocurrió un error en el proceso.");
+
+            } catch (RemoteException ex) {
+                Logger.getLogger(DescargoConsumos.class.getName()).log(Level.SEVERE, null, ex);
             }
-        
-        } catch (RemoteException ex) {
-            Logger.getLogger(DescargoConsumos.class.getName()).log(Level.SEVERE, null, ex);
-        }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnVerInvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerInvActionPerformed
-        VerInventario ver  = new VerInventario(ide);
+        VerInventario ver = new VerInventario(ide);
         ver.setVisible(true);
     }//GEN-LAST:event_btnVerInvActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_btnVolverActionPerformed
+
+    private void chbox_buscadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbox_buscadorActionPerformed
+        verBuscador(chbox_buscador.isSelected());
+    }//GEN-LAST:event_chbox_buscadorActionPerformed
+
+    private void jtfPresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfPresActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfPresActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        Usuario U = Cliente.conectarU();
+        try {
+            ArrayList<ItemInventario> listado
+                    = U.busquedaItem(this.jtfDesc.getText(), this.jtfPres.getText(), this.jtfInv.getText());
+            if (listado.size() == 0) {
+                JOptionPane.showMessageDialog(null, "La búsqueda no arrojó resultados, la lista de ítems se mantiene como estaba");
+            } else {
+                actualizarListado(listado);
+                JOptionPane.showMessageDialog(null, "Los resultados de la búsqueda se ven reflejados en el campo \"Item\"");
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(DescargoConsumos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -262,7 +490,7 @@ public class DescargoConsumos extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
-        
+
         //</editor-fold>
         //</editor-fold>
 
@@ -276,24 +504,63 @@ public class DescargoConsumos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnVerInv;
     private javax.swing.JButton btnVolver;
+    private javax.swing.JCheckBox chbox_buscador;
     private javax.swing.JLabel desc_Fecha;
     private javax.swing.JLabel desc_area;
     private javax.swing.JTextField desc_cantidad;
     private javax.swing.JComboBox desc_items;
     private javax.swing.JLabel desc_nombre;
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JTextField jtfDesc;
+    private javax.swing.JTextField jtfInv;
+    private javax.swing.JTextField jtfPres;
     private javax.swing.JLabel labelAdministrador;
+    private javax.swing.JLabel lblBuscarDes;
+    private javax.swing.JLabel lblBuscarInfo;
+    private javax.swing.JLabel lblBuscarInv;
+    private javax.swing.JLabel lblBuscarPres;
+    private javax.swing.JLabel lblDesc;
+    private javax.swing.JLabel lblPres;
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
 
+    private void verBuscador(boolean activar) {
+        this.lblBuscarDes.setVisible(activar);
+        this.lblBuscarPres.setVisible(activar);
+        this.lblBuscarInv.setVisible(activar);
+        this.lblBuscarInfo.setVisible(activar);
+        this.jtfDesc.setVisible(activar);
+        this.jtfPres.setVisible(activar);
+        this.jtfInv.setVisible(activar);
+        this.btnBuscar.setVisible(activar);
+    }
+
+    private void actualizarListado(ArrayList<ItemInventario> lista) {
+        desc_items.removeAllItems();
+        for (ItemInventario i : lista) {
+            this.desc_items.addItem(i.getNumero());
+        }
+    }
 }

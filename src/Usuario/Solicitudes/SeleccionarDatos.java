@@ -199,7 +199,6 @@ public class SeleccionarDatos extends javax.swing.JFrame {
             df.removeRow(i);
         }
         Usuario u = cliente.Cliente.conectarU();
-
         ArrayList<ItemInventario> itemInventario = null;
         try {
             itemInventario = u.itemInventarioAdmin();

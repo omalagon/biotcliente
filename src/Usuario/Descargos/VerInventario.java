@@ -6,12 +6,16 @@
 package Usuario.Descargos;
 
 import EstructurasAux.ItemInventario;
+import Usuario.Utils.ButtonEditor;
+import Usuario.Utils.ButtonRenderer;
+import Usuario.Utils.EnumAcciones;
 import interfaces.Usuario;
 import java.awt.Toolkit;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -21,6 +25,7 @@ import javax.swing.table.DefaultTableModel;
 public class VerInventario extends javax.swing.JFrame {
 
     private static String id = null;
+    private EnumAcciones acciones;
 
     /**
      * Creates new form VerInventario
@@ -36,6 +41,8 @@ public class VerInventario extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setSize(740, this.getHeight());
         this.RefrescarInven.doClick();
+        tablaInventario.getColumnModel().getColumn(4).setCellRenderer(new ButtonRenderer());
+        tablaInventario.getColumnModel().getColumn(4).setCellEditor(new ButtonEditor(new JTextField(),acciones.VER, id, " itemSinDetalles "));
         
     }
 
@@ -67,11 +74,11 @@ public class VerInventario extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Codigo", "Descripción", "Presentación", "Cantidad"
+                "Codigo", "Descripción", "Presentación", "Cantidad", ""
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, true, true
+                false, false, true, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -108,9 +115,8 @@ public class VerInventario extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(RefrescarInven, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(RefrescarInven, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -179,17 +185,14 @@ public class VerInventario extends javax.swing.JFrame {
         }
         
         for (ItemInventario i : itemInventario) {
-            Object[] aux = new Object[4];
+            Object[] aux = new Object[5];
             
             aux[0] =i.getNumero();
             aux[1]= i.getDescripcion();
             aux[2] = i.getPresentacion();
             aux[3] = i.getCantidad();
+            aux[4] = "Ver"+i.getNumero();
             
-            
-            /*aux.add(1, i.getDescripcion());
-            aux.add(2, i.getPresentacion());
-            aux.add(3, i.getCantidad());*/
             df.addRow(aux);
         }
     }//GEN-LAST:event_RefrescarInvenActionPerformed

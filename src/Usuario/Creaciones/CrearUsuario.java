@@ -5,15 +5,21 @@
  */
 package Usuario.Creaciones;
 
+import EstructurasAux.ItemInventario;
+import EstructurasAux.users;
 import Usuario.MenuPrincipal;
 import interfaces.Usuario;
 import java.awt.Toolkit;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -23,6 +29,8 @@ public class CrearUsuario extends javax.swing.JFrame {
 
     private static String id = null;
     private static String tabla = "";
+    private String idCreacion = "";
+    private boolean existia = false;
 
     /**
      * Creates new form creaciones
@@ -31,12 +39,51 @@ public class CrearUsuario extends javax.swing.JFrame {
         initComponents();
     }
 
-    public CrearUsuario(String id) {
+    public CrearUsuario(String id, String idCreacion) {
         initComponents();
         this.setLocationRelativeTo(null);
         CrearUsuario.id = id;
+        this.idCreacion = idCreacion;
+        this.jtf_id.setText(idCreacion);
+        this.jLabel2.setVisible(existia);
         setIcon();
+        if (this.idCreacion != "") {
+            jtf_id.getDocument().addDocumentListener(new DocumentListener() {
 
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    Usuario u = cliente.Cliente.conectarU();
+                    try {
+                        System.out.println("hace algo");
+                        users aux = u.getDatosUsuario(jtf_id.getText());
+                        if (aux != null) {
+                            jtf_nombre.setText(aux.getNombre());
+                            jtf_correo.setText(aux.getCorreo());
+                            existia = true;
+                            jLabel2.setVisible(existia);
+                        }
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(CrearProveedor.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    jtf_nombre.setText("");
+                    jtf_correo.setText("");
+                    existia = false;
+                    jLabel2.setVisible(existia);
+                }
+
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+            });
+        }
+        if (!idCreacion.equalsIgnoreCase("")) {
+            JOptionPane.showMessageDialog(null, "Haga clic en aceptar y oprima la tecla espacio");
+        }
     }
 
     /**
@@ -50,25 +97,46 @@ public class CrearUsuario extends javax.swing.JFrame {
 
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0));
         jlb_titulo = new javax.swing.JLabel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jtf_id = new javax.swing.JTextField();
-        jtf_nombre = new javax.swing.JTextField();
-        jtf_correo = new javax.swing.JTextField();
-        jcbx_area = new javax.swing.JComboBox();
+        btn_Aceptar = new javax.swing.JButton();
+        btn_Cerrar = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         lbl_identificacion = new javax.swing.JLabel();
         lbl_nombre = new javax.swing.JLabel();
         lbl_correo = new javax.swing.JLabel();
         jlb_creacion6 = new javax.swing.JLabel();
-        btn_Aceptar = new javax.swing.JButton();
-        btn_Cerrar = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jtf_id = new javax.swing.JTextField();
+        jtf_nombre = new javax.swing.JTextField();
+        jtf_correo = new javax.swing.JTextField();
+        jcbx_area = new javax.swing.JComboBox();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         jlb_titulo.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
-        jlb_titulo.setText("Creación de Usuario");
+        jlb_titulo.setText("Usuario");
+
+        btn_Aceptar.setText("Aceptar");
+        btn_Aceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_AceptarActionPerformed(evt);
+            }
+        });
+
+        btn_Cerrar.setText("Cerrar");
+        btn_Cerrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_CerrarActionPerformed(evt);
+            }
+        });
+
+        lbl_identificacion.setText("Identificación");
+
+        lbl_nombre.setText("Nombre");
+
+        lbl_correo.setText("Correo");
+
+        jlb_creacion6.setText("Área");
 
         jtf_id.setMaximumSize(new java.awt.Dimension(6, 20));
 
@@ -101,14 +169,6 @@ public class CrearUsuario extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        lbl_identificacion.setText("Identificación");
-
-        lbl_nombre.setText("Nombre");
-
-        lbl_correo.setText("Correo");
-
-        jlb_creacion6.setText("Área");
-
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -120,6 +180,8 @@ public class CrearUsuario extends javax.swing.JFrame {
                     .addComponent(lbl_nombre)
                     .addComponent(lbl_correo)
                     .addComponent(jlb_creacion6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -134,44 +196,13 @@ public class CrearUsuario extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jlb_creacion6)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Creación", jPanel1);
-
-        btn_Aceptar.setText("Aceptar");
-        btn_Aceptar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_AceptarActionPerformed(evt);
-            }
-        });
-
-        btn_Cerrar.setText("Cerrar");
-        btn_Cerrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_CerrarActionPerformed(evt);
-            }
-        });
+        jLabel2.setForeground(new java.awt.Color(255, 0, 51));
+        jLabel2.setText("Debe seleccionar de nuevo este campo");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -180,28 +211,31 @@ public class CrearUsuario extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane1)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jlb_titulo)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(btn_Cerrar)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btn_Aceptar)
+                            .addGap(19, 19, 19)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btn_Cerrar)
-                        .addGap(9, 9, 9)
-                        .addComponent(btn_Aceptar)))
-                .addContainerGap())
+                        .addComponent(jLabel2)
+                        .addGap(84, 84, 84))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jlb_titulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_Cerrar)
-                    .addComponent(btn_Aceptar))
+                    .addComponent(btn_Aceptar)
+                    .addComponent(btn_Cerrar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -209,12 +243,18 @@ public class CrearUsuario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_AceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_AceptarActionPerformed
-        this.crearUsuario();
+        if (existia == false) {
+            this.crearUsuario();
+        } else {
+            this.editarUsuario();
+        }
      }//GEN-LAST:event_btn_AceptarActionPerformed
 
     private void btn_CerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CerrarActionPerformed
-        MenuPrincipal menu = new MenuPrincipal(id);
-        menu.setVisible(true);
+        if (this.idCreacion.equalsIgnoreCase("")) {
+            MenuCreaciones menu = new MenuCreaciones(id);
+            menu.setVisible(true);
+        }
         this.setVisible(false);
     }//GEN-LAST:event_btn_CerrarActionPerformed
 
@@ -273,10 +313,9 @@ public class CrearUsuario extends javax.swing.JFrame {
     private javax.swing.JButton btn_Aceptar;
     private javax.swing.JButton btn_Cerrar;
     private javax.swing.Box.Filler filler1;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JComboBox jcbx_area;
     private javax.swing.JLabel jlb_creacion6;
     private javax.swing.JLabel jlb_titulo;
@@ -356,5 +395,46 @@ public class CrearUsuario extends javax.swing.JFrame {
 
     private void setIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+    }
+
+    private void editarUsuario() {
+        String identificacion = this.jtf_id.getText();
+        String nombre = this.jtf_nombre.getText();
+        String correo = this.jtf_correo.getText();
+        String psw = this.jtf_id.getText();
+        int area = this.jcbx_area.getSelectedIndex();
+        String labo = null;
+        boolean editado = false;
+        boolean val = validar(correo);
+        if (area == 0) {
+            labo = "MB";
+        }
+        if (area == 1) {
+            labo = "FQ";
+        }
+        if (area == 2) {
+            labo = "MA";
+        }
+        if (area == 3) {
+            labo = "EQ";
+        }
+        Usuario ad = cliente.Cliente.conectarU();
+        if (val == true && identificacion.isEmpty() == false && nombre.isEmpty()
+                == false && correo.isEmpty() == false && psw.isEmpty() == false) {
+            try {
+                users uuuu = new users(new BigDecimal(identificacion.trim()), nombre, correo, labo);
+                editado = ad.EditarUsuario(uuuu);
+                if (editado == true) {
+                    JOptionPane.showMessageDialog(null, "Usuario editado satisfactoriamente");
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se pudo editar el usuario");
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(CrearUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingrese todos los campos");
+        }
+
     }
 }

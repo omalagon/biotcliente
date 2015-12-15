@@ -17,6 +17,8 @@ import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -59,8 +61,39 @@ public class Solicitudes extends javax.swing.JFrame {
         this.jTFieldNombreSolicitante.setText(usuario);
         this.jTFieldNombreSolicitante.setEditable(false);
         this.jlbFecha.setText(cadenaFecha);
-        //this.btnRefrescarSolicitudes.doClick();
+        this.btnRefrescarSolicitudes.doClick();
+        this.Observaciones.setLineWrap(true);
+        Observaciones.getDocument().addDocumentListener(new DocumentListener() {
+            int length = Observaciones.getText().length();
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                length = Observaciones.getText().length();
+                lblRestantes.setText(Integer.toString((500-length)));
+                String maximo ="";
+                if(new Integer(lblRestantes.getText())<0)
+                {
+                    JOptionPane.showMessageDialog(null, ""
+                            + "<html>"
+                            + "<body>"
+                            + "Si la cantidad de caracteres ingresados en el campo de observaciones"
+                            + " es mayor a 500,<br></br> la solicitud no se guardará"
+                            + "</body>"
+                            + "</html>" );
+                }
+                
+            }
 
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                length = Observaciones.getText().length();
+                lblRestantes.setText(Integer.toString((500-length)));
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
     }
 
     /**
@@ -80,7 +113,6 @@ public class Solicitudes extends javax.swing.JFrame {
         jlbFecha = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        Observaciones = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel6 = new javax.swing.JLabel();
         jTFieldAreaProcesoSolicitante = new javax.swing.JTextField();
@@ -98,6 +130,10 @@ public class Solicitudes extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         btnAgregar = new javax.swing.JButton();
         BotonEnviar = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        Observaciones = new javax.swing.JTextArea();
+        jLabel13 = new javax.swing.JLabel();
+        lblRestantes = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaVerSolicitudes = new javax.swing.JTable();
@@ -120,8 +156,6 @@ public class Solicitudes extends javax.swing.JFrame {
         jLabel3.setText("Nota: Si necesita algún ítem que no se encuentre en el inventario,");
 
         jLabel5.setText("Observaciones");
-
-        Observaciones.setToolTipText("");
 
         jLabel6.setText("Area o Proceso solicitante");
 
@@ -225,6 +259,14 @@ public class Solicitudes extends javax.swing.JFrame {
 
         jPanel3Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {BotonEnviar, btnAgregar, btnVolver});
 
+        Observaciones.setColumns(20);
+        Observaciones.setRows(5);
+        jScrollPane3.setViewportView(Observaciones);
+
+        jLabel13.setText("Caracteres restantes:");
+
+        lblRestantes.setText("500");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -234,15 +276,6 @@ public class Solicitudes extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel7))
-                                .addGap(12, 12, 12)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
-                                    .addComponent(Observaciones)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -264,7 +297,21 @@ public class Solicitudes extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jTFieldNombreSolicitante, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                                     .addComponent(jTFieldAreaProcesoSolicitante))
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel7))
+                                .addGap(12, 12, 12)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel13)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(lblRestantes)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
+                                    .addComponent(jScrollPane3))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
@@ -299,11 +346,13 @@ public class Solicitudes extends javax.swing.JFrame {
                             .addComponent(jLabel8))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Observaciones, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                            .addComponent(jLabel5)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel13)
+                            .addComponent(lblRestantes))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3)
@@ -532,7 +581,7 @@ public class Solicitudes extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BotonEnviar;
-    private javax.swing.JTextField Observaciones;
+    private javax.swing.JTextArea Observaciones;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnRefrescarSolicitudes;
     private javax.swing.JButton btnVolver;
@@ -540,6 +589,7 @@ public class Solicitudes extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -553,6 +603,7 @@ public class Solicitudes extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JTextField jTFieldAreaProcesoSolicitante;
@@ -561,6 +612,7 @@ public class Solicitudes extends javax.swing.JFrame {
     public static javax.swing.JTable jTableIngresarItems;
     private javax.swing.JLabel jlbFecha;
     private javax.swing.JLabel labelAdministrador;
+    private javax.swing.JLabel lblRestantes;
     private javax.swing.JTable tablaVerSolicitudes;
     // End of variables declaration//GEN-END:variables
 

@@ -25,6 +25,7 @@ public class CrearProveedor extends javax.swing.JFrame {
     private static String id = null;
     private static String tabla = "";
     private static Boolean existia = false;
+    private String NITProv = "";
 
     /**
      * Creates new form creaciones
@@ -33,56 +34,62 @@ public class CrearProveedor extends javax.swing.JFrame {
         initComponents();
     }
 
-    public CrearProveedor(String id) {
+    public CrearProveedor(String id, String NITProv) {
         initComponents();
         this.setLocationRelativeTo(null);
         CrearProveedor.id = id;
+        this.NITProv = NITProv;
+        jtf_nit.setText(this.NITProv);
         setIcon();
-        jtf_nit.getDocument().addDocumentListener(new DocumentListener() {
+        if (this.NITProv != "") {
+            jtf_nit.getDocument().addDocumentListener(new DocumentListener() {
+                @Override
+                public void insertUpdate(DocumentEvent e) {
 
-            @Override
-            public void insertUpdate(DocumentEvent e) {
+                    Usuario u = cliente.Cliente.conectarU();
+                    try {
+                        proveedor datosProveedor = u.getDatosProveedor(jtf_nit.getText());
+                        if (datosProveedor != null) {
+                            jtf_nombre.setText(datosProveedor.getNombre());
+                            jtf_dir.setText(datosProveedor.getDireccion());
+                            jtf_tel.setText(datosProveedor.getTelefono());
+                            jtf_fax.setText(datosProveedor.getTelefax());
+                            jtf_ciudad.setText(datosProveedor.getCiudad());
+                            jtf_correo.setText(datosProveedor.getCorreo());
+                            jtf_cel.setText(datosProveedor.getCelular());
+                            jtf_contacto.setText(datosProveedor.getContacto());
 
-                Usuario u = cliente.Cliente.conectarU();
-                try {
-                    proveedor datosProveedor = u.getDatosProveedor(jtf_nit.getText());
-                    if (datosProveedor != null) {
-                        jtf_nombre.setText(datosProveedor.getNombre());
-                        jtf_dir.setText(datosProveedor.getDireccion());
-                        jtf_tel.setText(datosProveedor.getTelefono());
-                        jtf_fax.setText(datosProveedor.getTelefax());
-                        jtf_ciudad.setText(datosProveedor.getCiudad());
-                        jtf_correo.setText(datosProveedor.getCorreo());
-                        jtf_cel.setText(datosProveedor.getCelular());
-                        jtf_contacto.setText(datosProveedor.getContacto());
-                        
-                        existia = true;
+                            existia = true;
+                        }
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(CrearProveedor.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                } catch (RemoteException ex) {
-                    Logger.getLogger(CrearProveedor.class.getName()).log(Level.SEVERE, null, ex);
+
                 }
 
-            }
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    jtf_nombre.setText("");
+                    jtf_dir.setText("");
+                    jtf_tel.setText("");
+                    jtf_fax.setText("");
+                    jtf_ciudad.setText("");
+                    jtf_correo.setText("");
+                    jtf_cel.setText("");
+                    jtf_contacto.setText("");
+                    existia = false;
+                }
 
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                jtf_nombre.setText("");
-                jtf_dir.setText("");
-                jtf_tel.setText("");
-                jtf_fax.setText("");
-                jtf_ciudad.setText("");
-                jtf_correo.setText("");
-                jtf_cel.setText("");
-                jtf_contacto.setText("");
-                existia = false;
-            }
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    System.out.println("cambiando el valor");
 
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                System.out.println("cambiando el valor");
-
-            }
-        });
+                }
+            });
+        }
+        if (!NITProv.equalsIgnoreCase("")) {
+            JOptionPane.showMessageDialog(null, "Haga clic en aceptar y oprima la tecla espacio");
+        }
     }
 
     /**
@@ -96,18 +103,8 @@ public class CrearProveedor extends javax.swing.JFrame {
 
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0));
         jlb_titulo = new javax.swing.JLabel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jtf_nit = new javax.swing.JTextField();
-        jtf_nombre = new javax.swing.JTextField();
-        jtf_dir = new javax.swing.JTextField();
-        jtf_tel = new javax.swing.JTextField();
-        jtf_fax = new javax.swing.JTextField();
-        jtf_ciudad = new javax.swing.JTextField();
-        jtf_correo = new javax.swing.JTextField();
-        jtf_cel = new javax.swing.JTextField();
-        jtf_contacto = new javax.swing.JTextField();
+        btnAceptar = new javax.swing.JButton();
+        btnCerrar = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         lbl_nit = new javax.swing.JLabel();
         lbl_nombre = new javax.swing.JLabel();
@@ -118,13 +115,53 @@ public class CrearProveedor extends javax.swing.JFrame {
         lbl_pais = new javax.swing.JLabel();
         lbl_pais1 = new javax.swing.JLabel();
         lbl_pais2 = new javax.swing.JLabel();
-        btnAceptar = new javax.swing.JButton();
-        btnCerrar = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jtf_nit = new javax.swing.JTextField();
+        jtf_nombre = new javax.swing.JTextField();
+        jtf_dir = new javax.swing.JTextField();
+        jtf_tel = new javax.swing.JTextField();
+        jtf_fax = new javax.swing.JTextField();
+        jtf_ciudad = new javax.swing.JTextField();
+        jtf_correo = new javax.swing.JTextField();
+        jtf_cel = new javax.swing.JTextField();
+        jtf_contacto = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         jlb_titulo.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
-        jlb_titulo.setText("Creación de Proveedor");
+        jlb_titulo.setText("Proveedor");
+
+        btnAceptar.setText("Aceptar");
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAceptarActionPerformed(evt);
+            }
+        });
+
+        btnCerrar.setText("Cerrar");
+        btnCerrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarActionPerformed(evt);
+            }
+        });
+
+        lbl_nit.setText("NIT");
+
+        lbl_nombre.setText("Nombre");
+
+        lbl_dir.setText("Dirección");
+
+        lbl_tel.setText("Teléfono");
+
+        lbl_fax.setText("Telefax");
+
+        lbl_ciudad.setText("Ciudad");
+
+        lbl_pais.setText("Correo");
+
+        lbl_pais1.setText("Celular");
+
+        lbl_pais2.setText("Contacto");
 
         jtf_nit.setMaximumSize(new java.awt.Dimension(6, 20));
 
@@ -165,28 +202,10 @@ public class CrearProveedor extends javax.swing.JFrame {
                 .addComponent(jtf_correo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jtf_cel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jtf_contacto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        lbl_nit.setText("NIT");
-
-        lbl_nombre.setText("Nombre");
-
-        lbl_dir.setText("Dirección");
-
-        lbl_tel.setText("Teléfono");
-
-        lbl_fax.setText("Telefax");
-
-        lbl_ciudad.setText("Ciudad");
-
-        lbl_pais.setText("Correo");
-
-        lbl_pais1.setText("Celular");
-
-        lbl_pais2.setText("Contacto");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -204,7 +223,9 @@ public class CrearProveedor extends javax.swing.JFrame {
                     .addComponent(lbl_tel)
                     .addComponent(lbl_pais1)
                     .addComponent(lbl_pais2))
-                .addContainerGap(89, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -228,44 +249,10 @@ public class CrearProveedor extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(lbl_pais2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(0, 0, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-
-        jTabbedPane1.addTab("Creación", jPanel1);
-
-        btnAceptar.setText("Aceptar");
-        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAceptarActionPerformed(evt);
-            }
-        });
-
-        btnCerrar.setText("Cerrar");
-        btnCerrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCerrarActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -274,14 +261,16 @@ public class CrearProveedor extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jlb_titulo)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnCerrar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnAceptar)))
+                        .addComponent(btnAceptar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jlb_titulo)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -289,9 +278,9 @@ public class CrearProveedor extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jlb_titulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnAceptar)
                     .addComponent(btnCerrar))
@@ -310,8 +299,10 @@ public class CrearProveedor extends javax.swing.JFrame {
      }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
-        MenuPrincipal menu = new MenuPrincipal(id);
-        menu.setVisible(true);
+        if (this.NITProv.equalsIgnoreCase("")) {
+            CrearProveedor_Version2 cr = new CrearProveedor_Version2(id);
+            cr.setVisible(true);
+        }
         this.setVisible(false);
     }//GEN-LAST:event_btnCerrarActionPerformed
 
@@ -361,10 +352,8 @@ public class CrearProveedor extends javax.swing.JFrame {
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnCerrar;
     private javax.swing.Box.Filler filler1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel jlb_titulo;
     private javax.swing.JTextField jtf_cel;
     private javax.swing.JTextField jtf_ciudad;
@@ -391,9 +380,9 @@ public class CrearProveedor extends javax.swing.JFrame {
         boolean valido;
         try {
             valido = u.CrearProveedor(
-                    this.jtf_nit.getText(), this.jtf_nombre.getText(), this.jtf_dir.getText(), this.jtf_tel.getText(), 
+                    this.jtf_nit.getText(), this.jtf_nombre.getText(), this.jtf_dir.getText(), this.jtf_tel.getText(),
                     this.jtf_fax.getText(), this.jtf_ciudad.getText(), this.jtf_correo.getText(), this.jtf_cel.getText(), this.jtf_contacto.getText()
-                );
+            );
             if (valido) {
                 JOptionPane.showMessageDialog(null, "Proveedor Creado");
             } else {
@@ -413,7 +402,6 @@ public class CrearProveedor extends javax.swing.JFrame {
                     this.jtf_nit.getText(), this.jtf_nombre.getText(), this.jtf_dir.getText(), this.jtf_tel.getText(),
                     this.jtf_fax.getText(), this.jtf_ciudad.getText(), this.jtf_correo.getText(), this.jtf_cel.getText(),
                     this.jtf_contacto.getText()
-            
             );
             if (valido) {
                 JOptionPane.showMessageDialog(null, "Proveedor Editado");

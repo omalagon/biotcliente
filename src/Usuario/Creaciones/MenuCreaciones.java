@@ -187,14 +187,14 @@ public class MenuCreaciones extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_CrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CrearUsuarioActionPerformed
-        
-        
         if(p.isCrearUsuario()==0)
         {
             JOptionPane.showMessageDialog(null, "No tiene acceso");
         }else{
-        CrearUsuario us = new CrearUsuario(id);
-        us.setVisible(true);
+            CrearUsuario_Version2 us = new CrearUsuario_Version2(id);
+            us.setVisible(true);
+//        CrearUsuario us = new CrearUsuario(id);
+//        us.setVisible(true);
         this.setVisible(false);
         }
     }//GEN-LAST:event_btn_CrearUsuarioActionPerformed
@@ -204,7 +204,9 @@ public class MenuCreaciones extends javax.swing.JFrame {
         {
             JOptionPane.showMessageDialog(null, "No tiene acceso");
         }else{
-        CrearProveedor crPr = new CrearProveedor(this.id);
+//        CrearProveedor crPr = new CrearProveedor(this.id);
+//        crPr.setVisible(true);
+        CrearProveedor_Version2 crPr = new CrearProveedor_Version2(id);
         crPr.setVisible(true);
         this.setVisible(false);
         }
@@ -215,9 +217,13 @@ public class MenuCreaciones extends javax.swing.JFrame {
         {
             JOptionPane.showMessageDialog(null, "No tiene acceso");
         }else{
-        CrearItem cr = new CrearItem(this.id);
+            CrearItem_Version2 cr= new CrearItem_Version2(id);
+            cr.setVisible(true);
+            this.setVisible(false);
+        /*CrearItem cr = new CrearItem(this.id);
+            
         cr.setVisible(true);
-        this.setVisible(false);}
+        this.setVisible(false);*/}
     }//GEN-LAST:event_btn_CrearItemActionPerformed
 
     private void btn_VolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_VolverActionPerformed

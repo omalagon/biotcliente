@@ -24,7 +24,6 @@ public class datos implements Serializable{
     {
         Usuario u =cliente.Cliente.conectarU();
         try {
-            System.out.println("entra aca");
             listadoPermisos = u.lista(id);
         } catch (RemoteException ex) {
             Logger.getLogger(datos.class.getName()).log(Level.SEVERE, null, ex);

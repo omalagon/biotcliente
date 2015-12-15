@@ -114,7 +114,7 @@
                   <Data value="Aprobar Cotizaciones"/>
                   <Data value="Generar Ordenes de Compra"/>
                   <Data value="Bloquear Usuario"/>
-                  <Data value="null"/>
+                  <Data value="Generar FDC-001"/>
                 </Column>
                 <Column editable="true" title="Asignado?" type="java.lang.Boolean">
                   <Data value="null"/>
