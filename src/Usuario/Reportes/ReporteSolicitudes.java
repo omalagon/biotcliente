@@ -43,21 +43,11 @@ public class ReporteSolicitudes extends javax.swing.JFrame {
         initComponents();
     }
 
-    public ReporteSolicitudes(String id, ArrayList<solicitudPr> sol) {
+    public ReporteSolicitudes(String id) {
         initComponents();
         this.id = id;
         this.setLocationRelativeTo(null);
-        DefaultTableModel df = (DefaultTableModel) this.tabla_sol.getModel();
-        for (solicitudPr s : sol) {
-            Object[] datos = new Object[5];
-            datos[0] = s.getNum_sol();
-            datos[1] = new Date(s.getFecha().getTimeInMillis());
-            datos[2] = s.getIdSolicitante();
-            datos[3] = s.getNombreSolicitante();
-            datos[4] = s.getObservaciones();
-            df.addRow(datos);
-        }
-
+        this.btnRefrescar.doClick();
         tabla_sol.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             Usuario u = cliente.Cliente.conectarU();
 
@@ -68,7 +58,6 @@ public class ReporteSolicitudes extends javax.swing.JFrame {
                 DefaultTableModel df = (DefaultTableModel) tablaItems.getModel();
                 for (int i = df.getRowCount() - 1; i >= 0; i--) {
                     df.removeRow(i);
-
                 }
 
                 for (int i = items.size() - 1; i >= 0; i--) {
@@ -118,6 +107,8 @@ public class ReporteSolicitudes extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         btnVolver = new javax.swing.JButton();
         jLabel17 = new javax.swing.JLabel();
+        btnRefrescar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -167,6 +158,16 @@ public class ReporteSolicitudes extends javax.swing.JFrame {
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel17.setText("Generar .pdf");
 
+        btnRefrescar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ACT.png"))); // NOI18N
+        btnRefrescar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefrescarActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Refrescar");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -174,17 +175,28 @@ public class ReporteSolicitudes extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnRefrescar, btnVolver});
+
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addGap(8, 8, 8)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel17)
@@ -194,6 +206,8 @@ public class ReporteSolicitudes extends javax.swing.JFrame {
                 .addComponent(jLabel16)
                 .addContainerGap())
         );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnRefrescar, btnVolver});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -205,26 +219,26 @@ public class ReporteSolicitudes extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jlb_titulo)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 701, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 661, Short.MAX_VALUE)
                     .addComponent(jScrollPane1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 210, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jlb_titulo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -246,18 +260,18 @@ public class ReporteSolicitudes extends javax.swing.JFrame {
         String observaciones = tabla_sol.getValueAt(tabla_sol.getSelectedRow(), 4).toString();
         String area = null;
         String nombreAo = null;
-        
+
         try {
             area = u.area((String) tabla_sol.getValueAt(tabla_sol.getSelectedRow(), 2));
             nombreAo = u.getUsuario(id);
         } catch (RemoteException ex) {
             Logger.getLogger(ReporteSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
         }
-        String rutaImagen ;
+        String rutaImagen;
         String property = System.getProperty("user.dir");
         System.out.println(property);
-        rutaImagen = property.concat("\\..\\src\\Imagenes\\iconB.png");
-        
+        rutaImagen = property.concat("\\src\\Imagenes\\iconB.png");
+
         HashMap<String, String> parametros = new HashMap<>();
         parametros.put("image", rutaImagen);
         parametros.put("numsol", numSol);
@@ -279,6 +293,29 @@ public class ReporteSolicitudes extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
+        Usuario u = cliente.Cliente.conectarU();
+        ArrayList<solicitudPr> sol = new ArrayList<>();
+        try {
+            sol = u.numsSol();
+        } catch (RemoteException ex) {
+            Logger.getLogger(ReporteSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        DefaultTableModel df = (DefaultTableModel) this.tabla_sol.getModel();
+        for (int i = df.getRowCount() - 1; i >= 0; i--) {
+            df.removeRow(i);
+        }
+        for (solicitudPr s : sol) {
+            Object[] datos = new Object[5];
+            datos[0] = s.getNum_sol();
+            datos[1] = new Date(s.getFecha().getTimeInMillis());
+            datos[2] = s.getIdSolicitante();
+            datos[3] = s.getNombreSolicitante();
+            datos[4] = s.getObservaciones();
+            df.addRow(datos);
+        }
+    }//GEN-LAST:event_btnRefrescarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -316,8 +353,10 @@ public class ReporteSolicitudes extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRefrescar;
     private javax.swing.JButton btnVolver;
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JPanel jPanel1;

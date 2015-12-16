@@ -381,18 +381,13 @@ public class MenuReportes extends javax.swing.JFrame {
 
     private void btnSolicitudesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolicitudesActionPerformed
         if (p.getGenfdc001() == 0) {
-            JOptionPane.showMessageDialog(null, "No tiene acceso");
+            JOptionPane.showMessageDialog(null, "No tiene acceso, solo puede imprimir las solicitudes que ha realizado, en el "
+                    + "menú Procedimientos->Solicitudes->Mis Solicitudes");
         } else {
-
             Usuario u = cliente.Cliente.conectarU();
-            try {
-                ArrayList<solicitudPr> numsSol = u.numsSol();
-                ReporteSolicitudes reporte = new ReporteSolicitudes(id, numsSol);
-                reporte.setVisible(true);
-                this.setVisible(false);
-            } catch (RemoteException ex) {
-                Logger.getLogger(MenuReportes.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            ReporteSolicitudes reporte = new ReporteSolicitudes(id);
+            reporte.setVisible(true);
+            this.setVisible(false);
         }
     }//GEN-LAST:event_btnSolicitudesActionPerformed
 

@@ -31,6 +31,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -47,7 +49,7 @@ public class Solicitudes extends javax.swing.JFrame {
     private String area = null;
     String usuario = null;
     private ArrayList<solicitudPr> solicitudes = null;
-
+    private ArrayList<Object[]> items = new ArrayList<>();
     /**
      * Creates new form Solicitudes
      */
@@ -76,6 +78,7 @@ public class Solicitudes extends javax.swing.JFrame {
         this.jlbFecha.setText(cadenaFecha);
         this.btnRefrescarSolicitudes.doClick();
         this.Observaciones.setLineWrap(true);
+        this.jta_verObs.setLineWrap(true);
         Observaciones.getDocument().addDocumentListener(new DocumentListener() {
             int length = Observaciones.getText().length();
 
@@ -107,6 +110,40 @@ public class Solicitudes extends javax.swing.JFrame {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         });
+        
+        tablaVerSolicitudes.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            Usuario u = cliente.Cliente.conectarU();
+
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                BigDecimal aux = new BigDecimal(tablaVerSolicitudes.getValueAt(tablaVerSolicitudes.getSelectedRow(), 0).toString());
+                DefaultTableModel df = (DefaultTableModel) tablaItems.getModel();
+                for (int i = df.getRowCount() - 1; i >= 0; i--) {
+                    df.removeRow(i);
+                }
+                for (int i = items.size() - 1; i >= 0; i--) {
+                    items.remove(i);
+                }
+
+                try {
+                    ArrayList<ItemInventario> items_numSol = u.getItems_numSol(aux);
+                    for (ItemInventario i : items_numSol) {
+                        Object[] datos = new Object[3];
+                        datos[0] = i.getNumero();
+                        datos[1] = i.getDescripcion();
+                        datos[2] = i.getCantidadSolicitada();
+                        items.add(datos);
+                        df.addRow(datos);
+
+                    }
+                    jta_verObs.setText(u.getSolicitud(Integer.toString(aux.intValue())).getObservaciones());
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ReporteSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }
+        });
+        
     }
 
     /**
@@ -157,6 +194,12 @@ public class Solicitudes extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         btnVolver1 = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tablaItems = new javax.swing.JTable();
+        jLabel16 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jta_verObs = new javax.swing.JTextArea();
+        jLabel17 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -386,11 +429,11 @@ public class Solicitudes extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Numero de Solicitud", "Fecha", "Observaciones"
+                "Numero de Solicitud", "Fecha"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -476,26 +519,75 @@ public class Solicitudes extends javax.swing.JFrame {
 
         jPanel4Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnGenerarFDC001, btnRefrescarSolicitudes, btnVolver1});
 
+        tablaItems.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Código Interno", "Descripción", "Cantidad Solicitada"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane5.setViewportView(tablaItems);
+        if (tablaItems.getColumnModel().getColumnCount() > 0) {
+            tablaItems.getColumnModel().getColumn(2).setHeaderValue("Observaciones");
+        }
+
+        jLabel16.setText("Observaciones:");
+
+        jta_verObs.setColumns(20);
+        jta_verObs.setRows(5);
+        jScrollPane4.setViewportView(jta_verObs);
+
+        jLabel17.setText("Items de la solicitud");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 867, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel17)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 857, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel16)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(40, 40, 40))
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel16)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel17)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Mis Solicitudes", jPanel2);
@@ -539,10 +631,10 @@ public class Solicitudes extends javax.swing.JFrame {
         for (solicitudPr s : solicitudes) {
             fecha = s.getFecha();
 
-            Object[] datos = new Object[3];
+            Object[] datos = new Object[2];
             datos[0] = s.getNum_sol();
             datos[1] = fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR);
-            datos[2] = s.getObservaciones();
+            
             df.addRow(datos);
         }
     }//GEN-LAST:event_btnRefrescarSolicitudesActionPerformed
@@ -709,6 +801,8 @@ public class Solicitudes extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -724,6 +818,8 @@ public class Solicitudes extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JTextField jTFieldAreaProcesoSolicitante;
@@ -731,8 +827,10 @@ public class Solicitudes extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane1;
     public static javax.swing.JTable jTableIngresarItems;
     private javax.swing.JLabel jlbFecha;
+    private javax.swing.JTextArea jta_verObs;
     private javax.swing.JLabel labelAdministrador;
     private javax.swing.JLabel lblRestantes;
+    private javax.swing.JTable tablaItems;
     private javax.swing.JTable tablaVerSolicitudes;
     // End of variables declaration//GEN-END:variables
 
