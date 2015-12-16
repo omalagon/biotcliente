@@ -82,6 +82,7 @@ public class Solicitudes extends javax.swing.JFrame {
         this.btnRefrescarSolicitudes.doClick();
         this.Observaciones.setLineWrap(true);
         this.jta_verObs.setLineWrap(true);
+        this.jta_verObs.setEditable(false);
         Observaciones.getDocument().addDocumentListener(new DocumentListener() {
             int length = Observaciones.getText().length();
 
@@ -539,9 +540,6 @@ public class Solicitudes extends javax.swing.JFrame {
             }
         });
         jScrollPane5.setViewportView(tablaItems);
-        if (tablaItems.getColumnModel().getColumnCount() > 0) {
-            tablaItems.getColumnModel().getColumn(2).setHeaderValue("Observaciones");
-        }
 
         jLabel16.setText("Observaciones:");
 

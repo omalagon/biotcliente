@@ -11,7 +11,7 @@ import Usuario.MenuPrincipal;
 import Usuario.Recepciones.Recepciones;
 import Usuario.OCompra.Aprobados;
 import java.awt.Toolkit;
-import Usuario.Proc_Solicitudes;
+import Usuario.Solicitudes.Proc_Solicitudes;
 import Usuario.datos;
 import javax.swing.JOptionPane;
 

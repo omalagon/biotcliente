@@ -5,7 +5,7 @@
  */
 package Usuario;
 
-import Usuario.Proc_Solicitudes;
+import Usuario.Solicitudes.Proc_Solicitudes;
 import EstructurasAux.ItemInventario;
 import EstructurasAux.itemxproveedor;
 import EstructurasAux.proveedor;
