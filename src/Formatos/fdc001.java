@@ -91,11 +91,12 @@ public class fdc001 implements JRDataSource {
             datasource.addAsistente(pp);
         }
         String property = System.getProperty("user.dir");
-        rutaArchivo= property.concat("\\..\\src\\Formatos\\fdc001.jrxml");
+        rutaArchivo= property.concat("\\src\\Formatos\\fdc001.jrxml");
         try {
             inputStream = new FileInputStream(rutaArchivo);
         } catch (FileNotFoundException ex) {
             JOptionPane.showMessageDialog(null, "Error al leer el fichero de carga jasper report " + ex.getMessage());
+            
         }
 
         try {
@@ -107,8 +108,10 @@ public class fdc001 implements JRDataSource {
             pdf = new File(ruta);
         } catch (JRException e) {
             JOptionPane.showMessageDialog(null, "Error al cargar fichero jrml jasper report " + e.getMessage());
+            System.out.println(e.getCause());
         }
         return pdf;
     }
 
 }
+//uuid="((([0-9])*([A-Za-z])*)*-*)*"

@@ -7,16 +7,28 @@ package Usuario.solicitudes;
 
 import EstructurasAux.ItemInventario;
 import EstructurasAux.solicitudPr;
+import EstructurasAux.users;
+import Formatos.fdc001;
+import Usuario.Reportes.ReporteSolicitudes;
+import Usuario.Utils.InputDialogCBox;
+import cliente.Cliente;
 import interfaces.Usuario;
+import java.awt.Desktop;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
@@ -34,6 +46,7 @@ public class Solicitudes extends javax.swing.JFrame {
     private static String cadenaFecha = hoy.get(Calendar.DAY_OF_MONTH) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/" + hoy.get(Calendar.YEAR);
     private String area = null;
     String usuario = null;
+    private ArrayList<solicitudPr> solicitudes = null;
 
     /**
      * Creates new form Solicitudes
@@ -65,28 +78,28 @@ public class Solicitudes extends javax.swing.JFrame {
         this.Observaciones.setLineWrap(true);
         Observaciones.getDocument().addDocumentListener(new DocumentListener() {
             int length = Observaciones.getText().length();
+
             @Override
             public void insertUpdate(DocumentEvent e) {
                 length = Observaciones.getText().length();
-                lblRestantes.setText(Integer.toString((500-length)));
-                String maximo ="";
-                if(new Integer(lblRestantes.getText())<0)
-                {
+                lblRestantes.setText(Integer.toString((475 - length)));
+                String maximo = "";
+                if (new Integer(lblRestantes.getText()) < 0) {
                     JOptionPane.showMessageDialog(null, ""
                             + "<html>"
                             + "<body>"
                             + "Si la cantidad de caracteres ingresados en el campo de observaciones"
-                            + " es mayor a 500,<br></br> la solicitud no se guardará"
+                            + " es mayor a 475,<br></br> la solicitud no se guardará"
                             + "</body>"
-                            + "</html>" );
+                            + "</html>");
                 }
-                
+
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
                 length = Observaciones.getText().length();
-                lblRestantes.setText(Integer.toString((500-length)));
+                lblRestantes.setText(Integer.toString((475 - length)));
             }
 
             @Override
@@ -137,8 +150,13 @@ public class Solicitudes extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaVerSolicitudes = new javax.swing.JTable();
+        jPanel4 = new javax.swing.JPanel();
+        btnGenerarFDC001 = new javax.swing.JButton();
+        jLabel14 = new javax.swing.JLabel();
         btnRefrescarSolicitudes = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
+        btnVolver1 = new javax.swing.JButton();
+        jLabel15 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -265,7 +283,7 @@ public class Solicitudes extends javax.swing.JFrame {
 
         jLabel13.setText("Caracteres restantes:");
 
-        lblRestantes.setText("500");
+        lblRestantes.setText("475");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -310,7 +328,7 @@ public class Solicitudes extends javax.swing.JFrame {
                                         .addGap(18, 18, 18)
                                         .addComponent(lblRestantes)
                                         .addGap(0, 0, Short.MAX_VALUE))
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 732, Short.MAX_VALUE)
                                     .addComponent(jScrollPane3))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -381,43 +399,103 @@ public class Solicitudes extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tablaVerSolicitudes);
 
+        btnGenerarFDC001.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/L_reportes.png"))); // NOI18N
+        btnGenerarFDC001.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarFDC001ActionPerformed(evt);
+            }
+        });
+
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel14.setText("Generar Archivo");
+
         btnRefrescarSolicitudes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ACT.png"))); // NOI18N
+        btnRefrescarSolicitudes.setMaximumSize(new java.awt.Dimension(133, 91));
+        btnRefrescarSolicitudes.setMinimumSize(new java.awt.Dimension(133, 91));
         btnRefrescarSolicitudes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRefrescarSolicitudesActionPerformed(evt);
             }
         });
 
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel12.setText("Refrescar");
+        jLabel12.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        btnVolver1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/NO.png"))); // NOI18N
+        btnVolver1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolver1ActionPerformed(evt);
+            }
+        });
+
+        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel15.setText("Volver");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnVolver1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnGenerarFDC001, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRefrescarSolicitudes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
+        );
+
+        jPanel4Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnGenerarFDC001, btnRefrescarSolicitudes, btnVolver1});
+
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnRefrescarSolicitudes, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnGenerarFDC001, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnVolver1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel15)
+                .addContainerGap())
+        );
+
+        jPanel4Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnGenerarFDC001, btnRefrescarSolicitudes, btnVolver1});
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 834, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnRefrescarSolicitudes, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addComponent(jLabel12)))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 867, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(btnRefrescarSolicitudes, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel12)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
-                        .addGap(40, 40, 40))))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(40, 40, 40))
         );
 
         jTabbedPane1.addTab("Mis Solicitudes", jPanel2);
@@ -445,29 +523,28 @@ public class Solicitudes extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRefrescarSolicitudesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarSolicitudesActionPerformed
-    DefaultTableModel df = (DefaultTableModel) this.tablaVerSolicitudes.getModel();
-    Usuario u = cliente.Cliente.conectarU();
+        DefaultTableModel df = (DefaultTableModel) this.tablaVerSolicitudes.getModel();
+        Usuario u = cliente.Cliente.conectarU();
 
-    for (int i = df.getRowCount() - 1; i >= 0; i--) {
-        df.removeRow(i);
-    }
-    ArrayList<solicitudPr> solicitudes = null;
-    try {
-        solicitudes = u.getIdSolicitud(Solicitudes.id);
-        System.out.println(solicitudes);
-    } catch (RemoteException ex) {
-        Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    GregorianCalendar fecha;
-    for (solicitudPr s : solicitudes) {
-        fecha = s.getFecha();
+        for (int i = df.getRowCount() - 1; i >= 0; i--) {
+            df.removeRow(i);
+        }
+        try {
+            solicitudes = u.getIdSolicitud(Solicitudes.id);
+            System.out.println(solicitudes);
+        } catch (RemoteException ex) {
+            Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        GregorianCalendar fecha;
+        for (solicitudPr s : solicitudes) {
+            fecha = s.getFecha();
 
-        Object[] datos = new Object[3];
-        datos[0] = s.getNum_sol();
-        datos[1] = fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR);
-        datos[2] = s.getObservaciones();
-        df.addRow(datos);
-    }
+            Object[] datos = new Object[3];
+            datos[0] = s.getNum_sol();
+            datos[1] = fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR);
+            datos[2] = s.getObservaciones();
+            df.addRow(datos);
+        }
     }//GEN-LAST:event_btnRefrescarSolicitudesActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
@@ -478,7 +555,7 @@ public class Solicitudes extends javax.swing.JFrame {
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         MenuSolicitud menu = new MenuSolicitud(id);
         menu.setVisible(true);
-        
+
         this.setVisible(false);
     }//GEN-LAST:event_btnVolverActionPerformed
 
@@ -487,10 +564,10 @@ public class Solicitudes extends javax.swing.JFrame {
             DefaultTableModel df = (DefaultTableModel) Solicitudes.jTableIngresarItems.getModel();
             Usuario u = cliente.Cliente.conectarU();
             solicitudPr sol = new solicitudPr(hoy, this.Observaciones.getText(), null, Solicitudes.id, jTFieldNombreSolicitante.getText(), u.area(id));
-            BigDecimal numSol = null;
+            Integer numSol = 0;
             int ite = 0;
             boolean aceptado = true;
-            
+
             for (ItemInventario i : itemsSolicitud) {
                 if (df.getValueAt(ite, 5) != null) {
                     if (new Float(df.getValueAt(ite, 5).toString()) > 0) {
@@ -502,7 +579,7 @@ public class Solicitudes extends javax.swing.JFrame {
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Ingrese la cantidad solicitada");
-                    
+
                 }
             }
             for (ItemInventario ii : itemsSolicitud) {
@@ -510,30 +587,19 @@ public class Solicitudes extends javax.swing.JFrame {
                     aceptado = false;
                 }
             }
-            
+
             if (aceptado == true) {
-                try {
-                    u.crearSolicitud(sol);
-                    numSol = u.solicitudValida(Solicitudes.id);
-                    
-                } catch (RemoteException ex) {
-                    Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                System.out.println(numSol);
-                if (numSol != null) {
-                    try {
-                        u.itemxsolicitud(Solicitudes.itemsSolicitud, numSol);
-                    } catch (RemoteException ex) {
-                        Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                numSol = u.crearSolicitud(sol, Solicitudes.itemsSolicitud);
+                if (numSol != 0) {
                     JOptionPane.showMessageDialog(null, "El número de la solicitud hecha es:  " + numSol);
                 } else {
                     JOptionPane.showMessageDialog(null, "No fue posible realizar la solicitud");
-                    
+
                 }
             }
-            
+
             this.btnRefrescarSolicitudes.doClick();
+            this.Observaciones.setText("");
             for (int i = df.getRowCount() - 1; i >= 0; i--) {
                 df.removeRow(i);
             }
@@ -541,6 +607,55 @@ public class Solicitudes extends javax.swing.JFrame {
             Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_BotonEnviarActionPerformed
+
+    private void btnGenerarFDC001ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarFDC001ActionPerformed
+        Usuario u = Cliente.conectarU();
+        ArrayList<Object> aux = new ArrayList<>();
+        for (solicitudPr s : this.solicitudes) {
+            aux.add(Integer.toString(s.getNum_sol().intValue()));
+        }
+        InputDialogCBox seleccion = new InputDialogCBox(aux.toArray(), "Seleccione el numero de solicitud", "Numero solicitud");
+        String numSol = seleccion.retorno();
+        if (numSol != null) {
+            try {
+                solicitudPr solicitud = u.getSolicitud(numSol);
+                JOptionPane.showMessageDialog(null, "Obteniendo información de la solicitud", "Solicitud",JOptionPane.INFORMATION_MESSAGE);
+                ArrayList<ItemInventario> items_numSol = u.getItems_numSol(new BigDecimal(numSol));
+                users datosUsuario = u.getDatosUsuario(this.id);
+                fdc001 fdc = new fdc001();
+                String rutaImagen;
+                String property = System.getProperty("user.dir");
+                System.out.println(property);
+                rutaImagen = property.concat("\\src\\Imagenes\\iconB.png");
+                HashMap<String, String> parametros = new HashMap<>();
+                parametros.put("image", rutaImagen);
+                parametros.put("numsol", numSol);
+                parametros.put("fecha", new java.util.Date(solicitud.getFecha().getTimeInMillis()).toString());
+                parametros.put("area", datosUsuario.getLab());
+                parametros.put("nombreRA", datosUsuario.getNombre());
+                parametros.put("observaciones", solicitud.getObservaciones());
+                parametros.put("nombreAO", "");
+                JFileChooser chooser = new JFileChooser();
+                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                chooser.showOpenDialog(this);
+                String path = chooser.getSelectedFile().getPath();
+                File archivo = fdc001.metodo(path, parametros,ItemInventario.toObjectArray(items_numSol));
+                if (JOptionPane.showConfirmDialog(null, "¿Desea abrir el archivo?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    try {
+                        Desktop.getDesktop().open(archivo);
+                    } catch (IOException ex) {
+                        Logger.getLogger(ReporteSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnGenerarFDC001ActionPerformed
+
+    private void btnVolver1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolver1ActionPerformed
+        this.btnVolver.doClick();
+    }//GEN-LAST:event_btnVolver1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -583,13 +698,17 @@ public class Solicitudes extends javax.swing.JFrame {
     private javax.swing.JButton BotonEnviar;
     private javax.swing.JTextArea Observaciones;
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnGenerarFDC001;
     private javax.swing.JButton btnRefrescarSolicitudes;
     private javax.swing.JButton btnVolver;
+    private javax.swing.JButton btnVolver1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -601,6 +720,7 @@ public class Solicitudes extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -632,13 +752,6 @@ public class Solicitudes extends javax.swing.JFrame {
             datos[2] = i.getDescripcion();
             datos[3] = i.getCantidad();
             datos[4] = i.getPresentacion();
-/*
-            Vector datos = new Vector();
-            datos.add(i.getInventario());
-            datos.add(i.getNumero());
-            datos.add(i.getDescripcion());
-            datos.add(i.getCantidad());
-            datos.add(i.getPresentacion());*/
             df.addRow(datos);
         }
     }
