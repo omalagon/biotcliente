@@ -7,6 +7,7 @@ package Usuario;
 
 import EstructurasAux.ItemInventario;
 import EstructurasAux.solicitudPr;
+import EstructurasAux.users;
 import Usuario.Reportes.itemxProveedor;
 import interfaces.Usuario;
 import java.awt.Toolkit;
@@ -40,9 +41,9 @@ public class Proc_Solicitudes extends javax.swing.JFrame {
         Usuario u = cliente.Cliente.conectarU();
         String user = new String();
         try {
-            
-            user = u.getUsuario(id);
-            area = u.area(id);
+            users datosUsuario = u.getDatosUsuario(id);
+            user = datosUsuario.getNombre();
+            area = datosUsuario.getLab();
         } catch (RemoteException ex) {
             Logger.getLogger(Proc_Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -375,7 +376,7 @@ public class Proc_Solicitudes extends javax.swing.JFrame {
         }
         ArrayList<solicitudPr> solNoRev = null;
         try {
-            solNoRev = u.getNoRevisadas();
+            solNoRev = u.getSolicitudes("NO");
         } catch (RemoteException ex) {
             Logger.getLogger(Proc_Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -86,7 +86,7 @@ public class fdc001 implements JRDataSource {
         DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd__HH_mm_ss");
         String rutaArchivo = null;
         java.util.Date date = new java.util.Date();
-        ruta += "\\FDC001" + date.toString().substring(0, 4) + parametros.get("numsol") + ".pdf";
+        ruta += "\\FDC001" + date.toString().substring(0, 4) +" - Solicitud no." + parametros.get("numsol") + ".pdf";
         for (Object[] pp : pedido) {
             datasource.addAsistente(pp);
         }

@@ -6,11 +6,13 @@
 package Usuario.Reportes;
 
 import EstructurasAux.ItemInventario;
+import EstructurasAux.datosFormatos;
 import EstructurasAux.solicitudPr;
 import Formatos.fdc001;
 import Usuario.MenuPrincipal;
 import interfaces.Usuario;
 import java.awt.Desktop;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -48,6 +50,7 @@ public class ReporteSolicitudes extends javax.swing.JFrame {
         this.id = id;
         this.setLocationRelativeTo(null);
         this.btnRefrescar.doClick();
+        setIcon();
         tabla_sol.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             Usuario u = cliente.Cliente.conectarU();
 
@@ -260,10 +263,12 @@ public class ReporteSolicitudes extends javax.swing.JFrame {
         String observaciones = tabla_sol.getValueAt(tabla_sol.getSelectedRow(), 4).toString();
         String area = null;
         String nombreAo = null;
-
+        JOptionPane.showMessageDialog(null, "Obteniendo información de la solicitud", "Solicitud",JOptionPane.INFORMATION_MESSAGE);
+        datosFormatos datos= null;        
         try {
-            area = u.area((String) tabla_sol.getValueAt(tabla_sol.getSelectedRow(), 2));
+            area = u.getDatosUsuario((String) tabla_sol.getValueAt(tabla_sol.getSelectedRow(), 2)).getLab();
             nombreAo = u.getUsuario(id);
+            datos= u.getDatos("1");
         } catch (RemoteException ex) {
             Logger.getLogger(ReporteSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -273,6 +278,9 @@ public class ReporteSolicitudes extends javax.swing.JFrame {
         rutaImagen = property.concat("\\src\\Imagenes\\iconB.png");
 
         HashMap<String, String> parametros = new HashMap<>();
+        parametros.put("revision", datos.getRevision());
+        parametros.put("fechaAct", datos.getFechaActualizacion());
+        parametros.put("titulo", datos.getTitulo());
         parametros.put("image", rutaImagen);
         parametros.put("numsol", numSol);
         parametros.put("fecha", fecha);
@@ -352,6 +360,9 @@ public class ReporteSolicitudes extends javax.swing.JFrame {
         });
     }
 
+    private void setIcon() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRefrescar;
     private javax.swing.JButton btnVolver;

@@ -58,6 +58,9 @@
 	<parameter name="nombreAO" class="java.lang.String"/>
 	<parameter name="image" class="java.lang.String"/>
 	<parameter name="numsol" class="java.lang.String"/>
+	<parameter name="revision" class="java.lang.String"/>
+	<parameter name="fechaAct" class="java.lang.String"/>
+	<parameter name="titulo" class="java.lang.String"/>
 	<field name="inv" class="java.lang.String"/>
 	<field name="nombre" class="java.lang.String"/>
 	<field name="desc" class="java.lang.String"/>
@@ -86,7 +89,7 @@
 				<text><![CDATA[F-DC-001]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="20" width="128" height="20" />
+				<reportElement x="0" y="20" width="71" height="20" />
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -97,7 +100,7 @@
 				<textElement textAlignment="Center">
 					<font fontName="Arial" isBold="true"/>
 				</textElement>
-				<text><![CDATA[REVISION 05]]></text>
+				<text><![CDATA[REVISION]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="40" width="128" height="20" />
@@ -112,34 +115,6 @@
 					<font fontName="Arial" isBold="true"/>
 				</textElement>
 				<text><![CDATA[FECHA ACTUALIZACION]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="59" width="128" height="20" />
-				<box>
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" isBold="true"/>
-				</textElement>
-				<text><![CDATA[29 -SEP-14]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="128" y="0" width="381" height="40" />
-				<box>
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="14" isBold="true"/>
-				</textElement>
-				<text><![CDATA[SOLICITUD DE PRODUCTOS O BIENES]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="509" y="0" width="135" height="79" />
@@ -163,6 +138,42 @@
 					<font size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{numsol}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="71" y="20" width="57" height="20" />
+				<box leftPadding="0">
+					<topPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{revision}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="59" width="128" height="20" />
+				<box>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fechaAct}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="128" y="0" width="381" height="40" />
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titulo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

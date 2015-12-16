@@ -6,6 +6,7 @@
 package Usuario.solicitudes;
 
 import EstructurasAux.ItemInventario;
+import EstructurasAux.datosFormatos;
 import EstructurasAux.solicitudPr;
 import EstructurasAux.users;
 import Formatos.fdc001;
@@ -50,6 +51,7 @@ public class Solicitudes extends javax.swing.JFrame {
     String usuario = null;
     private ArrayList<solicitudPr> solicitudes = null;
     private ArrayList<Object[]> items = new ArrayList<>();
+
     /**
      * Creates new form Solicitudes
      */
@@ -65,8 +67,9 @@ public class Solicitudes extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setSize(1050, this.getHeight());
         try {
-            this.area = u.area(id);
-            this.usuario = u.getUsuario(id);
+            users datosUsuario = u.getDatosUsuario(id);
+            this.area = datosUsuario.getLab();
+            this.usuario = datosUsuario.getNombre();
         } catch (RemoteException ex) {
             Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -110,7 +113,7 @@ public class Solicitudes extends javax.swing.JFrame {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         });
-        
+
         tablaVerSolicitudes.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             Usuario u = cliente.Cliente.conectarU();
 
@@ -140,10 +143,10 @@ public class Solicitudes extends javax.swing.JFrame {
                 } catch (RemoteException ex) {
                     Logger.getLogger(ReporteSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
             }
         });
-        
+
     }
 
     /**
@@ -634,7 +637,7 @@ public class Solicitudes extends javax.swing.JFrame {
             Object[] datos = new Object[2];
             datos[0] = s.getNum_sol();
             datos[1] = fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR);
-            
+
             df.addRow(datos);
         }
     }//GEN-LAST:event_btnRefrescarSolicitudesActionPerformed
@@ -655,7 +658,8 @@ public class Solicitudes extends javax.swing.JFrame {
         try {
             DefaultTableModel df = (DefaultTableModel) Solicitudes.jTableIngresarItems.getModel();
             Usuario u = cliente.Cliente.conectarU();
-            solicitudPr sol = new solicitudPr(hoy, this.Observaciones.getText(), null, Solicitudes.id, jTFieldNombreSolicitante.getText(), u.area(id));
+            users datosUsuario = u.getDatosUsuario(id);
+            solicitudPr sol = new solicitudPr(hoy, this.Observaciones.getText(), null, Solicitudes.id, jTFieldNombreSolicitante.getText(), datosUsuario.getLab());
             Integer numSol = 0;
             int ite = 0;
             boolean aceptado = true;
@@ -711,15 +715,19 @@ public class Solicitudes extends javax.swing.JFrame {
         if (numSol != null) {
             try {
                 solicitudPr solicitud = u.getSolicitud(numSol);
-                JOptionPane.showMessageDialog(null, "Obteniendo información de la solicitud", "Solicitud",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Obteniendo información de la solicitud", "Solicitud", JOptionPane.INFORMATION_MESSAGE);
                 ArrayList<ItemInventario> items_numSol = u.getItems_numSol(new BigDecimal(numSol));
                 users datosUsuario = u.getDatosUsuario(this.id);
                 fdc001 fdc = new fdc001();
+                datosFormatos datos = u.getDatos("1");
                 String rutaImagen;
                 String property = System.getProperty("user.dir");
                 System.out.println(property);
                 rutaImagen = property.concat("\\src\\Imagenes\\iconB.png");
                 HashMap<String, String> parametros = new HashMap<>();
+                parametros.put("revision", datos.getRevision());
+                parametros.put("fechaAct", datos.getFechaActualizacion());
+                parametros.put("titulo", datos.getTitulo());
                 parametros.put("image", rutaImagen);
                 parametros.put("numsol", numSol);
                 parametros.put("fecha", new java.util.Date(solicitud.getFecha().getTimeInMillis()).toString());
@@ -731,7 +739,7 @@ public class Solicitudes extends javax.swing.JFrame {
                 chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 chooser.showOpenDialog(this);
                 String path = chooser.getSelectedFile().getPath();
-                File archivo = fdc001.metodo(path, parametros,ItemInventario.toObjectArray(items_numSol));
+                File archivo = fdc001.metodo(path, parametros, ItemInventario.toObjectArray(items_numSol));
                 if (JOptionPane.showConfirmDialog(null, "¿Desea abrir el archivo?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                     try {
                         Desktop.getDesktop().open(archivo);

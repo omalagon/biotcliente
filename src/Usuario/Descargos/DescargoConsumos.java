@@ -7,6 +7,7 @@ package Usuario.Descargos;
 
 import EstructurasAux.ItemInventario;
 import EstructurasAux.descargo;
+import EstructurasAux.users;
 import cliente.Cliente;
 import interfaces.Usuario;
 import java.awt.Toolkit;
@@ -49,8 +50,9 @@ public class DescargoConsumos extends javax.swing.JFrame {
         this.lblPres.setText("");
         this.jLabel7.setText("");
         try {
-            User = u.getUsuario(ide);
-            area = u.area(ide);
+            users datosUsuario = u.getDatosUsuario(ide);
+            User = datosUsuario.getNombre();
+            area = datosUsuario.getLab();
             itemInventarioAdmin = u.itemInventarioAdmin();
         } catch (RemoteException ex) {
             Logger.getLogger(DescargoConsumos.class.getName()).log(Level.SEVERE, null, ex);
