@@ -6,10 +6,12 @@
 package Usuario.Solicitudes;
 
 import EstructurasAux.ItemInventario;
+import EstructurasAux.proveedor;
 import EstructurasAux.solicitudPr;
 import EstructurasAux.users;
 import Usuario.Cotizacion;
 import Usuario.Reportes.itemxProveedor;
+import Usuario.Reportes.verProveedores;
 import interfaces.Usuario;
 import java.awt.Toolkit;
 import java.math.BigDecimal;
@@ -24,7 +26,11 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import Usuario.solicitudes.MenuSolicitud;
 import Usuario.solicitudes.RevisarSolicitudes;
+import java.util.HashMap;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -34,14 +40,15 @@ public class Proc_Solicitudes extends javax.swing.JFrame {
 
     private static String id = null;
     private static String area = new String();
+    private ArrayList<ItemInventario> itemsXSolicitud = null;
+    private String numSol;
 
-    public Proc_Solicitudes(String id) {
+    public Proc_Solicitudes(String id) throws RemoteException {
         initComponents();
         Proc_Solicitudes.id = id;
         setIcon();
         this.jta_verObs.setLineWrap(true);
         this.jta_verObs.setEditable(false);
-        this.btnrefrescar.doClick();
         Usuario u = cliente.Cliente.conectarU();
         String user = new String();
         try {
@@ -61,6 +68,7 @@ public class Proc_Solicitudes extends javax.swing.JFrame {
                 llenarContenidoSol(new BigDecimal(tablaSolicitudesNoRev.getValueAt(tablaSolicitudesNoRev.getSelectedRow(), 0).toString()));
                 try {
                     jta_verObs.setText(u.getSolicitud(Integer.toString(aux.intValue())).getObservaciones());
+                    numSol = tablaSolicitudesNoRev.getValueAt(tablaSolicitudesNoRev.getSelectedRow(), 0).toString();
                 } catch (RemoteException ex) {
                     Logger.getLogger(Proc_Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -68,7 +76,35 @@ public class Proc_Solicitudes extends javax.swing.JFrame {
 
         });
         this.setLocationRelativeTo(null);
+        DefaultTableModel df_NoRevisadas = (DefaultTableModel) this.tablaSolicitudesNoRev.getModel();
+        for (int i = df_NoRevisadas.getRowCount() - 1; i >= 0; i--) {
+            df_NoRevisadas.removeRow(i);
+        }
 
+        ArrayList<solicitudPr> solNoRev = null;
+        try {
+            solNoRev = u.getSolicitudes("NO");
+        } catch (RemoteException ex) {
+            Logger.getLogger(Proc_Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        GregorianCalendar fecha = new GregorianCalendar();
+        for (solicitudPr s : solNoRev) {
+            fecha = s.getFecha();
+            Object[] datos = new Object[3];
+            datos[0] = s.getNum_sol();
+            datos[1] = fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR);
+            datos[2] = s.getNombreSolicitante();
+            df_NoRevisadas.addRow(datos);
+        }
+        TableColumn cCalidadCell = this.tablaContenido.getColumnModel().getColumn(7);
+        JComboBox Apro_NITProv = new JComboBox();
+        HashMap<String, String> mapProv = new HashMap();
+        ArrayList<proveedor> todosProveedores = u.todosProveedores();
+        for (proveedor p : todosProveedores) {
+            Apro_NITProv.addItem(p.getNombre());
+            mapProv.put(p.getNombre(), p.getNIT());
+        }
+        cCalidadCell.setCellEditor(new DefaultCellEditor(Apro_NITProv));
     }
 
     /**
@@ -122,14 +158,14 @@ public class Proc_Solicitudes extends javax.swing.JFrame {
 
             },
             new String [] {
-                "C. Interno", "Inventario", "Descripción", "Cant. Solicitada", "Precio", "Cant. Aprobada", "Aprobar"
+                "C. Interno", "Inventario", "Descripción", "Cant. Solicitada", "Precio", "Cant. Aprobada", "Aprobar", "Proveedor"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, false, true
+                false, false, false, false, true, false, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -187,6 +223,7 @@ public class Proc_Solicitudes extends javax.swing.JFrame {
         jLabel3.setText("Volver");
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/prov.png"))); // NOI18N
+        jButton1.setToolTipText("Muestra los ítems por proveedor y el listado de proveedores");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -194,7 +231,7 @@ public class Proc_Solicitudes extends javax.swing.JFrame {
         });
 
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("Item x Prov");
+        jLabel6.setText("Item x Prov y Prov");
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/apro.png"))); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -240,9 +277,9 @@ public class Proc_Solicitudes extends javax.swing.JFrame {
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(9, 9, 9)
-                .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addGap(9, 9, 9)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -316,29 +353,6 @@ public class Proc_Solicitudes extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnrefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnrefrescarActionPerformed
-        DefaultTableModel df_NoRevisadas = (DefaultTableModel) this.tablaSolicitudesNoRev.getModel();
-        Usuario u = cliente.Cliente.conectarU();
-        for (int i = df_NoRevisadas.getRowCount() - 1; i >= 0; i--) {
-            df_NoRevisadas.removeRow(i);
-        }
-        ArrayList<solicitudPr> solNoRev = null;
-        try {
-            solNoRev = u.getSolicitudes("NO");
-        } catch (RemoteException ex) {
-            Logger.getLogger(Proc_Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        GregorianCalendar fecha = new GregorianCalendar();
-        for (solicitudPr s : solNoRev) {
-            fecha = s.getFecha();
-            Object[] datos = new Object[3];
-            datos[0] = s.getNum_sol();
-            datos[1] = fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR);
-            datos[2] = s.getNombreSolicitante();
-            df_NoRevisadas.addRow(datos);
-        }
-    }//GEN-LAST:event_btnrefrescarActionPerformed
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         MenuSolicitud menu = new MenuSolicitud(id);
         menu.setVisible(true);
@@ -348,13 +362,58 @@ public class Proc_Solicitudes extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         itemxProveedor itm = new itemxProveedor();
         itm.setVisible(true);
+        verProveedores ver = new verProveedores();
+        ver.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        RevisarSolicitudes rev = new RevisarSolicitudes(Proc_Solicitudes.id);
-        rev.setVisible(true);
-        this.setVisible(false);
+        DefaultTableModel df_contenido = (DefaultTableModel) this.tablaContenido.getModel();
+        Usuario u = cliente.Cliente.conectarU();
+        boolean valido;
+        ItemInventario itm;
+        ArrayList<ItemInventario> itemsAprobados = new ArrayList<>();
+
+        for (int i = 0; i < df_contenido.getRowCount(); i++) {
+            valido = (boolean) df_contenido.getValueAt(i, 6);
+            if (valido) {
+                try {
+                    itm = this.itemsXSolicitud.get(i);
+                    String cadPrecio = df_contenido.getValueAt(i, 4).toString();
+                    String cadCantAprobada = df_contenido.getValueAt(i, 5).toString();
+                    String cadProveedor = df_contenido.getValueAt(i, 7).toString();
+                    if (!cadPrecio.equalsIgnoreCase("") && !cadCantAprobada.equalsIgnoreCase("")
+                            && !cadProveedor.equalsIgnoreCase("")) {
+                        float precio = new Float(cadPrecio);
+                        float cantAprobada = new Float(cadCantAprobada);
+                        itm.setPrecio(precio);
+                        itm.setCantidadSolicitada(cantAprobada); //Se cambia por la cantidad aprobada
+                    }
+                    itemsAprobados.add(itm);
+                    solicitudPr sol = new solicitudPr(new BigDecimal(numSol), id);
+                    boolean aprobarItems = u.aprobarItems(itemsAprobados, sol, cadProveedor);
+                    if (aprobarItems) {
+                        JOptionPane.showMessageDialog(null, "La solicitud ha sido aprobada");
+                    }
+                } catch (RemoteException ex) {
+                    Logger.getLogger(Proc_Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        }
+
+
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void btnrefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnrefrescarActionPerformed
+        Proc_Solicitudes p;
+        try {
+            p = new Proc_Solicitudes(id);
+            p.setVisible(true);
+        } catch (RemoteException ex) {
+            Logger.getLogger(Proc_Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.dispose();
+    }//GEN-LAST:event_btnrefrescarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -396,17 +455,18 @@ public class Proc_Solicitudes extends javax.swing.JFrame {
     private void llenarContenidoSol(BigDecimal numsol) {
         Usuario n = cliente.Cliente.conectarU();
         DefaultTableModel df_contenido = (DefaultTableModel) this.tablaContenido.getModel();
-        ArrayList<ItemInventario> tablaCotizacionesIXP = null;
+
         for (int i = df_contenido.getRowCount() - 1; i >= 0; i--) {
             df_contenido.removeRow(i);
         }
 
         try {
-            tablaCotizacionesIXP = n.getItemsAprobado(numsol, "NO");
+            itemsXSolicitud = n.getItemsAprobado(numsol, "NO");
         } catch (RemoteException ex) {
             Logger.getLogger(Proc_Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for (ItemInventario i : tablaCotizacionesIXP) {
+        int j = 0;
+        for (ItemInventario i : itemsXSolicitud) {
             Object[] datos = new Object[6];
             datos[0] = i.getNumero();
             datos[1] = i.getInventario();
@@ -415,6 +475,8 @@ public class Proc_Solicitudes extends javax.swing.JFrame {
             datos[4] = "";
             datos[5] = i.getCantidadSolicitada();
             df_contenido.addRow(datos);
+            df_contenido.setValueAt(false, j, 6);
+            j++;
         }
     }
 

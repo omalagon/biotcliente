@@ -13,6 +13,9 @@ import Usuario.OCompra.Aprobados;
 import java.awt.Toolkit;
 import Usuario.Solicitudes.Proc_Solicitudes;
 import Usuario.datos;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -23,6 +26,7 @@ public class MenuSolicitud extends javax.swing.JFrame {
 
     private String id = null;
     private permisos p;
+
     /**
      * Creates new form Seleccion
      */
@@ -36,8 +40,8 @@ public class MenuSolicitud extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.id = id;
         setIcon();
-        p= new datos().lista(id);
-        
+        p = new datos().lista(id);
+
     }
 
     /**
@@ -249,35 +253,32 @@ public class MenuSolicitud extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOCompraActionPerformed
-        if(p.isGenerarOrdenesCompra()==0)
-        {
+        if (p.isGenerarOrdenesCompra() == 0) {
             JOptionPane.showMessageDialog(null, "No tiene acceso");
-        }else{
-        Aprobados ap = new Aprobados(id);
-        ap.setVisible(true);
-        this.setVisible(false);
+        } else {
+            Aprobados ap = new Aprobados(id);
+            ap.setVisible(true);
+            this.setVisible(false);
         }
     }//GEN-LAST:event_btnOCompraActionPerformed
 
     private void btnAprobarCotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAprobarCotActionPerformed
-        if(p.isAprobarCotizaciones()==0)
-        {
+        if (p.isAprobarCotizaciones() == 0) {
             JOptionPane.showMessageDialog(null, "No tiene acceso");
-        }else{
-        RevisarSolicitudes rev = new RevisarSolicitudes(this.id);
-        rev.setVisible(true);
-        this.setVisible(false);
+        } else {
+            RevisarSolicitudes rev = new RevisarSolicitudes(this.id);
+            rev.setVisible(true);
+            this.setVisible(false);
         }
     }//GEN-LAST:event_btnAprobarCotActionPerformed
 
     private void btnRealizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarActionPerformed
-        if(p.isSolicitarProductos()==0)
-        {
+        if (p.isSolicitarProductos() == 0) {
             JOptionPane.showMessageDialog(null, "No tiene acceso");
-        }else{
-        MenuPrincipal.ventanaSolicitudes = new Solicitudes(id);
-        MenuPrincipal.ventanaSolicitudes.setVisible(true);
-        this.setVisible(false);
+        } else {
+            MenuPrincipal.ventanaSolicitudes = new Solicitudes(id);
+            MenuPrincipal.ventanaSolicitudes.setVisible(true);
+            this.setVisible(false);
         }
     }//GEN-LAST:event_btnRealizarActionPerformed
 
@@ -288,36 +289,38 @@ public class MenuSolicitud extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btn_SolicitudesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SolicitudesActionPerformed
-        if(p.isRealizarCotizaciones()==0)
-        {
+        if (p.isRealizarCotizaciones() == 0) {
             JOptionPane.showMessageDialog(null, "No tiene acceso");
-        }else{
-        Proc_Solicitudes pp = new Proc_Solicitudes(id);
-        pp.setVisible(true);
-        this.setVisible(false);
+        } else {
+            Proc_Solicitudes pp;
+            try {
+                pp = new Proc_Solicitudes(id);
+                pp.setVisible(true);
+            } catch (RemoteException ex) {
+                Logger.getLogger(MenuSolicitud.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            this.setVisible(false);
         }
     }//GEN-LAST:event_btn_SolicitudesActionPerformed
 
     private void btnGestionarSolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionarSolActionPerformed
-        if(p.isRecibirPedidos()==0)
-        {
+        if (p.isRecibirPedidos() == 0) {
             JOptionPane.showMessageDialog(null, "No tiene acceso");
-        }else{
-        
-        Recepciones rec = new Recepciones(id);
-        rec.setVisible(true);
-        this.setVisible(false);
+        } else {
+
+            Recepciones rec = new Recepciones(id);
+            rec.setVisible(true);
+            this.setVisible(false);
         }
     }//GEN-LAST:event_btnGestionarSolActionPerformed
 
     private void btnRecibirPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecibirPedidosActionPerformed
-       if(p.isDescargarConsumos()==0)
-        {
+        if (p.isDescargarConsumos() == 0) {
             JOptionPane.showMessageDialog(null, "No tiene acceso");
-        }else{
-        DescargoConsumos des = new DescargoConsumos(id);
-        des.setVisible(true);
-       }
+        } else {
+            DescargoConsumos des = new DescargoConsumos(id);
+            des.setVisible(true);
+        }
     }//GEN-LAST:event_btnRecibirPedidosActionPerformed
 
     /**

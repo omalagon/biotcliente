@@ -35,6 +35,7 @@ public class Cotizacion extends javax.swing.JFrame {
     private static String id = null;
     private HashMap<String, String> mapProv = new HashMap();
     boolean asociado = false;
+
     /**
      * Creates new form Cotizacion
      */
@@ -53,8 +54,8 @@ public class Cotizacion extends javax.swing.JFrame {
         ArrayList<proveedor> todosProveedores = u.todosProveedores();
         for (proveedor p : todosProveedores) {
             Apro_NITProv.addItem(p.getNombre());
-            mapProv.put(p.getNombre(),p.getNIT());
-        }   
+            mapProv.put(p.getNombre(), p.getNIT());
+        }
         cCalidadCell.setCellEditor(new DefaultCellEditor(Apro_NITProv));
 
         this.numeroSolicitudCot.setText(toString);
@@ -367,32 +368,27 @@ public class Cotizacion extends javax.swing.JFrame {
                 proveedor = this.mapProv.get(df_itemsCot.getValueAt(ite, 7).toString());
                 System.out.println(id + " " + codigo + " " + lab + " " + numSol + " " + precio);
                 actPrecio = u.generarCotizacion(id, proveedor, codigo, lab, numSol, precio);
-                
-                
-                
-                DefaultTableModel dfixp =(DefaultTableModel) tablaIXP.getModel();
-                
+
+                DefaultTableModel dfixp = (DefaultTableModel) tablaIXP.getModel();
+
                 ArrayList<ItemInventario> itemxProv = u.itemxProv(proveedor, codigo);
-                if(itemxProv.size()==0)
-                {
+                if (itemxProv.size() == 0) {
                     u.asociarItem(codigo, proveedor, Float.toString(precio));
-                        JOptionPane.showMessageDialog(null, "El proveedor seleccionado no estaba asociado al ítem.\nSe acaba de asociar con los siguientes parámetros:"
-                                + "\nCódigo: "+codigo +"\nPrecio: " + precio);
-                }else{
-                for (ItemInventario i : itemxProv) {
-                    System.out.println(i.getNumero());
-                    if(i.getNumero().equalsIgnoreCase(codigo))
-                    {
-                        asociado = true;
-                        System.out.println("entro");
-                    }else
-                    {
-                        
-                        break;
+                    JOptionPane.showMessageDialog(null, "El proveedor seleccionado no estaba asociado al ítem.\nSe acaba de asociar con los siguientes parámetros:"
+                            + "\nCódigo: " + codigo + "\nPrecio: " + precio);
+                } else {
+                    for (ItemInventario i : itemxProv) {
+                        System.out.println(i.getNumero());
+                        if (i.getNumero().equalsIgnoreCase(codigo)) {
+                            asociado = true;
+                            System.out.println("entro");
+                        } else {
+
+                            break;
+                        }
                     }
                 }
-                }
-                
+
             } catch (RemoteException ex) {
                 Logger.getLogger(Cotizacion.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -411,8 +407,14 @@ public class Cotizacion extends javax.swing.JFrame {
     }//GEN-LAST:event_BotonRevisarActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        Proc_Solicitudes sol = new Proc_Solicitudes(Cotizacion.id);
-        sol.setVisible(true);
+        Proc_Solicitudes sol;
+        try {
+            sol = new Proc_Solicitudes(Cotizacion.id);
+
+            sol.setVisible(true);
+        } catch (RemoteException ex) {
+            Logger.getLogger(Cotizacion.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.setVisible(false);
     }//GEN-LAST:event_btnVolverActionPerformed
 
