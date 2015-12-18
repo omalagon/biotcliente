@@ -92,7 +92,7 @@ public class MenuSolicitud extends javax.swing.JFrame {
             }
         });
 
-        jLabel5.setText("Aprobar Cotizaciones");
+        jLabel5.setText("Solicitudes Revisadas");
 
         jLabel6.setText("Generar Ord. Compra");
 
@@ -111,7 +111,7 @@ public class MenuSolicitud extends javax.swing.JFrame {
         });
 
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setText("Procesar Solicitudes");
+        jLabel9.setText("Solicitudes no revisadas");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -266,9 +266,13 @@ public class MenuSolicitud extends javax.swing.JFrame {
         if (p.isAprobarCotizaciones() == 0) {
             JOptionPane.showMessageDialog(null, "No tiene acceso");
         } else {
-            RevisarSolicitudes rev = new RevisarSolicitudes(this.id);
-            rev.setVisible(true);
-            this.setVisible(false);
+            try {
+                Usuario.Solicitudes.Proc_SolicitudesRevisadas pr = new Usuario.Solicitudes.Proc_SolicitudesRevisadas(id);
+                pr.setVisible(true);
+            } catch (RemoteException ex) {
+                Logger.getLogger(MenuSolicitud.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            this.dispose();
         }
     }//GEN-LAST:event_btnAprobarCotActionPerformed
 
