@@ -278,7 +278,7 @@ public class ReporteSolicitudes extends javax.swing.JFrame {
         rutaImagen = property.concat("\\src\\Imagenes\\iconB.png");
 
         HashMap<String, String> parametros = new HashMap<>();
-        parametros.put("revision", datos.getRevision());
+        parametros.put("cargo", area);
         parametros.put("fechaAct", datos.getFechaActualizacion());
         parametros.put("titulo", datos.getTitulo());
         parametros.put("image", rutaImagen);

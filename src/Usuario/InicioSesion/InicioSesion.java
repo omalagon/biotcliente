@@ -8,6 +8,8 @@ package Usuario.InicioSesion;
 import Usuario.MenuPrincipal;
 import Usuario.datos;
 import interfaces.Usuario;
+import java.awt.AWTException;
+import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -31,28 +33,47 @@ public class InicioSesion extends javax.swing.JFrame {
         setIcon();
 
         lbl_psw.addKeyListener(new KeyListener() {
-
             @Override
             public void keyTyped(KeyEvent e) {
-                
             }
-
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     btn_Ingresar.doClick();
-
                 }
             }
-
             @Override
-            public void keyReleased(KeyEvent e) {
-                
+            public void keyReleased(KeyEvent e) { 
+            }
+        });
+        
+        lbl_Id.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    try {
+                        presionarTab();
+                    } catch (AWTException ex) {
+                        Logger.getLogger(InicioSesion.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+            @Override
+            public void keyReleased(KeyEvent e) { 
             }
         });
 
     }
 
+    public static  void presionarTab() throws AWTException
+    {
+        Robot r = new  Robot();
+        r.keyPress(KeyEvent.VK_TAB);
+        r.keyRelease(KeyEvent.VK_TAB);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

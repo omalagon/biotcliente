@@ -8,6 +8,7 @@ package Usuario.Descargos;
 import EstructurasAux.ItemInventario;
 import EstructurasAux.descargo;
 import EstructurasAux.users;
+import Usuario.solicitudes.MenuSolicitud;
 import cliente.Cliente;
 import interfaces.Usuario;
 import java.awt.Toolkit;
@@ -442,7 +443,8 @@ public class DescargoConsumos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVerInvActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        this.setVisible(false);
+        new MenuSolicitud(this.ide).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void chbox_buscadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbox_buscadorActionPerformed

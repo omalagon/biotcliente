@@ -40,10 +40,33 @@ public class VerInventario extends javax.swing.JFrame {
         setIcon();
         this.setLocationRelativeTo(null);
         this.setSize(740, this.getHeight());
-        this.RefrescarInven.doClick();
         tablaInventario.getColumnModel().getColumn(4).setCellRenderer(new ButtonRenderer());
         tablaInventario.getColumnModel().getColumn(4).setCellEditor(new ButtonEditor(new JTextField(),acciones.VER, id, " itemSinDetalles "));
+                DefaultTableModel df = (DefaultTableModel) this.tablaInventario.getModel();
+        for (int i = df.getRowCount() - 1; i >= 0; i--) {
+            df.removeRow(i);
+        }
+        Usuario u = cliente.Cliente.conectarU();
         
+        ArrayList<ItemInventario> itemInventario = null;
+        try {
+            itemInventario = u.itemInventarioAdmin();
+        } catch (RemoteException ex) {
+            Logger.getLogger(VerInventario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        for (ItemInventario i : itemInventario) {
+            Object[] aux = new Object[5];
+            
+            aux[0] =i.getNumero();
+            aux[1]= i.getDescripcion();
+            aux[2] = i.getPresentacion();
+            aux[3] = i.getCantidad();
+            aux[4] = "Ver"+i.getNumero();
+            
+            df.addRow(aux);
+        }
+
     }
 
     /**
@@ -171,30 +194,9 @@ public class VerInventario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void RefrescarInvenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefrescarInvenActionPerformed
-        DefaultTableModel df = (DefaultTableModel) this.tablaInventario.getModel();
-        for (int i = df.getRowCount() - 1; i >= 0; i--) {
-            df.removeRow(i);
-        }
-        Usuario u = cliente.Cliente.conectarU();
-        
-        ArrayList<ItemInventario> itemInventario = null;
-        try {
-            itemInventario = u.itemInventarioAdmin();
-        } catch (RemoteException ex) {
-            Logger.getLogger(VerInventario.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        for (ItemInventario i : itemInventario) {
-            Object[] aux = new Object[5];
-            
-            aux[0] =i.getNumero();
-            aux[1]= i.getDescripcion();
-            aux[2] = i.getPresentacion();
-            aux[3] = i.getCantidad();
-            aux[4] = "Ver"+i.getNumero();
-            
-            df.addRow(aux);
-        }
+        VerInventario verInventario = new VerInventario(id);
+        verInventario.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_RefrescarInvenActionPerformed
 
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed

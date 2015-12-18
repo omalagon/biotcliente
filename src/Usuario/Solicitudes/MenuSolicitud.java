@@ -329,6 +329,7 @@ public class MenuSolicitud extends javax.swing.JFrame {
         } else {
             DescargoConsumos des = new DescargoConsumos(id);
             des.setVisible(true);
+            this.dispose();
         }
     }//GEN-LAST:event_btnRecibirPedidosActionPerformed
 

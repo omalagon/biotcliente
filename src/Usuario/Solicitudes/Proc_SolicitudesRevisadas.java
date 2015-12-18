@@ -52,7 +52,6 @@ public class Proc_SolicitudesRevisadas extends javax.swing.JFrame {
         Proc_SolicitudesRevisadas.id = id;
         setIcon();
         this.jta_verObs.setLineWrap(true);
-        this.jta_verObs.setEditable(false);
         Usuario u = cliente.Cliente.conectarU();
         String user = new String();
         try {
@@ -432,6 +431,7 @@ public class Proc_SolicitudesRevisadas extends javax.swing.JFrame {
                 rutaImagen = property.concat("\\src\\Imagenes\\iconB.png");
                 HashMap<String, String> parametros = new HashMap<>();
                 parametros.put("revision", datos.getRevision());
+                parametros.put("cargo", datosSolicitante.getLab());
                 parametros.put("fechaAct", datos.getFechaActualizacion());
                 parametros.put("titulo", datos.getTitulo());
                 parametros.put("image", rutaImagen);
@@ -439,7 +439,7 @@ public class Proc_SolicitudesRevisadas extends javax.swing.JFrame {
                 parametros.put("fecha", new java.util.Date(solicitud.getFecha().getTimeInMillis()).toString());
                 parametros.put("area", datosSolicitante.getLab());
                 parametros.put("nombreRA", datosSolicitante.getNombre());
-                parametros.put("observaciones", solicitud.getObservaciones());
+                parametros.put("observaciones", this.jta_verObs.getText());
                 parametros.put("nombreAO", datosAO.getNombre());
                 JFileChooser chooser = new JFileChooser();
                 chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);

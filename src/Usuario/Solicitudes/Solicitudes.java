@@ -82,7 +82,6 @@ public class Solicitudes extends javax.swing.JFrame {
         this.btnRefrescarSolicitudes.doClick();
         this.Observaciones.setLineWrap(true);
         this.jta_verObs.setLineWrap(true);
-        this.jta_verObs.setEditable(false);
         Observaciones.getDocument().addDocumentListener(new DocumentListener() {
             int length = Observaciones.getText().length();
 
@@ -720,6 +719,7 @@ public class Solicitudes extends javax.swing.JFrame {
                 rutaImagen = property.concat("\\src\\Imagenes\\iconB.png");
                 HashMap<String, String> parametros = new HashMap<>();
                 parametros.put("revision", datos.getRevision());
+                parametros.put("cargo", datosUsuario.getLab());
                 parametros.put("fechaAct", datos.getFechaActualizacion());
                 parametros.put("titulo", datos.getTitulo());
                 parametros.put("image", rutaImagen);
@@ -727,7 +727,7 @@ public class Solicitudes extends javax.swing.JFrame {
                 parametros.put("fecha", new java.util.Date(solicitud.getFecha().getTimeInMillis()).toString());
                 parametros.put("area", datosUsuario.getLab());
                 parametros.put("nombreRA", datosUsuario.getNombre());
-                parametros.put("observaciones", solicitud.getObservaciones());
+                parametros.put("observaciones", this.Observaciones.getText());
                 parametros.put("nombreAO", "");
                 JFileChooser chooser = new JFileChooser();
                 chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
