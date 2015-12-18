@@ -417,7 +417,7 @@ public class Solicitudes extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel13)
                             .addComponent(lblRestantes))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3)
@@ -583,7 +583,7 @@ public class Solicitudes extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel16)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel17)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -609,7 +609,7 @@ public class Solicitudes extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(labelAdministrador)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1))
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 673, Short.MAX_VALUE))
         );
 
         pack();
@@ -624,7 +624,6 @@ public class Solicitudes extends javax.swing.JFrame {
         }
         try {
             solicitudes = u.getIdSolicitud(Solicitudes.id);
-            System.out.println(solicitudes);
         } catch (RemoteException ex) {
             Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -705,11 +704,8 @@ public class Solicitudes extends javax.swing.JFrame {
     private void btnGenerarFDC001ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarFDC001ActionPerformed
         Usuario u = Cliente.conectarU();
         ArrayList<Object> aux = new ArrayList<>();
-        for (solicitudPr s : this.solicitudes) {
-            aux.add(Integer.toString(s.getNum_sol().intValue()));
-        }
-        InputDialogCBox seleccion = new InputDialogCBox(aux.toArray(), "Seleccione el numero de solicitud", "Numero solicitud");
-        String numSol = seleccion.retorno();
+        DefaultTableModel df = (DefaultTableModel) this.tablaVerSolicitudes.getModel();
+        String numSol = df.getValueAt(this.tablaVerSolicitudes.getSelectedRow(), 0).toString();
         if (numSol != null) {
             try {
                 solicitudPr solicitud = u.getSolicitud(numSol);

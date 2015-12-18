@@ -6,13 +6,14 @@
 package Usuario.Solicitudes;
 
 import EstructurasAux.ItemInventario;
+import EstructurasAux.datosFormatos;
 import EstructurasAux.itemxproveedor;
 import EstructurasAux.proveedor;
 import EstructurasAux.solicitudPr;
 import EstructurasAux.users;
-import Usuario.Cotizacion;
-import Usuario.Reportes.itemxProveedor;
-import Usuario.Reportes.verProveedores;
+import Formatos.fdc001;
+import Usuario.Reportes.ReporteSolicitudes;
+import Usuario.Utils.InputDialogCBox;
 import interfaces.Usuario;
 import java.awt.Toolkit;
 import java.math.BigDecimal;
@@ -26,12 +27,13 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import Usuario.solicitudes.MenuSolicitud;
-import Usuario.solicitudes.RevisarSolicitudes;
+import cliente.Cliente;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
-import javax.swing.DefaultCellEditor;
-import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.table.TableColumn;
 
 /**
  *
@@ -142,6 +144,8 @@ public class Proc_SolicitudesRevisadas extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         btnrefrescar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        btnGenerarFDC001 = new javax.swing.JButton();
+        jLabel14 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -228,6 +232,16 @@ public class Proc_SolicitudesRevisadas extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Refrescar");
 
+        btnGenerarFDC001.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/L_reportes.png"))); // NOI18N
+        btnGenerarFDC001.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarFDC001ActionPerformed(evt);
+            }
+        });
+
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel14.setText("Generar Archivo");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -235,27 +249,37 @@ public class Proc_SolicitudesRevisadas extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(btnrefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(btnGenerarFDC001, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnrefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel1, jLabel7});
 
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnGenerarFDC001, btnrefrescar});
+
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnGenerarFDC001)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnrefrescar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
@@ -268,6 +292,8 @@ public class Proc_SolicitudesRevisadas extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3))
         );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnGenerarFDC001, btnrefrescar});
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("Observaciones");
@@ -291,14 +317,14 @@ public class Proc_SolicitudesRevisadas extends javax.swing.JFrame {
                             .addComponent(jSeparator2)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 794, Short.MAX_VALUE)
+                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 773, Short.MAX_VALUE)
                                     .addComponent(jSeparator1)
                                     .addComponent(jScrollPane1)
                                     .addComponent(jLabel4)
                                     .addComponent(jLabel2)
                                     .addComponent(jScrollPane2))
                                 .addGap(16, 16, 16)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
         layout.setVerticalGroup(
@@ -306,7 +332,7 @@ public class Proc_SolicitudesRevisadas extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -322,9 +348,7 @@ public class Proc_SolicitudesRevisadas extends javax.swing.JFrame {
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -387,6 +411,64 @@ public class Proc_SolicitudesRevisadas extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnrefrescarActionPerformed
 
+    private void btnGenerarFDC001ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarFDC001ActionPerformed
+
+        try {
+            Usuario u = Cliente.conectarU();
+            DefaultTableModel dfTablaSol = (DefaultTableModel) this.tablaSolicitudesNoRev.getModel();
+            DefaultTableModel df_contenido = (DefaultTableModel) this.tablaContenido.getModel();
+            String numSol = dfTablaSol.getValueAt(tablaSolicitudesNoRev.getSelectedRow(), 0).toString();
+            if (numSol != null) {
+                solicitudPr solicitud = u.getSolicitud(numSol);
+                JOptionPane.showMessageDialog(null, "Obteniendo información de la solicitud", "Solicitud", JOptionPane.INFORMATION_MESSAGE);
+                ArrayList<ItemInventario> items_numSol = u.getItemsAprobado(new BigDecimal(numSol), "SI");
+                users datosSolicitante = u.getDatosUsuario(solicitud.getIdSolicitante());
+                users datosAO = u.getDatosUsuario(id);
+                fdc001 fdc = new fdc001();
+                datosFormatos datos = u.getDatos("1");
+                String rutaImagen;
+                String property = System.getProperty("user.dir");
+                System.out.println(property);
+                rutaImagen = property.concat("\\src\\Imagenes\\iconB.png");
+                HashMap<String, String> parametros = new HashMap<>();
+                parametros.put("revision", datos.getRevision());
+                parametros.put("fechaAct", datos.getFechaActualizacion());
+                parametros.put("titulo", datos.getTitulo());
+                parametros.put("image", rutaImagen);
+                parametros.put("numsol", numSol);
+                parametros.put("fecha", new java.util.Date(solicitud.getFecha().getTimeInMillis()).toString());
+                parametros.put("area", datosSolicitante.getLab());
+                parametros.put("nombreRA", datosSolicitante.getNombre());
+                parametros.put("observaciones", solicitud.getObservaciones());
+                parametros.put("nombreAO", datosAO.getNombre());
+                JFileChooser chooser = new JFileChooser();
+                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                chooser.showOpenDialog(this);
+                String path = chooser.getSelectedFile().getPath();
+                ArrayList<String> proveedores= new ArrayList<>();
+                ArrayList<String> cantAprobada= new ArrayList<>();
+                for (int i = 0; i < df_contenido.getRowCount(); i++) {
+                    proveedores.add(df_contenido.getValueAt(i, 7).toString());
+                    cantAprobada.add(df_contenido.getValueAt(i, 5).toString());
+                }
+                
+                
+                
+                
+                File archivo = fdc001.metodo(path, parametros, ItemInventario.toObjectArray(items_numSol, proveedores, cantAprobada));
+                if (JOptionPane.showConfirmDialog(null, "¿Desea abrir el archivo?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    try {
+                        Desktop.getDesktop().open(archivo);
+                    } catch (IOException ex) {
+                        Logger.getLogger(ReporteSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(Proc_SolicitudesRevisadas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnGenerarFDC001ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -445,7 +527,7 @@ public class Proc_SolicitudesRevisadas extends javax.swing.JFrame {
                     datos[2] = i.getDescripcion();
                     datos[3] = i.getCantidadSolicitada();
                     datos[4] = i.getPrecio();
-                    datos[5] = i.getCantidadSolicitada();
+                    datos[5] = n.getCantAprobada(numsol.toString(), i.getNumero());
                     datos[7] = n.getProveedorAsociado(new itemxproveedor("", i.getPrecio(), i.getNumero())).get(0).getNombre();
                     df_contenido.addRow(datos);
                     df_contenido.setValueAt(false, j, 6);
@@ -462,10 +544,12 @@ public class Proc_SolicitudesRevisadas extends javax.swing.JFrame {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnGenerarFDC001;
     private javax.swing.JButton btnrefrescar;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

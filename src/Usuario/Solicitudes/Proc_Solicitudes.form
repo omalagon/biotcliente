@@ -105,7 +105,7 @@
                 <Column editable="false" title="Descripci&#xf3;n" type="java.lang.Object"/>
                 <Column editable="false" title="Cant. Solicitada" type="java.lang.Object"/>
                 <Column editable="true" title="Precio" type="java.lang.Object"/>
-                <Column editable="false" title="Cant. Aprobada" type="java.lang.Object"/>
+                <Column editable="true" title="Cant. Aprobada" type="java.lang.Object"/>
                 <Column editable="true" title="Aprobar" type="java.lang.Boolean"/>
                 <Column editable="true" title="Proveedor" type="java.lang.Object"/>
               </Table>

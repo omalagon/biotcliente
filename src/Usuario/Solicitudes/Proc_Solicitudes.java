@@ -166,7 +166,7 @@ public class Proc_Solicitudes extends javax.swing.JFrame {
                 java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, false, true, true
+                false, false, false, false, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {

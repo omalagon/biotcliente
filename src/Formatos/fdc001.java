@@ -5,6 +5,7 @@
  */
 package Formatos;
 
+import EstructurasAux.ItemInventario;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -54,31 +55,45 @@ public class fdc001 implements JRDataSource {
     public Object getFieldValue(JRField jrf) throws JRException {
 
         Object valor = null;
-        System.out.println(pedido.get(0)[0]);
-        if ("inv".equals(jrf.getName())) {
+        if ("inv".equalsIgnoreCase(jrf.getName())) {
             valor = pedido.get(i)[0].toString();
-
-        } else if ("nombre".equals(jrf.getName())) {
-
+            System.out.println("inv "+valor);
+        } else if ("nombre".equalsIgnoreCase(jrf.getName())) {
+            System.out.println("nombre "+valor);
             valor = pedido.get(i)[1].toString();
 
-        } else if ("desc".equals(jrf.getName())) {
-
+        } else if ("desc".equalsIgnoreCase(jrf.getName())) {
+            System.out.println("desc "+valor);
             valor = pedido.get(i)[2].toString();
 
-        } else if ("cants".equals(jrf.getName())) {
+        } else if ("cants".equalsIgnoreCase(jrf.getName())) {
+            System.out.println("cants "+valor);
             valor = pedido.get(i)[3].toString();
-        } else if ("cantApr".equals(jrf.getName())) {
-            valor = "";
-        } else if ("pUnitario".equals(jrf.getName())) {
+        } else if ("pUnitario".equalsIgnoreCase(jrf.getName())) {
+            System.out.println("pUnitario"+valor);
             valor = pedido.get(i)[5].toString();
+        } else if ("Prov".equalsIgnoreCase(jrf.getName())) {
+            System.out.println("prov"+valor);
+            valor = pedido.get(i)[6].toString();
+        } else if ("cantApr".equalsIgnoreCase(jrf.getName())) {
+            System.out.println("cantApr " +valor);
+            valor = pedido.get(i)[7].toString();
         }
 
         return valor;
     }
 
     public static File metodo(String ruta, HashMap parametros, ArrayList<Object[]> pedido) {
-
+        for (Object[] p : pedido) {
+            System.out.println("longitud " +p.length);
+            System.out.println(p[0]);
+            System.out.println(p[1]);
+            System.out.println(p[2]);
+            System.out.println(p[3]);
+            System.out.println(p[4]);
+            System.out.println(p[5]);
+            System.out.println("====================================\n");
+        }
         InputStream inputStream = null;
         JasperPrint jasperPrint = null;
         fdc001 datasource = new fdc001();
