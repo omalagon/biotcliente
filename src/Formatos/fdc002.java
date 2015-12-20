@@ -54,23 +54,17 @@ public class fdc002 implements JRDataSource {
 
         Object valor = null;
 
-        if ("cInterno".equals(jrf.getName())) {
-
+        if ("cInterno".equalsIgnoreCase(jrf.getName())) {
             valor = pedido.get(i).getCinterno();
-
-        } else if ("Desc".equals(jrf.getName())) {
-
+        } else if ("Desc".equalsIgnoreCase(jrf.getName())) {
             valor = pedido.get(i).getDesc();
-
-        } else if ("Cant".equals(jrf.getName())) {
-
+        } else if ("Cant".equalsIgnoreCase(jrf.getName())) {
             valor = Float.toString(pedido.get(i).getCaprobada());
-
-        } else if ("pres".equals(jrf.getName())) {
+        } else if ("pres".equalsIgnoreCase(jrf.getName())) {
             valor = pedido.get(i).getPresen();
-        } else if ("vUnitario".equals(jrf.getName())) {
+        } else if ("vUnitario".equalsIgnoreCase(jrf.getName())) {
             valor = Float.toString(pedido.get(i).getPrecioU());
-        } else if ("Vtotal".equals(jrf.getName())) {
+        } else if ("Vtotal".equalsIgnoreCase(jrf.getName())) {
             valor = Float.toString(pedido.get(i).getvTotal());
         }
 
@@ -83,8 +77,8 @@ public class fdc002 implements JRDataSource {
         InputStream inputStream = null;
         JasperPrint jasperPrint = null;
         fdc002 datasource = new fdc002();
-        File pdf=null;
-        String rutaArchivo=null;
+        File pdf = null;
+        String rutaArchivo = null;
         for (itemsOrdenCompra pp : pedido) {
             System.out.println(pp.getCinterno());
             datasource.addAsistente(pp);
@@ -104,8 +98,8 @@ public class fdc002 implements JRDataSource {
             JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
             jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, datasource);
 
-            JasperExportManager.exportReportToPdfFile(jasperPrint, ruta + "\\"+parametros.get("oCompra") + ".pdf");
-            pdf = new File(ruta  + "\\"+parametros.get("oCompra") + ".pdf");
+            JasperExportManager.exportReportToPdfFile(jasperPrint, ruta + "\\" + parametros.get("oCompra") + ".pdf");
+            pdf = new File(ruta + "\\" + parametros.get("oCompra") + ".pdf");
             //JasperViewer.viewReport(jasperPrint);
         } catch (JRException e) {
             JOptionPane.showMessageDialog(null, "Error al cargar fichero jrml jasper report " + e.getMessage());

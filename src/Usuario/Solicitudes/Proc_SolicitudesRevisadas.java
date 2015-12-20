@@ -361,17 +361,19 @@ public class Proc_SolicitudesRevisadas extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        DefaultTableModel df_contenido = (DefaultTableModel) this.tablaContenido.getModel();
-        Usuario u = cliente.Cliente.conectarU();
-        boolean valido;
-        ItemInventario itm;
-        ArrayList<ItemInventario> itemsAprobados = new ArrayList<>();
+        try {
+            DefaultTableModel df_contenido = (DefaultTableModel) this.tablaContenido.getModel();
+            Usuario u = cliente.Cliente.conectarU();
+            boolean valido;
+            ItemInventario itm;
+            ArrayList<ItemInventario> itemsAprobados = new ArrayList<>();
 
-        boolean aprobarItems = false;
-        for (int i = 0; i < df_contenido.getRowCount(); i++) {
-            valido = (boolean) df_contenido.getValueAt(i, 6);
-            if (valido) {
-                try {
+            boolean desaprobarItems = false;
+            ArrayList<String> arrProv = new ArrayList<>();
+            for (int i = 0; i < df_contenido.getRowCount(); i++) {
+                valido = (boolean) df_contenido.getValueAt(i, 6);
+                if (valido) {
+
                     itm = this.itemsXSolicitud.get(i);
                     String cadCantAprobada = df_contenido.getValueAt(i, 5).toString();
                     String cadProveedor = df_contenido.getValueAt(i, 7).toString();
@@ -382,21 +384,21 @@ public class Proc_SolicitudesRevisadas extends javax.swing.JFrame {
                         itm.setPrecio(0);
                         itm.setCantidadSolicitada(cantAprobada); //Se cambia por la cantidad aprobada
                         nitProveedor = this.mapProv.get(cadProveedor);
+                        arrProv.add(nitProveedor);
+                        itemsAprobados.add(itm);
                     }
-                    itemsAprobados.add(itm);
-                    solicitudPr sol = new solicitudPr(new BigDecimal(numSol), id);
-                    aprobarItems = u.desaprobarItems(itemsAprobados, sol, nitProveedor);
-
-                } catch (RemoteException ex) {
-                    Logger.getLogger(Proc_SolicitudesRevisadas.class.getName()).log(Level.SEVERE, null, ex);
                 }
+
             }
 
+                    solicitudPr sol = new solicitudPr(new BigDecimal(numSol), id);
+                    desaprobarItems = u.desaprobarItems(itemsAprobados, sol, arrProv);
+            if (desaprobarItems) {
+                JOptionPane.showMessageDialog(null, "Los ítems han sido devueltos a aprobación");
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(Proc_SolicitudesRevisadas.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if (aprobarItems) {
-            JOptionPane.showMessageDialog(null, "Los ítems han sido devueltos a aprobación");
-        }
-
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void btnrefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnrefrescarActionPerformed
@@ -445,16 +447,13 @@ public class Proc_SolicitudesRevisadas extends javax.swing.JFrame {
                 chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 chooser.showOpenDialog(this);
                 String path = chooser.getSelectedFile().getPath();
-                ArrayList<String> proveedores= new ArrayList<>();
-                ArrayList<String> cantAprobada= new ArrayList<>();
+                ArrayList<String> proveedores = new ArrayList<>();
+                ArrayList<String> cantAprobada = new ArrayList<>();
                 for (int i = 0; i < df_contenido.getRowCount(); i++) {
                     proveedores.add(df_contenido.getValueAt(i, 7).toString());
                     cantAprobada.add(df_contenido.getValueAt(i, 5).toString());
                 }
-                
-                
-                
-                
+
                 File archivo = fdc001.metodo(path, parametros, ItemInventario.toObjectArray(items_numSol, proveedores, cantAprobada));
                 if (JOptionPane.showConfirmDialog(null, "¿Desea abrir el archivo?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                     try {

@@ -9,7 +9,7 @@ import EstructurasAux.permisos;
 import Usuario.Descargos.DescargoConsumos;
 import Usuario.MenuPrincipal;
 import Usuario.Recepciones.Recepciones;
-import Usuario.OCompra.Aprobados;
+import Usuario.OCompra.AprobarOCompra;
 import java.awt.Toolkit;
 import Usuario.Solicitudes.Proc_Solicitudes;
 import Usuario.datos;
@@ -261,9 +261,13 @@ public class MenuSolicitud extends javax.swing.JFrame {
         if (p.isGenerarOrdenesCompra() == 0) {
             JOptionPane.showMessageDialog(null, "No tiene acceso");
         } else {
-            Aprobados ap = new Aprobados(id);
-            ap.setVisible(true);
-            this.setVisible(false);
+            try {
+                AprobarOCompra ap = new AprobarOCompra(id);
+                ap.setVisible(true);
+                this.dispose();
+            } catch (RemoteException ex) {
+                Logger.getLogger(MenuSolicitud.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btnOCompraActionPerformed
 
