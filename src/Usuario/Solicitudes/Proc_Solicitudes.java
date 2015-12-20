@@ -9,7 +9,6 @@ import EstructurasAux.ItemInventario;
 import EstructurasAux.proveedor;
 import EstructurasAux.solicitudPr;
 import EstructurasAux.users;
-import Usuario.Cotizacion;
 import Usuario.Reportes.itemxProveedor;
 import Usuario.Reportes.verProveedores;
 import interfaces.Usuario;
