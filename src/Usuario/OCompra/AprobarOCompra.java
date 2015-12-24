@@ -415,8 +415,9 @@ public class AprobarOCompra extends javax.swing.JFrame {
                 valido = (boolean) df_items.getValueAt(i, 7);
                 if (valido) {
                     ItemInventario get = this.itemAsociados.get(i);
+                    get.setNumSolAsociado(df_items.getValueAt(i, 0).toString());
                     aAprobar.add(get);
-                    itemsOrdenCompra itm = new itemsOrdenCompra(get.getNumero(), get.getInventario(), get.getDescripcion(), get.getCantidadAprobada(),
+                    itemsOrdenCompra itm = new itemsOrdenCompra(df_items.getValueAt(i, 0).toString(),get.getNumero(), get.getInventario(), get.getDescripcion(), get.getCantidadAprobada(),
                             get.getPresentacion(), get.getPrecio(), "", new BigDecimal(0));
                     itm.setvTotal(itm.getCaprobada() * itm.getPrecioU());
                     listaItems.add(itm);
@@ -509,7 +510,7 @@ public class AprobarOCompra extends javax.swing.JFrame {
             Logger.getLogger(AprobarOCompra.class.getName()).log(Level.SEVERE, null, ex);
         }
         GregorianCalendar fecha = new GregorianCalendar();
-        if (!listaProveedores.isEmpty()) {
+        if (listaProveedores != null) {
             for (proveedor s : listaProveedores) {
                 Object[] datos = new Object[6];
                 datos[0] = s.getNIT();
@@ -543,19 +544,21 @@ public class AprobarOCompra extends javax.swing.JFrame {
         //Info items
         int j = 0;
         float subtotal = 0;
-        for (ItemInventario i : itemAsociados) {
-            Object[] infoItems = new Object[8];
-            infoItems[0] = i.getNumSolAsociado();
-            infoItems[1] = i.getNumero();
-            infoItems[2] = i.getDescripcion();
-            infoItems[3] = i.getCantidadAprobada();
-            infoItems[4] = i.getPresentacion();
-            infoItems[5] = i.getPrecio();
-            infoItems[6] = i.getPrecio() * i.getCantidadAprobada();
-            subtotal += i.getPrecio() * i.getCantidadAprobada();
-            df_items.addRow(infoItems);
-            df_items.setValueAt(true, j, 7);
-            j++;
+        if (itemAsociados != null) {
+            for (ItemInventario i : itemAsociados) {
+                Object[] infoItems = new Object[8];
+                infoItems[0] = i.getNumSolAsociado();
+                infoItems[1] = i.getNumero();
+                infoItems[2] = i.getDescripcion();
+                infoItems[3] = i.getCantidadAprobada();
+                infoItems[4] = i.getPresentacion();
+                infoItems[5] = i.getPrecio();
+                infoItems[6] = i.getPrecio() * i.getCantidadAprobada();
+                subtotal += i.getPrecio() * i.getCantidadAprobada();
+                df_items.addRow(infoItems);
+                df_items.setValueAt(true, j, 7);
+                j++;
+            }
         }
         this.lblSubtotal.setText(Float.toString(subtotal));
 

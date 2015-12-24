@@ -29,7 +29,7 @@
                   <Component id="jPanel9" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="labelInicioSesion" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="936" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="926" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -54,7 +54,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="24" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Recepci&#xf3;n de Pedidos"/>
+        <Property name="text" type="java.lang.String" value="Devoluci&#xf3;n de Pedidos"/>
       </Properties>
     </Component>
     <Container class="javax.swing.JPanel" name="jPanel9">
@@ -295,12 +295,12 @@
                     <Column editable="false" title="Presentaci&#xf3;n" type="java.lang.Object"/>
                     <Column editable="false" title="Valor Unitario" type="java.lang.Object"/>
                     <Column editable="false" title="Valor Total" type="java.lang.Object"/>
-                    <Column editable="true" title="Fecha Recepci&#xf3;n" type="java.lang.Object"/>
-                    <Column editable="true" title="Certificado de calidad" type="java.lang.Object"/>
-                    <Column editable="true" title="Cump. Espe" type="java.lang.Object"/>
-                    <Column editable="true" title="Fecha Vencimiento" type="java.lang.Object"/>
-                    <Column editable="true" title="M. Ver. interna" type="java.lang.Object"/>
-                    <Column editable="true" title="Recibido" type="java.lang.Boolean"/>
+                    <Column editable="false" title="Fecha Recepci&#xf3;n" type="java.lang.Object"/>
+                    <Column editable="false" title="Certificado de calidad" type="java.lang.Object"/>
+                    <Column editable="false" title="Cump. Espe" type="java.lang.Object"/>
+                    <Column editable="false" title="Fecha Vencimiento" type="java.lang.Object"/>
+                    <Column editable="false" title="M. Ver. interna" type="java.lang.Object"/>
+                    <Column editable="true" title="Devolver" type="java.lang.Boolean"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -710,7 +710,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnEnviarRec">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Enviar Revisi&#xf3;n"/>
+            <Property name="text" type="java.lang.String" value="Devolver"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEnviarRecActionPerformed"/>

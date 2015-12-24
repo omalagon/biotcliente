@@ -377,7 +377,7 @@ public class DesaprobarOCompra extends javax.swing.JFrame {
             Logger.getLogger(DesaprobarOCompra.class.getName()).log(Level.SEVERE, null, ex);
         }
         GregorianCalendar fecha = new GregorianCalendar();
-        if (!listaProveedores.isEmpty()) {
+        if (listaProveedores!=null) {
             for (proveedor s : listaProveedores) {
                 Object[] datos = new Object[6];
                 datos[0] = s.getNIT();
