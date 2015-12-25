@@ -8,8 +8,10 @@ package Usuario.Reportes;
 import Usuario.OCompra.*;
 import EstructurasAux.ItemInventario;
 import EstructurasAux.datosFormatos;
+import EstructurasAux.itemRecep;
 import EstructurasAux.itemsOrdenCompra;
 import EstructurasAux.proveedor;
+import EstructurasAux.recepcionProd;
 import EstructurasAux.users;
 import Formatos.fdc002;
 import Usuario.Reportes.ReporteSolicitudes;
@@ -53,78 +55,26 @@ public class ReporteOCompra extends javax.swing.JFrame {
         initComponents();
         ReporteOCompra.id = id;
         setIcon();
+        this.lbl_nit.setText("");
+        this.lbl_nombre.setText("");
+        this.lbl_direccion.setText("");
+        this.lbl_tel.setText("");
+        this.lbl_fax.setText("");
+        this.lbl_cel.setText("");
         this.jta_verObs.setLineWrap(true);
+        this.jta_verObs.setEditable(false);
+
         Usuario u = cliente.Cliente.conectarU();
         String user = new String();
         this.setLocationRelativeTo(null);
-        try {
-            users datosUsuario = u.getDatosUsuario(id);
-            user = datosUsuario.getNombre();
-            area = datosUsuario.getLab();
-        } catch (RemoteException ex) {
-            Logger.getLogger(ReporteOCompra.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        tablaProveedor.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+        tablaOrdenes.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent event) {
-                llenarTablaItems();
-            }
-
-        });
-
-        tablaContenido.getDefaultEditor(Boolean.class).addCellEditorListener(new CellEditorListener() {
-            @Override
-            public void editingStopped(ChangeEvent e) {
-                float precio = new Float(tablaContenido.getValueAt(tablaContenido.getSelectedRow(), 6).toString());
-                float sub = new Float(lblSubtotal.getText());
-                if ((boolean) tablaContenido.getValueAt(tablaContenido.getSelectedRow(), 7) == true) {
-
-                    sub += precio;
-                    lblSubtotal.setText(Float.toString(sub));
-                } else {
-                    sub -= precio;
-                    lblSubtotal.setText(Float.toString(sub));
-                }
-            }
-
-            @Override
-            public void editingCanceled(ChangeEvent e) {
-
+                llenarInfo();
             }
         });
-
-        this.jta_verObs.getDocument().addDocumentListener(new DocumentListener() {
-            int length = jta_verObs.getText().length();
-
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                length = jta_verObs.getText().length();
-                lblRestantes.setText(Integer.toString((534 - length)));
-                String maximo = "";
-                if (new Integer(lblRestantes.getText()) < 0) {
-                    JOptionPane.showMessageDialog(null, ""
-                            + "<html>"
-                            + "<body>"
-                            + "En el documento solo aparecerán los primeros 534 caracteres"
-                            + "</body>"
-                            + "</html>");
-                }
-
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                length = jta_verObs.getText().length();
-                lblRestantes.setText(Integer.toString((543 - length)));
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        });
-        llenarTablaProveedores();
-
+        llenarOrdenes();
     }
 
     /**
@@ -132,7 +82,7 @@ public class ReporteOCompra extends javax.swing.JFrame {
      */
     public ReporteOCompra() {
         initComponents();
-        tablaProveedor.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+        tablaOrdenes.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent event) {
                 System.out.println("escucha");
@@ -155,7 +105,7 @@ public class ReporteOCompra extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane5 = new javax.swing.JScrollPane();
-        tablaProveedor = new javax.swing.JTable();
+        tablaOrdenes = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         btnrefrescar = new javax.swing.JButton();
@@ -170,8 +120,20 @@ public class ReporteOCompra extends javax.swing.JFrame {
         jta_verObs = new javax.swing.JTextArea();
         lblSubtotal = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        lblRestantes = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        lbl_tel = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        lbl_cel = new javax.swing.JLabel();
+        lbl_direccion = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        lbl_fax = new javax.swing.JLabel();
+        lbl_nombre = new javax.swing.JLabel();
+        lbl_nit = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -180,19 +142,12 @@ public class ReporteOCompra extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Num. Sol", "C. Interno", "Descripción", "Cant. Aprobada", "Presentación", "Precio", "Valor Total", "Generar"
+                "Num. Sol", "C. Interno", "Descripción", "Cant. Aprobada", "Presentación", "Precio", "Valor Total"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
-            };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, true
+                false, false, false, false, false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -203,26 +158,26 @@ public class ReporteOCompra extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setText("Información de los ítems");
 
-        tablaProveedor.setModel(new javax.swing.table.DefaultTableModel(
+        tablaOrdenes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "NIT", "Nombre", "Dirección", "Celular", "Teléfono", "Fax"
+                "Numero de Orden"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, true, true
+                false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane5.setViewportView(tablaProveedor);
+        jScrollPane5.setViewportView(tablaOrdenes);
 
         jLabel5.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
-        jLabel5.setText("Orden de Compra");
+        jLabel5.setText("Reporte Ordenes de Compra");
 
         btnrefrescar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ACT.png"))); // NOI18N
         btnrefrescar.addActionListener(new java.awt.event.ActionListener() {
@@ -305,9 +260,90 @@ public class ReporteOCompra extends javax.swing.JFrame {
 
         jLabel8.setText("Subtotal: $");
 
-        lblRestantes.setText("534");
+        jLabel7.setText("Nombre");
 
-        jLabel13.setText("Caracteres restantes:");
+        jLabel9.setText("Dirección");
+
+        jLabel6.setText("NIT");
+
+        lbl_tel.setText("jLabel21");
+
+        jLabel11.setText("Fax");
+
+        lbl_cel.setText("jLabel23");
+
+        lbl_direccion.setText("jLabel20");
+
+        jLabel12.setText("Celular");
+
+        jLabel10.setText("Teléfono");
+
+        lbl_fax.setText("jLabel22");
+
+        lbl_nombre.setText("jLabel19");
+
+        lbl_nit.setText("jLabel18");
+
+        jLabel15.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel15.setText("Información del Proveedor");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel15)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel10))
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_tel)
+                            .addComponent(lbl_direccion)
+                            .addComponent(lbl_cel)
+                            .addComponent(lbl_fax)
+                            .addComponent(lbl_nombre)
+                            .addComponent(lbl_nit))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel15)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(lbl_nit))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_nombre)
+                    .addComponent(jLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(lbl_direccion))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(lbl_tel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(lbl_fax))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_cel)
+                    .addComponent(jLabel12))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -322,16 +358,10 @@ public class ReporteOCompra extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 811, Short.MAX_VALUE)
-                                .addGap(26, 26, 26))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jSeparator2)
-                                .addGap(16, 16, 16))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jSeparator1)
-                                    .addComponent(jScrollPane1)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 819, Short.MAX_VALUE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(0, 0, Short.MAX_VALUE)
                                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -341,12 +371,16 @@ public class ReporteOCompra extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel4)
-                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel13)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(lblRestantes)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jSeparator2))
+                                .addGap(16, 16, 16)))
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
         layout.setVerticalGroup(
@@ -354,9 +388,14 @@ public class ReporteOCompra extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(22, 22, 22)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
@@ -372,11 +411,7 @@ public class ReporteOCompra extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblRestantes)
-                    .addComponent(jLabel13))
-                .addGap(13, 13, 13))
+                .addGap(33, 33, 33))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -407,22 +442,17 @@ public class ReporteOCompra extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Recopilando información...");
             Usuario u = cliente.Cliente.conectarU();
             datosFormatos datos = u.getDatos("2");
-            proveedor datosProveedor = u.getDatosProveedor(tablaProveedor.getValueAt(tablaProveedor.getSelectedRow(), 0).toString());
+            proveedor datosProveedor = u.getDatosProveedor(this.lbl_nit.getText());
             DefaultTableModel df_items = (DefaultTableModel) this.tablaContenido.getModel();
             ArrayList<itemsOrdenCompra> listaItems = new ArrayList<itemsOrdenCompra>();
             ArrayList<ItemInventario> aAprobar = new ArrayList<>();
-            boolean valido = false;
             for (int i = 0; i < df_items.getRowCount(); i++) {
-                valido = (boolean) df_items.getValueAt(i, 7);
-                if (valido) {
-                    ItemInventario get = this.itemAsociados.get(i);
-                    get.setNumSolAsociado(df_items.getValueAt(i, 0).toString());
-                    aAprobar.add(get);
-                    itemsOrdenCompra itm = new itemsOrdenCompra(df_items.getValueAt(i, 0).toString(),get.getNumero(), get.getInventario(), get.getDescripcion(), get.getCantidadAprobada(),
-                            get.getPresentacion(), get.getPrecio(), "", new BigDecimal(0));
-                    itm.setvTotal(itm.getCaprobada() * itm.getPrecioU());
-                    listaItems.add(itm);
-                }
+                ItemInventario get = this.itemAsociados.get(i);
+                aAprobar.add(get);
+                itemsOrdenCompra itm = new itemsOrdenCompra( get.getNumero(), get.getInventario(), get.getDescripcion(), get.getCantidadAprobada(),
+                        get.getPresentacion(), get.getPrecio(), "", new BigDecimal(0));
+                itm.setvTotal(itm.getCaprobada() * itm.getPrecioU());
+                listaItems.add(itm);
             }
             String rutaImagen;
             String property = System.getProperty("user.dir");
@@ -430,7 +460,7 @@ public class ReporteOCompra extends javax.swing.JFrame {
             HashMap<String, String> parametros = new HashMap<>();
             parametros.put("image", rutaImagen);
             parametros.put("fechaElab", u.getFecha());
-            parametros.put("oCompra", "");
+            parametros.put("oCompra", this.tablaOrdenes.getValueAt(this.tablaOrdenes.getSelectedRow(), 0).toString());
             parametros.put("revision", datos.getRevision());
             parametros.put("fechaact", datos.getFechaActualizacion());
             parametros.put("titulo", datos.getTitulo());
@@ -501,70 +531,61 @@ public class ReporteOCompra extends javax.swing.JFrame {
         });
     }
 
-    private void llenarTablaProveedores() {
-        Usuario u = cliente.Cliente.conectarU();
-        DefaultTableModel df_proveedores = (DefaultTableModel) this.tablaProveedor.getModel();
-        for (int i = df_proveedores.getRowCount() - 1; i >= 0; i--) {
-            df_proveedores.removeRow(i);
-        }
-        ArrayList<proveedor> listaProveedores = null;
+    private void llenarInfo() {
         try {
-            listaProveedores = u.getProveedoresConSolicitudes("");
+            Usuario u = cliente.Cliente.conectarU();
+            String numorden = this.tablaOrdenes.getValueAt(this.tablaOrdenes.getSelectedRow(), 0).toString();
+            recepcionProd datosRec = u.getDatosRec2(new BigDecimal(numorden), id);
+            this.lbl_nit.setText(datosRec.getP().getNIT());
+            this.lbl_nombre.setText(datosRec.getP().getNombre());
+            this.lbl_direccion.setText(datosRec.getP().getDireccion());
+            this.lbl_tel.setText(datosRec.getP().getTelefono());
+            this.lbl_fax.setText(datosRec.getP().getTelefax());
+            this.lbl_cel.setText(datosRec.getP().getCelular());
+
+            DefaultTableModel df_items = (DefaultTableModel) this.tablaContenido.getModel();
+            for (int i = df_items.getRowCount() - 1; i >= 0; i--) {
+                df_items.removeRow(i);
+            }
+            ArrayList<itemRecep> articulos = datosRec.getArticulos();
+            this.itemAsociados= new ArrayList<>();
+            float tot = 0;
+            int i = 0;
+            for (itemRecep articulo : articulos) {
+                ItemInventario d = u.buscarInfoItem(articulo.getCinterno());
+                Object[] datos = new Object[7];
+                datos[0] = d.getInventario();
+                datos[1] = d.getNumero();
+                datos[2] = d.getDescripcion();
+                datos[3] = articulo.getcAprobada();
+                datos[4] = d.getPresentacion();
+                datos[5] = articulo.getPrecio();
+                datos[6] = articulo.getcAprobada() * articulo.getPrecio();
+                d.setCantidadAprobada(articulo.getcAprobada());
+                d.setPrecio(articulo.getPrecio());
+                itemAsociados.add(d);
+                df_items.addRow(datos);
+                tot += articulo.getcAprobada() * articulo.getPrecio();
+                this.lblSubtotal.setText(Float.toString(tot));
+            }
+            this.jta_verObs.setText(datosRec.getObservaciones());
         } catch (RemoteException ex) {
             Logger.getLogger(ReporteOCompra.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        GregorianCalendar fecha = new GregorianCalendar();
-        if (listaProveedores != null) {
-            for (proveedor s : listaProveedores) {
-                Object[] datos = new Object[6];
-                datos[0] = s.getNIT();
-                datos[1] = s.getNombre();
-                datos[2] = s.getDireccion();
-                datos[3] = s.getCelular();
-                datos[4] = s.getTelefono();
-                datos[5] = s.getTelefax();
-                df_proveedores.addRow(datos);
-
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "No hay ordenes de compra por revisar");
         }
     }
 
-    private void llenarTablaItems() {
+    private void llenarOrdenes() throws RemoteException {
         Usuario u = cliente.Cliente.conectarU();
-        DefaultTableModel df_items = (DefaultTableModel) this.tablaContenido.getModel();
-
-        for (int i = df_items.getRowCount() - 1; i >= 0; i--) {
-            df_items.removeRow(i);
+        DefaultTableModel dfOrdenes = (DefaultTableModel) this.tablaOrdenes.getModel();
+        for (int i = dfOrdenes.getRowCount() - 1; i >= 0; i--) {
+            dfOrdenes.removeRow(i);
         }
-
-        try {
-            itemAsociados = u.getItemxProveedorSolicitudes(tablaProveedor.getValueAt(tablaProveedor.getSelectedRow(), 0).toString(), "SI");
-        } catch (RemoteException ex) {
-            Logger.getLogger(ReporteOCompra.class.getName()).log(Level.SEVERE, null, ex);
+        ArrayList<Integer> numerosDeOrden = u.numerosDeOrden();
+        for (Integer i : numerosDeOrden) {
+            Object[] infoItems = new Object[8];
+            infoItems[0] = i;
+            dfOrdenes.addRow(infoItems);
         }
-
-        //Info items
-        int j = 0;
-        float subtotal = 0;
-        if (itemAsociados != null) {
-            for (ItemInventario i : itemAsociados) {
-                Object[] infoItems = new Object[8];
-                infoItems[0] = i.getNumSolAsociado();
-                infoItems[1] = i.getNumero();
-                infoItems[2] = i.getDescripcion();
-                infoItems[3] = i.getCantidadAprobada();
-                infoItems[4] = i.getPresentacion();
-                infoItems[5] = i.getPrecio();
-                infoItems[6] = i.getPrecio() * i.getCantidadAprobada();
-                subtotal += i.getPrecio() * i.getCantidadAprobada();
-                df_items.addRow(infoItems);
-                df_items.setValueAt(true, j, 7);
-                j++;
-            }
-        }
-        this.lblSubtotal.setText(Float.toString(subtotal));
 
     }
 
@@ -576,23 +597,36 @@ public class ReporteOCompra extends javax.swing.JFrame {
     private javax.swing.JButton btnrefrescar;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTextArea jta_verObs;
-    private javax.swing.JLabel lblRestantes;
     private javax.swing.JLabel lblSubtotal;
+    private javax.swing.JLabel lbl_cel;
+    private javax.swing.JLabel lbl_direccion;
+    private javax.swing.JLabel lbl_fax;
+    private javax.swing.JLabel lbl_nit;
+    private javax.swing.JLabel lbl_nombre;
+    private javax.swing.JLabel lbl_tel;
     private javax.swing.JTable tablaContenido;
-    private javax.swing.JTable tablaProveedor;
+    private javax.swing.JTable tablaOrdenes;
     // End of variables declaration//GEN-END:variables
+
 }
