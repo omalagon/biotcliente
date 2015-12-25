@@ -78,6 +78,8 @@ public class fdc001 implements JRDataSource {
         } else if ("cantApr".equalsIgnoreCase(jrf.getName())) {
             System.out.println("cantApr " +valor);
             valor = pedido.get(i)[7].toString();
+        } else if ("NOrden".equalsIgnoreCase(jrf.getName())) {
+            valor = pedido.get(i)[8].toString();
         }
 
         return valor;

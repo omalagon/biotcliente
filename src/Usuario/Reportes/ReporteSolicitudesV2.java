@@ -328,9 +328,9 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        MenuSolicitud menu = new MenuSolicitud(id);
+        MenuReportes menu = new MenuReportes(id);
         menu.setVisible(true);
-        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnrefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnrefrescarActionPerformed
@@ -369,7 +369,7 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
                 parametros.put("fechaAct", datos.getFechaActualizacion());
                 parametros.put("titulo", datos.getTitulo());
                 parametros.put("image", rutaImagen);
-                parametros.put("numsol", numSol);
+                parametros.put("numsol", Integer.toString(new Double(numSol).intValue()));
                 parametros.put("fecha", new java.util.Date(solicitud.getFecha().getTimeInMillis()).toString());
                 parametros.put("area", datosSolicitante.getLab());
                 parametros.put("nombreRA", datosSolicitante.getNombre());
@@ -381,12 +381,14 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
                 String path = chooser.getSelectedFile().getPath();
                 ArrayList<String> proveedores = new ArrayList<>();
                 ArrayList<String> cantAprobada = new ArrayList<>();
+                ArrayList<String> numorden = new ArrayList<>();
                 for (int i = 0; i < df_contenido.getRowCount(); i++) {
-                    proveedores.add(df_contenido.getValueAt(i, 7).toString());
+                    proveedores.add(df_contenido.getValueAt(i, 6).toString());
                     cantAprobada.add(df_contenido.getValueAt(i, 5).toString());
+                    numorden.add(df_contenido.getValueAt(i, 7).toString());  
                 }
 
-                File archivo = fdc001.metodo(path, parametros, ItemInventario.toObjectArray(items_numSol, proveedores, cantAprobada));
+                File archivo = fdc001.metodo(path, parametros, ItemInventario.toObjectArray(items_numSol, proveedores, cantAprobada, numorden));
                 if (JOptionPane.showConfirmDialog(null, "¿Desea abrir el archivo?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                     try {
                         Desktop.getDesktop().open(archivo);

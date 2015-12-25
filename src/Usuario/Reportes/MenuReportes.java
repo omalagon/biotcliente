@@ -494,7 +494,14 @@ public class MenuReportes extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_itmxprovActionPerformed
 
     private void btnSolicitudes1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolicitudes1ActionPerformed
-        // TODO add your handling code here:
+        try {
+            ReporteOCompra re = new  ReporteOCompra(id);
+            re.setVisible(true);
+            this.dispose();
+        } catch (RemoteException ex) {
+            Logger.getLogger(MenuReportes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_btnSolicitudes1ActionPerformed
 
     private void btnSolicitudes2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolicitudes2ActionPerformed
