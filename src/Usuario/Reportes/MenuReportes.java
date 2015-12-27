@@ -505,7 +505,9 @@ public class MenuReportes extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSolicitudes1ActionPerformed
 
     private void btnSolicitudes2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolicitudes2ActionPerformed
-        // TODO add your handling code here:
+        ReporteRecepciones rep = new ReporteRecepciones(id);
+        rep.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnSolicitudes2ActionPerformed
 
     /**
