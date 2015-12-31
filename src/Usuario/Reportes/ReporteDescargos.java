@@ -28,7 +28,7 @@ public class ReporteDescargos extends javax.swing.JFrame {
 
     private static String id = null;
     private static BigDecimal busqueda = null;
-    private JList list;
+    private JList<String> list;
     /**
      * Creates new form ReporteDescargos
      */
@@ -206,9 +206,9 @@ public class ReporteDescargos extends javax.swing.JFrame {
     private void btnVerInformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerInformeActionPerformed
         Usuario u = cliente.Cliente.conectarU();
         ArrayList<informeDescargos> Informe;
-        Object meses[] = {"ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"};
+        String meses[] = {"ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"};
         String cabeceras[] = {"Código", "Descripción", "Inventario Actual", "Consumido", "Nombre", "Área"};
-        this.list= new JList( meses);
+        this.list= new JList<String>( meses);
         int si_no = -20;
         int aux = -20;
         DefaultTableModel df = null;
@@ -259,7 +259,7 @@ public class ReporteDescargos extends javax.swing.JFrame {
         this.tablaInformes.setModel(df);
         
         String meses[] = {"ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"};
-        list = new JList(meses);
+        list = new JList<String>(meses);
         JOptionPane elegir = new JOptionPane();
         int si_no = -20;
         int aux = -20;

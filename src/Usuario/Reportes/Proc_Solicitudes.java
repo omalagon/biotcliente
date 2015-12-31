@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Usuario.Solicitudes;
+package Usuario.Reportes;
 
+import Usuario.Solicitudes.*;
 import EstructurasAux.ItemInventario;
 import EstructurasAux.proveedor;
 import EstructurasAux.solicitudPr;
@@ -440,6 +441,8 @@ public class Proc_Solicitudes extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Proc_Solicitudes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 

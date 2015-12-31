@@ -566,7 +566,7 @@ public class DescargoConsumos extends javax.swing.JFrame {
     private void actualizarListado(ArrayList<ItemInventario> lista) {
         desc_items.removeAllItems();
         for (ItemInventario i : lista) {
-            this.desc_items.addItem(i.getNumero());
+            desc_items.addItem((String)i.getNumero());
         }
     }
 }

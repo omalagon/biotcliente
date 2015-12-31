@@ -479,11 +479,11 @@ public class Recepciones extends javax.swing.JFrame {
         DefaultTableModel df = (DefaultTableModel) this.tablaDatosPedido.getModel();
         TableColumn cCalidadCell = this.tablaDatosPedido.getColumnModel().getColumn(8);
         TableColumn cEspe = this.tablaDatosPedido.getColumnModel().getColumn(9);
-        JComboBox calidad = new JComboBox();
+        JComboBox<String> calidad = new JComboBox<String>();
         calidad.addItem("SI");
         calidad.addItem("NO");
 
-        JComboBox cEspecificaciones = new JComboBox();
+        JComboBox<String> cEspecificaciones = new JComboBox<String>();
         cEspecificaciones.addItem("SI");
         cEspecificaciones.addItem("NO");
 

@@ -48,7 +48,7 @@ public class ReporteOCompra extends javax.swing.JFrame {
     private static String area = new String();
     private ArrayList<ItemInventario> itemsXSolicitud = null;
     private String numSol;
-    HashMap<String, String> mapProv = new HashMap();
+    HashMap<String, String> mapProv = new HashMap<String, String>();
     ArrayList<ItemInventario> itemAsociados = null;
 
     public ReporteOCompra(String id) throws RemoteException {

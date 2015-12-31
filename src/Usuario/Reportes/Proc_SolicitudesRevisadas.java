@@ -14,6 +14,9 @@ import EstructurasAux.solicitudPr;
 import EstructurasAux.users;
 import Formatos.fdc001;
 import Usuario.Reportes.ReporteSolicitudes;
+import Usuario.Utils.BtnEditorOcultar;
+import Usuario.Utils.ButtonRenderer;
+import Usuario.Utils.EnumAcciones;
 import Usuario.Utils.InputDialogCBox;
 import interfaces.Usuario;
 import java.awt.Toolkit;
@@ -35,22 +38,24 @@ import java.io.IOException;
 import java.util.HashMap;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 /**
  *
  * @author Oscar Dario Malagon Murcia
  */
-public class ReporteSolicitudesV2 extends javax.swing.JFrame {
+public class Proc_SolicitudesRevisadas extends javax.swing.JFrame {
 
     private static String id = null;
     private static String area = new String();
     private ArrayList<ItemInventario> itemsXSolicitud = null;
     private String numSol;
     HashMap<String, String> mapProv = new HashMap<String, String>();
-
-    public ReporteSolicitudesV2(String id) throws RemoteException {
+    EnumAcciones acciones;
+    
+    public Proc_SolicitudesRevisadas(String id) throws RemoteException {
         initComponents();
-        ReporteSolicitudesV2.id = id;
+        Proc_SolicitudesRevisadas.id = id;
         setIcon();
         this.jta_verObs.setLineWrap(true);
         Usuario u = cliente.Cliente.conectarU();
@@ -60,7 +65,7 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
             user = datosUsuario.getNombre();
             area = datosUsuario.getLab();
         } catch (RemoteException ex) {
-            Logger.getLogger(ReporteSolicitudesV2.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Proc_SolicitudesRevisadas.class.getName()).log(Level.SEVERE, null, ex);
         }
         tablaSolicitudesNoRev.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -75,7 +80,7 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
                     jta_verObs.setText(u.getSolicitud(Integer.toString(aux.intValue())).getObservaciones());
                     numSol = tablaSolicitudesNoRev.getValueAt(tablaSolicitudesNoRev.getSelectedRow(), 0).toString();
                 } catch (RemoteException ex) {
-                    Logger.getLogger(ReporteSolicitudesV2.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Proc_SolicitudesRevisadas.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 
@@ -88,29 +93,33 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
 
         ArrayList<solicitudPr> solNoRev = null;
         try {
-            solNoRev = u.getSolicitudes("", "");
+            solNoRev = u.getSolicitudes("", id);
         } catch (RemoteException ex) {
-            Logger.getLogger(ReporteSolicitudesV2.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Proc_SolicitudesRevisadas.class.getName()).log(Level.SEVERE, null, ex);
         }
         GregorianCalendar fecha = new GregorianCalendar();
         for (solicitudPr s : solNoRev) {
             fecha = s.getFecha();
-            Object[] datos = new Object[3];
+            Object[] datos = new Object[4];
             datos[0] = s.getNum_sol();
             datos[1] = fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR);
             datos[2] = s.getNombreSolicitante();
+            datos[3] = "Ocultar"+s.getNum_sol();
             df_NoRevisadas.addRow(datos);
         }
         ArrayList<proveedor> todosProveedores = u.todosProveedores();
         for (proveedor p : todosProveedores) {
             mapProv.put(p.getNombre(), p.getNIT());
         }
+        this.tablaSolicitudesNoRev.getColumnModel().getColumn(3).setCellRenderer(new ButtonRenderer());
+        this.tablaSolicitudesNoRev.getColumnModel().getColumn(3).setCellEditor(new BtnEditorOcultar(new JTextField(),acciones.OCULTAR, id, "", "SolicitudRev" ));
+        
     }
 
     /**
      * Creates new form Proc_Solicitudes
      */
-    public ReporteSolicitudesV2() {
+    public Proc_SolicitudesRevisadas() {
         initComponents();
         tablaSolicitudesNoRev.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -140,6 +149,8 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
         btnrefrescar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         btnGenerarFDC001 = new javax.swing.JButton();
@@ -156,12 +167,19 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
 
             },
             new String [] {
-                "C. Interno", "Inventario", "Descripción", "Cant. Solicitada", "Precio", "Cant. Aprobada", "Proveedor", "Num orden"
+                "C. Interno", "Inventario", "Descripción", "Cant. Solicitada", "Precio", "Cant. Aprobada", "Desaprobar", "Proveedor"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.Object.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true, false, true, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -177,11 +195,11 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Numero de Solicitud", "Fecha", "Responsable Area (Solicitante)"
+                "Numero de Solicitud", "Fecha", "Responsable Area (Solicitante)", ""
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -191,7 +209,7 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
         jScrollPane5.setViewportView(tablaSolicitudesNoRev);
 
         jLabel5.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
-        jLabel5.setText("Solicitudes");
+        jLabel5.setText("Solicitudes revisadas");
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/NO.png"))); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -202,6 +220,16 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Volver");
+
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/apro.png"))); // NOI18N
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("Desaprobar");
 
         btnrefrescar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ACT.png"))); // NOI18N
         btnrefrescar.addActionListener(new java.awt.event.ActionListener() {
@@ -233,16 +261,23 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
                     .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnGenerarFDC001, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(btnGenerarFDC001, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnrefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel1, jLabel7});
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnGenerarFDC001, btnrefrescar});
 
@@ -257,6 +292,10 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
                 .addComponent(btnrefrescar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -302,9 +341,9 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -318,9 +357,7 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -328,15 +365,56 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        MenuReportes menu = new MenuReportes(id);
+        MenuSolicitud menu = new MenuSolicitud(id);
         menu.setVisible(true);
-        this.dispose();
+        this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void btnrefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnrefrescarActionPerformed
-        ReporteSolicitudesV2 p;
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
-            p = new ReporteSolicitudesV2(id);
+            DefaultTableModel df_contenido = (DefaultTableModel) this.tablaContenido.getModel();
+            Usuario u = cliente.Cliente.conectarU();
+            boolean valido;
+            ItemInventario itm;
+            ArrayList<ItemInventario> itemsAprobados = new ArrayList<>();
+
+            boolean desaprobarItems = false;
+            ArrayList<String> arrProv = new ArrayList<>();
+            for (int i = 0; i < df_contenido.getRowCount(); i++) {
+                valido = (boolean) df_contenido.getValueAt(i, 6);
+                if (valido) {
+
+                    itm = this.itemsXSolicitud.get(i);
+                    String cadCantAprobada = df_contenido.getValueAt(i, 5).toString();
+                    String cadProveedor = df_contenido.getValueAt(i, 7).toString();
+                    String nitProveedor = "";
+                    if (!cadCantAprobada.equalsIgnoreCase("")
+                            && !cadProveedor.equalsIgnoreCase("")) {
+                        float cantAprobada = new Float(cadCantAprobada);
+                        itm.setPrecio(0);
+                        itm.setCantidadSolicitada(cantAprobada); //Se cambia por la cantidad aprobada
+                        nitProveedor = this.mapProv.get(cadProveedor);
+                        arrProv.add(nitProveedor);
+                        itemsAprobados.add(itm);
+                    }
+                }
+
+            }
+
+                    solicitudPr sol = new solicitudPr(new BigDecimal(numSol), id);
+                    desaprobarItems = u.desaprobarItems(itemsAprobados, sol, arrProv);
+            if (desaprobarItems) {
+                JOptionPane.showMessageDialog(null, "Los ítems han sido devueltos a aprobación");
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(Proc_SolicitudesRevisadas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void btnrefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnrefrescarActionPerformed
+        Proc_SolicitudesRevisadas p;
+        try {
+            p = new Proc_SolicitudesRevisadas(id);
             p.setVisible(true);
         } catch (RemoteException ex) {
             Logger.getLogger(Proc_Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
@@ -369,7 +447,7 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
                 parametros.put("fechaAct", datos.getFechaActualizacion());
                 parametros.put("titulo", datos.getTitulo());
                 parametros.put("image", rutaImagen);
-                parametros.put("numsol", Integer.toString(new Double(numSol).intValue()));
+                parametros.put("numsol", numSol);
                 parametros.put("fecha", new java.util.Date(solicitud.getFecha().getTimeInMillis()).toString());
                 parametros.put("area", datosSolicitante.getLab());
                 parametros.put("nombreRA", datosSolicitante.getNombre());
@@ -381,14 +459,12 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
                 String path = chooser.getSelectedFile().getPath();
                 ArrayList<String> proveedores = new ArrayList<>();
                 ArrayList<String> cantAprobada = new ArrayList<>();
-                ArrayList<String> numorden = new ArrayList<>();
                 for (int i = 0; i < df_contenido.getRowCount(); i++) {
-                    proveedores.add(df_contenido.getValueAt(i, 6).toString());
+                    proveedores.add(df_contenido.getValueAt(i, 7).toString());
                     cantAprobada.add(df_contenido.getValueAt(i, 5).toString());
-                    numorden.add(df_contenido.getValueAt(i, 7).toString());  
                 }
 
-                File archivo = fdc001.metodo(path, parametros, ItemInventario.toObjectArray(items_numSol, proveedores, cantAprobada, numorden));
+                File archivo = fdc001.metodo(path, parametros, ItemInventario.toObjectArray(items_numSol, proveedores, cantAprobada));
                 if (JOptionPane.showConfirmDialog(null, "¿Desea abrir el archivo?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                     try {
                         Desktop.getDesktop().open(archivo);
@@ -398,7 +474,7 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
                 }
             }
         } catch (RemoteException ex) {
-            Logger.getLogger(ReporteSolicitudesV2.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Proc_SolicitudesRevisadas.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnGenerarFDC001ActionPerformed
 
@@ -419,13 +495,13 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ReporteSolicitudesV2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Proc_SolicitudesRevisadas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ReporteSolicitudesV2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Proc_SolicitudesRevisadas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ReporteSolicitudesV2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Proc_SolicitudesRevisadas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ReporteSolicitudesV2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Proc_SolicitudesRevisadas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -440,7 +516,7 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new ReporteSolicitudesV2().setVisible(true);
+                new Proc_SolicitudesRevisadas().setVisible(true);
             }
         });
     }
@@ -456,6 +532,7 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
         try {
             itemsXSolicitud = n.getItemsAprobado(numsol, "SI");
             if (!itemsXSolicitud.isEmpty()) {
+                int j = 0;
                 for (ItemInventario i : itemsXSolicitud) {
                     Object[] datos = new Object[8];
                     datos[0] = i.getNumero();
@@ -464,17 +541,14 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
                     datos[3] = i.getCantidadSolicitada();
                     datos[4] = i.getPrecio();
                     datos[5] = n.getCantAprobada(numsol.toString(), i.getNumero());
-                    itemxproveedor itx =n.getProveedorAsociado(new itemxproveedor("", i.getPrecio(), i.getNumero())).get(0);
-                    datos[6] = itx.getNombre();
-                    ItemInventario j = i;
-                    j.setCantidadAprobada(new Float(datos[5].toString()));
-                    double num =n.buscarOrdenByNumSol(j, itx.getNIT(), this.tablaSolicitudesNoRev.getValueAt(tablaSolicitudesNoRev.getSelectedRow(), 0).toString());
-                    datos[7] = (num != -1 ? num:"");
+                    datos[7] = n.getProveedorAsociado(new itemxproveedor("", i.getPrecio(), i.getNumero())).get(0).getNombre();
                     df_contenido.addRow(datos);
+                    df_contenido.setValueAt(false, j, 6);
+                    j++;
                 }
             }
         } catch (RemoteException ex) {
-            Logger.getLogger(ReporteSolicitudesV2.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Proc_SolicitudesRevisadas.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -486,12 +560,14 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
     private javax.swing.JButton btnGenerarFDC001;
     private javax.swing.JButton btnrefrescar;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
