@@ -99,22 +99,22 @@
                   <Data value="16"/>
                 </Column>
                 <Column editable="true" title="Permiso" type="java.lang.Object">
-                  <Data value="Crear Item"/>
-                  <Data value="Crear Proveedor"/>
-                  <Data value="Crear Usuario"/>
+                  <Data value="Gestionar Item"/>
+                  <Data value="Gestionar Proveedor"/>
+                  <Data value="Gestionar Usuario"/>
                   <Data value="Descargar Consumos"/>
-                  <Data value="Recibir Pedidos"/>
+                  <Data value="Recibir/Devolver  Pedidos"/>
                   <Data value="Generar Reporte Descargos"/>
                   <Data value="Generar Reporte Inventario"/>
                   <Data value="Generar Reporte Usuarios"/>
                   <Data value="Generar Reporte Proveedores"/>
                   <Data value="Generar Reporte Item x Proveedor"/>
                   <Data value="Solicitar Productos"/>
-                  <Data value="Realizar Cotizaciones"/>
-                  <Data value="Aprobar Cotizaciones"/>
-                  <Data value="Generar Ordenes de Compra"/>
+                  <Data value="Gestionar Solicitudes"/>
+                  <Data value="Generar Reporte Solicitudes"/>
+                  <Data value="Generar Reporte Ordenes de Compra"/>
                   <Data value="Bloquear Usuario"/>
-                  <Data value="Generar FDC-001"/>
+                  <Data value="Generar Reporte Recepciones"/>
                 </Column>
                 <Column editable="true" title="Asignado?" type="java.lang.Boolean">
                   <Data value="null"/>

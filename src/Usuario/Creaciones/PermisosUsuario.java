@@ -94,22 +94,22 @@ public class PermisosUsuario extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", "Crear Item", null},
-                {"2", "Crear Proveedor",  new Boolean(false)},
-                {"3", "Crear Usuario", null},
+                {"1", "Gestionar Item", null},
+                {"2", "Gestionar Proveedor",  new Boolean(false)},
+                {"3", "Gestionar Usuario", null},
                 {"4", "Descargar Consumos", null},
-                {"5", "Recibir Pedidos", null},
+                {"5", "Recibir/Devolver  Pedidos", null},
                 {"6", "Generar Reporte Descargos", null},
                 {"7", "Generar Reporte Inventario", null},
                 {"8", "Generar Reporte Usuarios", null},
                 {"9", "Generar Reporte Proveedores", null},
                 {"10", "Generar Reporte Item x Proveedor", null},
                 {"11", "Solicitar Productos", null},
-                {"12", "Realizar Cotizaciones", null},
-                {"13", "Aprobar Cotizaciones", null},
-                {"14", "Generar Ordenes de Compra", null},
+                {"12", "Gestionar Solicitudes", null},
+                {"13", "Generar Reporte Solicitudes", null},
+                {"14", "Generar Reporte Ordenes de Compra", null},
                 {"15", "Bloquear Usuario", null},
-                {"16", "Generar FDC-001", null}
+                {"16", "Generar Reporte Recepciones", null}
             },
             new String [] {
                 "Id", "Permiso", "Asignado?"

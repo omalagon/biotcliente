@@ -425,7 +425,9 @@ public class DescargoConsumos extends javax.swing.JFrame {
                         this.desc_cantidad.setText("");
                         this.desc_items.setSelectedIndex(0);
                     } else {
-                        this.setVisible(false);
+                        MenuSolicitud menu = new MenuSolicitud(ide);
+                        menu.setVisible(true);
+                        this.dispose();
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Ocurrió un error en el proceso.");

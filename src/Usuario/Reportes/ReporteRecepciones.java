@@ -7,23 +7,32 @@ package Usuario.Reportes;
 
 import Usuario.Recepciones.*;
 import EstructurasAux.ItemInventario;
+import EstructurasAux.datosFormatos;
 import EstructurasAux.evProv;
+import EstructurasAux.infoItems;
 import EstructurasAux.itemRecep;
 import EstructurasAux.recepcionProd;
+import Formatos.fdc002;
+import Formatos.fdc002Recepciones;
 import Usuario.solicitudes.MenuSolicitud;
 import com.toedter.calendar.JDateChooserCellEditor;
 import interfaces.Usuario;
+import java.awt.Desktop;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -133,7 +142,7 @@ public class ReporteRecepciones extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         labelInicioSesion.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        labelInicioSesion.setText("Recepción de Pedidos");
+        labelInicioSesion.setText("Reporte Pedidos");
 
         jLabel20.setText("Fecha recepción");
 
@@ -410,6 +419,14 @@ public class ReporteRecepciones extends javax.swing.JFrame {
                         .addComponent(jlblrecFecha)
                         .addGap(422, 422, 422))
                     .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jSeparator8)
+                            .addGroup(jPanel9Layout.createSequentialGroup()
+                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 345, Short.MAX_VALUE))))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -417,28 +434,20 @@ public class ReporteRecepciones extends javax.swing.JFrame {
                         .addComponent(jLabel42)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane10))
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel35)
-                            .addGroup(jPanel9Layout.createSequentialGroup()
-                                .addComponent(jLabel40)
-                                .addGap(65, 65, 65)
-                                .addComponent(total))
-                            .addComponent(jLabel1))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSeparator8)
-                            .addGroup(jPanel9Layout.createSequentialGroup()
-                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnVolver)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEnviarRec)))
+                        .addComponent(btnEnviarRec))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel35)
+                            .addComponent(jLabel1)
+                            .addGroup(jPanel9Layout.createSequentialGroup()
+                                .addComponent(jLabel40)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(total)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel9Layout.setVerticalGroup(
@@ -460,30 +469,29 @@ public class ReporteRecepciones extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel35)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel40)
                     .addComponent(total))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(1, 1, 1)
                 .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(11, 11, 11)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(26, 26, 26)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addComponent(jLabel42, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(jPanel9Layout.createSequentialGroup()
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel42, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnVolver)
-                            .addComponent(btnEnviarRec)))))
+                            .addComponent(btnEnviarRec)
+                            .addComponent(btnVolver)))
+                    .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -496,7 +504,7 @@ public class ReporteRecepciones extends javax.swing.JFrame {
                     .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(labelInicioSesion)
-                        .addGap(0, 936, Short.MAX_VALUE)))
+                        .addGap(0, 1000, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -505,8 +513,7 @@ public class ReporteRecepciones extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(labelInicioSesion)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -514,24 +521,71 @@ public class ReporteRecepciones extends javax.swing.JFrame {
 
     private void btnEnviarRecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarRecActionPerformed
         {
-            DefaultTableModel df = (DefaultTableModel) this.tablaDatosPedido.getModel();
-            String numorden1 = this.tablaOrdenes.getValueAt(this.tablaOrdenes.getSelectedRow(), 0).toString();
-            ArrayList<itemRecep> articulos = new ArrayList<>();
-            itemRecep ii;
-            Usuario u = cliente.Cliente.conectarU();
-            for (int i = 0; i < df.getRowCount(); i++) {
-                    ii = new itemRecep(df.getValueAt(i, 1).toString(), this.recobs.getText(), new Float(df.getValueAt(i, 3).toString()), new Float(df.getValueAt(i, 5).toString()));
-                    ii.setfLlegada((Date) df.getValueAt(i, 7));
-                    ii.setcCalidad(df.getValueAt(i, 8).toString());
-                    ii.setcEsp(df.getValueAt(i, 9).toString());
-                    ii.setfVencimiento((Date) df.getValueAt(i, 10));
-                    ii.setmVerificacion(df.getValueAt(i, 11));
-                    articulos.add(ii);
+            try {
+                DefaultTableModel df = (DefaultTableModel) this.tablaDatosPedido.getModel();
+                String numorden1 = this.tablaOrdenes.getValueAt(this.tablaOrdenes.getSelectedRow(), 0).toString();
+                Usuario u = cliente.Cliente.conectarU();
+                ArrayList<infoItems> lstItems = new ArrayList<>();
+                for (int i = 0; i < df.getRowCount(); i++) {
+                    lstItems.add(new infoItems(
+                            df.getValueAt(i, 1).toString(),
+                            df.getValueAt(i, 2).toString(),
+                            df.getValueAt(i, 3).toString(),
+                            df.getValueAt(i, 4).toString(),
+                            df.getValueAt(i, 5).toString(),
+                            df.getValueAt(i, 6).toString(),
+                            df.getValueAt(i, 7).toString(),
+                            df.getValueAt(i, 8).toString(),
+                            df.getValueAt(i, 9).toString(),
+                            df.getValueAt(i, 10).toString(),
+                            df.getValueAt(i, 11).toString()));
+                }
+                System.out.println(df.getValueAt(0, 8).toString());
+                evProv evProv = new evProv(this.rec_nit.getText(), new Double(numorden1), this.ev1.getSelectedItem().toString(), this.ev2.getSelectedItem().toString(),
+                        this.ev3.getSelectedItem().toString(), this.ev4.getSelectedItem().toString(), this.ev5.getSelectedItem().toString(), this.ev6.getSelectedItem().toString(),
+                        this.ev7.getSelectedItem().toString(), this.ev8.getSelectedItem().toString());
+                JOptionPane.showMessageDialog(null, "Recopilando información...");
+                datosFormatos datos = u.getDatos("2");
+                String rutaImagen;
+                String property = System.getProperty("user.dir");
+                rutaImagen = property.concat("\\src\\Imagenes\\iconB.png");
+                HashMap<String, String> parametros = new HashMap<>();
+                parametros.put("image", rutaImagen);
+                parametros.put("fechaElab", u.getFecha());
+                parametros.put("oCompra", this.tablaOrdenes.getValueAt(this.tablaOrdenes.getSelectedRow(), 0).toString());
+                parametros.put("revision", datos.getRevision());
+                parametros.put("fechaact", datos.getFechaActualizacion());
+                parametros.put("titulo", datos.getTitulo());
+                parametros.put("Obs", this.recobs.getText());
+                parametros.put("subtotal", this.total.getText());
+                parametros.put("nit", this.rec_nit.getText());
+                parametros.put("nombreProv", this.rec_nomProv.getText());
+                parametros.put("direccionProv", this.rec_dir.getText() + "-" + this.rec_cel.getText());
+                parametros.put("fax", this.rec_fax.getText());
+                parametros.put("1_sPreventa", this.ev1.getSelectedItem().toString());
+                parametros.put("2_AUsuario", this.ev2.getSelectedItem().toString());
+                parametros.put("3_SCalidad", this.ev3.getSelectedItem().toString());
+                parametros.put("4_fEntrega", this.ev4.getSelectedItem().toString());
+                parametros.put("5_completos", this.ev5.getSelectedItem().toString());
+                parametros.put("6_CRequisitos", this.ev6.getSelectedItem().toString());
+                parametros.put("7_CCalidad", this.ev7.getSelectedItem().toString());
+                parametros.put("8_Conformidad", this.ev8.getSelectedItem().toString());
+                JFileChooser chooser = new JFileChooser();
+                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                chooser.showOpenDialog(this);
+                String path = chooser.getSelectedFile().getPath();
+                File archivo = fdc002Recepciones.metodo(path, parametros, lstItems);
+                if (JOptionPane.showConfirmDialog(null, "¿Desea abrir el archivo?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    try {
+                        Desktop.getDesktop().open(archivo);
+                    } catch (IOException ex) {
+                        Logger.getLogger(ReporteSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(ReporteRecepciones.class.getName()).log(Level.SEVERE, null, ex);
             }
-            evProv evProv = new evProv(this.rec_nit.getText(), new Double(numorden1), this.ev1.getSelectedItem().toString(), this.ev2.getSelectedItem().toString(),
-                    this.ev3.getSelectedItem().toString(), this.ev4.getSelectedItem().toString(), this.ev5.getSelectedItem().toString(), this.ev6.getSelectedItem().toString(),
-                    this.ev7.getSelectedItem().toString(), this.ev8.getSelectedItem().toString());
-
+            
         }    }//GEN-LAST:event_btnEnviarRecActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
@@ -671,7 +725,6 @@ public class ReporteRecepciones extends javax.swing.JFrame {
                     datos[10] = articulo.getfVencimiento();
                     datos[11] = articulo.getmVerificacion().toString();
                     df.addRow(datos);
-                    df.setValueAt(false, i, 12);
                     this.recobs.setText(articulo.getObs());
                     tot += articulo.getcAprobada() * articulo.getPrecio();
                     this.total.setText(Float.toString(tot));
@@ -687,7 +740,14 @@ public class ReporteRecepciones extends javax.swing.JFrame {
                     this.ev6.setSelectedItem(ev.getEv6());
                     this.ev7.setSelectedItem(ev.getEv7());
                     this.ev8.setSelectedItem(ev.getEv8());
-
+                    this.ev1.setEditable(false);
+                    this.ev2.setEditable(false);
+                    this.ev3.setEditable(false);
+                    this.ev4.setEditable(false);
+                    this.ev5.setEditable(false);
+                    this.ev6.setEditable(false);
+                    this.ev7.setEditable(false);
+                    this.ev8.setEditable(false);
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "No se encontró nada referente al número de orden dado");

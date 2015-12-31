@@ -309,7 +309,7 @@ public class MenuSolicitud extends javax.swing.JFrame {
     }//GEN-LAST:event_btnOCompraActionPerformed
 
     private void btnAprobarCotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAprobarCotActionPerformed
-        if (p.isAprobarCotizaciones() == 0) {
+        if (p.isRealizarCotizaciones()== 0) {
             JOptionPane.showMessageDialog(null, "No tiene acceso");
         } else {
             try {

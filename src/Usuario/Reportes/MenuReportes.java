@@ -423,7 +423,7 @@ public class MenuReportes extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     private void btnSolicitudesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolicitudesActionPerformed
-        if (p.getGenfdc001() == 0) {
+        if (p.isAprobarCotizaciones() == 0) {
             JOptionPane.showMessageDialog(null, "No tiene acceso, solo puede imprimir las solicitudes que ha realizado, en el "
                     + "menú Procedimientos->Solicitudes->Mis Solicitudes");
         } else {
@@ -494,20 +494,27 @@ public class MenuReportes extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_itmxprovActionPerformed
 
     private void btnSolicitudes1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolicitudes1ActionPerformed
-        try {
-            ReporteOCompra re = new  ReporteOCompra(id);
-            re.setVisible(true);
-            this.dispose();
-        } catch (RemoteException ex) {
-            Logger.getLogger(MenuReportes.class.getName()).log(Level.SEVERE, null, ex);
+        if (p.isGenerarOrdenesCompra() == 0) {
+            JOptionPane.showMessageDialog(null, "No tiene acceso");
+        } else {
+            try {
+                ReporteOCompra re = new ReporteOCompra(id);
+                re.setVisible(true);
+                this.dispose();
+            } catch (RemoteException ex) {
+                Logger.getLogger(MenuReportes.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        
     }//GEN-LAST:event_btnSolicitudes1ActionPerformed
 
     private void btnSolicitudes2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolicitudes2ActionPerformed
-        ReporteRecepciones rep = new ReporteRecepciones(id);
-        rep.setVisible(true);
-        this.dispose();
+        if (p.getGenfdc001()== 0) {
+            JOptionPane.showMessageDialog(null, "No tiene acceso");
+        } else {
+            ReporteRecepciones rep = new ReporteRecepciones(id);
+            rep.setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_btnSolicitudes2ActionPerformed
 
     /**

@@ -5,6 +5,7 @@
  */
 package Formatos;
 
+import EstructurasAux.infoItems;
 import EstructurasAux.itemsOrdenCompra;
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,7 +32,7 @@ import net.sf.jasperreports.engine.xml.JRXmlLoader;
  */
 public class fdc002Recepciones implements JRDataSource {
 
-    private List<itemsOrdenCompra> pedido = new ArrayList<>();
+    private List<infoItems> pedido = new ArrayList<>();
     private int i = -1;
 
     public fdc002Recepciones() {
@@ -43,7 +44,7 @@ public class fdc002Recepciones implements JRDataSource {
         return ++i < pedido.size();
     }
 
-    public void addAsistente(itemsOrdenCompra Asistente) {
+    public void addAsistente(infoItems Asistente) {
 
         this.pedido.add(Asistente);
 
@@ -57,21 +58,59 @@ public class fdc002Recepciones implements JRDataSource {
         if ("cInterno".equalsIgnoreCase(jrf.getName())) {
             valor = pedido.get(i).getCinterno();
         } else if ("Desc".equalsIgnoreCase(jrf.getName())) {
-            valor = pedido.get(i).getDesc();
+            valor = pedido.get(i).getDescripcion();
         } else if ("Cant".equalsIgnoreCase(jrf.getName())) {
-            valor = Float.toString(pedido.get(i).getCaprobada());
+            valor = pedido.get(i).getCantidad();
         } else if ("pres".equalsIgnoreCase(jrf.getName())) {
-            valor = pedido.get(i).getPresen();
+            valor = pedido.get(i).getPresentacion();
         } else if ("vUnitario".equalsIgnoreCase(jrf.getName())) {
-            valor = Float.toString(pedido.get(i).getPrecioU());
+            valor = pedido.get(i).getVunitario();
         } else if ("Vtotal".equalsIgnoreCase(jrf.getName())) {
-            valor = Float.toString(pedido.get(i).getvTotal());
-        }
+            valor = pedido.get(i).getVtotal();
+        } else if ("fRecepcion".equalsIgnoreCase(jrf.getName())) {
+            valor = pedido.get(i).getFrecepcion();
+        } else if ("CalidaSi".equalsIgnoreCase(jrf.getName())) {
+            if(pedido.get(i).getCcalidad().equalsIgnoreCase("SI"))
+            {
+                valor = "X";
+            }else
+            {
+                valor="";
+            }
+        } else if ("CalidadNo".equalsIgnoreCase(jrf.getName())) {
+            if(pedido.get(i).getCcalidad().equalsIgnoreCase("NO"))
+            {
+                valor = "X";
+            }else
+            {
+                valor="";
+            }
+        }else if ("EspSi".equalsIgnoreCase(jrf.getName())) {
+            if(pedido.get(i).getCcalidad().equalsIgnoreCase("SI"))
+            {
+                valor = "X";
+            }else
+            {
+                valor="";
+            }
+        } else if ("EspNo".equalsIgnoreCase(jrf.getName())) {
+            if(pedido.get(i).getCcalidad().equalsIgnoreCase("NO"))
+            {
+                valor = "X";
+            }else
+            {
+                valor="";
+            }
+        } else if ("Venci".equalsIgnoreCase(jrf.getName())) {
+            valor = pedido.get(i).getFvencimiento();
+        } else if ("Verif".equalsIgnoreCase(jrf.getName())) {
+            valor = pedido.get(i).getMverificacion();
+        } 
 
         return valor;
     }
 
-    public static File metodo(String ruta, HashMap parametros, ArrayList<itemsOrdenCompra> pedido) {
+    public static File metodo(String ruta, HashMap parametros, ArrayList<infoItems> pedido) {
         // TODO code application logic here
 
         InputStream inputStream = null;
@@ -79,7 +118,7 @@ public class fdc002Recepciones implements JRDataSource {
         fdc002Recepciones datasource = new fdc002Recepciones();
         File pdf = null;
         String rutaArchivo = null;
-        for (itemsOrdenCompra pp : pedido) {
+        for (infoItems pp : pedido) {
             System.out.println(pp.getCinterno());
             datasource.addAsistente(pp);
         }

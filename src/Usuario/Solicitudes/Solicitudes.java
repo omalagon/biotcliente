@@ -11,6 +11,10 @@ import EstructurasAux.solicitudPr;
 import EstructurasAux.users;
 import Formatos.fdc001;
 import Usuario.Reportes.ReporteSolicitudes;
+import Usuario.Utils.BtnEditorOcultar;
+import Usuario.Utils.ButtonEditor;
+import Usuario.Utils.ButtonRenderer;
+import Usuario.Utils.EnumAcciones;
 import Usuario.Utils.InputDialogCBox;
 import cliente.Cliente;
 import interfaces.Usuario;
@@ -30,6 +34,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
+import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
@@ -51,7 +56,7 @@ public class Solicitudes extends javax.swing.JFrame {
     String usuario = null;
     private ArrayList<solicitudPr> solicitudes = null;
     private ArrayList<Object[]> items = new ArrayList<>();
-
+    private EnumAcciones acciones;
     /**
      * Creates new form Solicitudes
      */
@@ -147,6 +152,9 @@ public class Solicitudes extends javax.swing.JFrame {
             }
         });
 
+        this.tablaVerSolicitudes.getColumnModel().getColumn(2).setCellRenderer(new ButtonRenderer());
+        this.tablaVerSolicitudes.getColumnModel().getColumn(2).setCellEditor(new BtnEditorOcultar(new JTextField(),acciones.OCULTAR, id, "", "Solicitud" ));
+        
     }
 
     /**
@@ -416,7 +424,7 @@ public class Solicitudes extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel13)
                             .addComponent(lblRestantes))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3)
@@ -432,11 +440,11 @@ public class Solicitudes extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Numero de Solicitud", "Fecha"
+                "Numero de Solicitud", "Fecha", ""
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -578,15 +586,16 @@ public class Solicitudes extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel16)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel17)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -608,7 +617,7 @@ public class Solicitudes extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(labelAdministrador)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 673, Short.MAX_VALUE))
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE))
         );
 
         pack();
@@ -629,11 +638,10 @@ public class Solicitudes extends javax.swing.JFrame {
         GregorianCalendar fecha;
         for (solicitudPr s : solicitudes) {
             fecha = s.getFecha();
-
-            Object[] datos = new Object[2];
+            Object[] datos = new Object[3];
             datos[0] = s.getNum_sol();
             datos[1] = fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR);
-
+            datos[2] = "Ocultar"+s.getNum_sol();
             df.addRow(datos);
         }
     }//GEN-LAST:event_btnRefrescarSolicitudesActionPerformed

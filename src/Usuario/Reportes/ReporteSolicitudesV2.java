@@ -88,7 +88,7 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
 
         ArrayList<solicitudPr> solNoRev = null;
         try {
-            solNoRev = u.getSolicitudes("");
+            solNoRev = u.getSolicitudes("", "");
         } catch (RemoteException ex) {
             Logger.getLogger(ReporteSolicitudesV2.class.getName()).log(Level.SEVERE, null, ex);
         }

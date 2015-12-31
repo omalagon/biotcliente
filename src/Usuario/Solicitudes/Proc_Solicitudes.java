@@ -82,7 +82,7 @@ public class Proc_Solicitudes extends javax.swing.JFrame {
 
         ArrayList<solicitudPr> solNoRev = null;
         try {
-            solNoRev = u.getSolicitudes("NO");
+            solNoRev = u.getSolicitudes("NO", id);
         } catch (RemoteException ex) {
             Logger.getLogger(Proc_Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
         }

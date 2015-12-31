@@ -13,5 +13,6 @@ public enum EnumAcciones {
     ELIMINAR,
     ACTUALIZAR,
     VER,
-    PERMISOS;
+    PERMISOS, 
+    OCULTAR;
 }

@@ -13,6 +13,9 @@ import EstructurasAux.solicitudPr;
 import EstructurasAux.users;
 import Formatos.fdc001;
 import Usuario.Reportes.ReporteSolicitudes;
+import Usuario.Utils.BtnEditorOcultar;
+import Usuario.Utils.ButtonRenderer;
+import Usuario.Utils.EnumAcciones;
 import Usuario.Utils.InputDialogCBox;
 import interfaces.Usuario;
 import java.awt.Toolkit;
@@ -34,6 +37,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 /**
  *
@@ -46,7 +50,8 @@ public class Proc_SolicitudesRevisadas extends javax.swing.JFrame {
     private ArrayList<ItemInventario> itemsXSolicitud = null;
     private String numSol;
     HashMap<String, String> mapProv = new HashMap();
-
+    EnumAcciones acciones;
+    
     public Proc_SolicitudesRevisadas(String id) throws RemoteException {
         initComponents();
         Proc_SolicitudesRevisadas.id = id;
@@ -87,23 +92,27 @@ public class Proc_SolicitudesRevisadas extends javax.swing.JFrame {
 
         ArrayList<solicitudPr> solNoRev = null;
         try {
-            solNoRev = u.getSolicitudes("");
+            solNoRev = u.getSolicitudes("", id);
         } catch (RemoteException ex) {
             Logger.getLogger(Proc_SolicitudesRevisadas.class.getName()).log(Level.SEVERE, null, ex);
         }
         GregorianCalendar fecha = new GregorianCalendar();
         for (solicitudPr s : solNoRev) {
             fecha = s.getFecha();
-            Object[] datos = new Object[3];
+            Object[] datos = new Object[4];
             datos[0] = s.getNum_sol();
             datos[1] = fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR);
             datos[2] = s.getNombreSolicitante();
+            datos[3] = "Ocultar"+s.getNum_sol();
             df_NoRevisadas.addRow(datos);
         }
         ArrayList<proveedor> todosProveedores = u.todosProveedores();
         for (proveedor p : todosProveedores) {
             mapProv.put(p.getNombre(), p.getNIT());
         }
+        this.tablaSolicitudesNoRev.getColumnModel().getColumn(3).setCellRenderer(new ButtonRenderer());
+        this.tablaSolicitudesNoRev.getColumnModel().getColumn(3).setCellEditor(new BtnEditorOcultar(new JTextField(),acciones.OCULTAR, id, "", "SolicitudRev" ));
+        
     }
 
     /**
@@ -185,11 +194,11 @@ public class Proc_SolicitudesRevisadas extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Numero de Solicitud", "Fecha", "Responsable Area (Solicitante)"
+                "Numero de Solicitud", "Fecha", "Responsable Area (Solicitante)", ""
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
