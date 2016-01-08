@@ -8,7 +8,12 @@ package Usuario.Creaciones;
 import EstructurasAux.permisos;
 import Usuario.MenuPrincipal;
 import Usuario.datos;
+import java.awt.Desktop;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,6 +24,7 @@ public class MenuCreaciones extends javax.swing.JFrame {
 
     private String id = null;
     permisos p;
+
     /**
      * Creates new form Seleccion
      */
@@ -58,6 +64,8 @@ public class MenuCreaciones extends javax.swing.JFrame {
         btn_Volver = new javax.swing.JButton();
         lbl_volver1 = new javax.swing.JLabel();
         btn_Volver1 = new javax.swing.JButton();
+        btn_Volver2 = new javax.swing.JButton();
+        lbl_volver2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -152,19 +160,36 @@ public class MenuCreaciones extends javax.swing.JFrame {
             }
         });
 
+        btn_Volver2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Carrito.png"))); // NOI18N
+        btn_Volver2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_Volver2ActionPerformed(evt);
+            }
+        });
+
+        lbl_volver2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_volver2.setText("Ver Manual");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbl_volver1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_Volver1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbl_volver2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_Volver2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btn_Volver, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_volver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btn_Volver1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btn_Volver, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(lbl_volver1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lbl_volver, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -173,11 +198,18 @@ public class MenuCreaciones extends javax.swing.JFrame {
                 .addComponent(btn_Volver, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(btn_Volver1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbl_volver1)
-                    .addComponent(lbl_volver)))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(btn_Volver1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(btn_Volver2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lbl_volver2)
+                            .addComponent(lbl_volver1)
+                            .addComponent(lbl_volver))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -200,51 +232,49 @@ public class MenuCreaciones extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_CrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CrearUsuarioActionPerformed
-        if(p.isCrearUsuario()==0)
-        {
+        if (p.isCrearUsuario() == 0) {
             JOptionPane.showMessageDialog(null, "No tiene acceso");
-        }else{
+        } else {
             CrearUsuario_Version2 us = new CrearUsuario_Version2(id);
             us.setVisible(true);
 //        CrearUsuario us = new CrearUsuario(id);
 //        us.setVisible(true);
-        this.setVisible(false);
+            this.setVisible(false);
         }
     }//GEN-LAST:event_btn_CrearUsuarioActionPerformed
 
     private void btn_CrearProvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CrearProvActionPerformed
-        if(p.isCrearProveedor()==0)
-        {
+        if (p.isCrearProveedor() == 0) {
             JOptionPane.showMessageDialog(null, "No tiene acceso");
-        }else{
+        } else {
 //        CrearProveedor crPr = new CrearProveedor(this.id);
 //        crPr.setVisible(true);
-        CrearProveedor_Version2 crPr = new CrearProveedor_Version2(id);
-        crPr.setVisible(true);
-        this.setVisible(false);
+            CrearProveedor_Version2 crPr = new CrearProveedor_Version2(id);
+            crPr.setVisible(true);
+            this.setVisible(false);
         }
     }//GEN-LAST:event_btn_CrearProvActionPerformed
 
     private void btn_CrearItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CrearItemActionPerformed
-        if(p.isCrearItem()==0)
-        {
+        if (p.isCrearItem() == 0) {
             JOptionPane.showMessageDialog(null, "No tiene acceso");
-        }else{
-            CrearItem_Version2 cr= new CrearItem_Version2(id);
+        } else {
+            CrearItem_Version2 cr = new CrearItem_Version2(id);
             cr.setVisible(true);
             this.setVisible(false);
-        /*CrearItem cr = new CrearItem(this.id);
+            /*CrearItem cr = new CrearItem(this.id);
             
         cr.setVisible(true);
-        this.setVisible(false);*/}
+        this.setVisible(false);*/
+        }
     }//GEN-LAST:event_btn_CrearItemActionPerformed
 
     private void btn_VolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_VolverActionPerformed
@@ -254,15 +284,26 @@ public class MenuCreaciones extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_VolverActionPerformed
 
     private void btn_Volver1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_Volver1ActionPerformed
-        if (id.equalsIgnoreCase("35505330") ||id.equalsIgnoreCase("79165996") ||id.equalsIgnoreCase("52495832") )
-        {
+        if (id.equalsIgnoreCase("35505330") || id.equalsIgnoreCase("79165996") || id.equalsIgnoreCase("52495832")) {
             DatosDeFormatos dt = new DatosDeFormatos(this.id);
             dt.setVisible(true);
             this.dispose();
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "No tiene acceso");
         }
     }//GEN-LAST:event_btn_Volver1ActionPerformed
+
+    private void btn_Volver2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_Volver2ActionPerformed
+        String ruta;
+        String property = System.getProperty("user.dir");
+        ruta = property.concat("\\src\\ManualUsuario.pdf");
+        File Manual = new File(ruta);
+        try {
+            Desktop.getDesktop().open(Manual);
+        } catch (IOException ex) {
+            Logger.getLogger(MenuCreaciones.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btn_Volver2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -313,6 +354,7 @@ public class MenuCreaciones extends javax.swing.JFrame {
     private javax.swing.JButton btn_CrearUsuario;
     private javax.swing.JButton btn_Volver;
     private javax.swing.JButton btn_Volver1;
+    private javax.swing.JButton btn_Volver2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel jlb_titulo;
@@ -321,5 +363,6 @@ public class MenuCreaciones extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_item;
     private javax.swing.JLabel lbl_volver;
     private javax.swing.JLabel lbl_volver1;
+    private javax.swing.JLabel lbl_volver2;
     // End of variables declaration//GEN-END:variables
 }

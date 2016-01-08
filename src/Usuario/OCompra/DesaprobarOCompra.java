@@ -70,8 +70,6 @@ public class DesaprobarOCompra extends javax.swing.JFrame {
 
         });
 
-
-        
         llenarTablaProveedores();
 
     }
@@ -305,7 +303,7 @@ public class DesaprobarOCompra extends javax.swing.JFrame {
     private void btnGenerarFDC001ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarFDC001ActionPerformed
         Usuario u = cliente.Cliente.conectarU();
         boolean valido = false;
-        DefaultTableModel df_items =(DefaultTableModel) tablaContenido.getModel();
+        DefaultTableModel df_items = (DefaultTableModel) tablaContenido.getModel();
         for (int i = 0; i < df_items.getRowCount(); i++) {
             valido = (boolean) df_items.getValueAt(i, 7);
             if (valido) {
@@ -313,12 +311,13 @@ public class DesaprobarOCompra extends javax.swing.JFrame {
                     ItemInventario itm = new ItemInventario();
                     itm.setNumSolAsociado(tablaContenido.getValueAt(i, 0).toString());
                     itm.setNumero(tablaContenido.getValueAt(i, 1).toString());
-                    u.devolverOCompra(itm, new Double(tablaContenido.getValueAt(i, 8).toString()));
+                    valido = u.devolverOCompra(itm, new Double(tablaContenido.getValueAt(i, 8).toString()));
                 } catch (RemoteException ex) {
                     Logger.getLogger(DesaprobarOCompra.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
+        JOptionPane.showMessageDialog(null, "Hecho");
     }//GEN-LAST:event_btnGenerarFDC001ActionPerformed
 
     /**
@@ -377,7 +376,7 @@ public class DesaprobarOCompra extends javax.swing.JFrame {
             Logger.getLogger(DesaprobarOCompra.class.getName()).log(Level.SEVERE, null, ex);
         }
         GregorianCalendar fecha = new GregorianCalendar();
-        if (listaProveedores!=null) {
+        if (listaProveedores != null) {
             for (proveedor s : listaProveedores) {
                 Object[] datos = new Object[6];
                 datos[0] = s.getNIT();
@@ -418,6 +417,7 @@ public class DesaprobarOCompra extends javax.swing.JFrame {
                 infoItems[2] = i.getDescripcion();
                 infoItems[3] = i.getCantidadAprobada();
                 infoItems[4] = i.getPresentacion();
+                i.setPrecio(new Float(u.buscarPrecio(i,tablaProveedor.getValueAt(tablaProveedor.getSelectedRow(), 0).toString())));
                 infoItems[5] = i.getPrecio();
                 infoItems[6] = i.getPrecio() * i.getCantidadAprobada();
                 infoItems[8] = u.buscarOcompra(i, tablaProveedor.getValueAt(tablaProveedor.getSelectedRow(), 0).toString());
