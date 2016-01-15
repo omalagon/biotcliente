@@ -5,27 +5,26 @@
  */
 package Usuario.Recepciones;
 
-import EstructurasAux.ItemInventario;
-import EstructurasAux.evProv;
-import EstructurasAux.itemRecep;
-import EstructurasAux.recepcionProd;
 import Usuario.solicitudes.MenuSolicitud;
-import com.toedter.calendar.JDateChooserCellEditor;
+import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import interfaces.Usuario;
 import java.awt.Toolkit;
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultCellEditor;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import logica.EvProv;
+import logica.ItemInventario;
+import logica.ItemRecep;
+import logica.RecepcionProd;
+import sun.util.BuddhistCalendar;
 
 /**
  *
@@ -44,15 +43,11 @@ public class DevolverPedido extends javax.swing.JFrame {
     }
 
     public DevolverPedido(String id) {
-        try {
-            initComponents();
-            this.setLocationRelativeTo(null);
-            DevolverPedido.id = id;
-            this.jlblrecFecha.setText(cliente.Cliente.conectarU().getFecha());
-            setIcon();
-        } catch (RemoteException ex) {
-            Logger.getLogger(DevolverPedido.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        initComponents();
+        this.setLocationRelativeTo(null);
+        DevolverPedido.id = id;
+        this.jlblrecFecha.setText(getFecha());
+        setIcon();
     }
 
     /**
@@ -471,7 +466,6 @@ public class DevolverPedido extends javax.swing.JFrame {
     private void btnProcesarRecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcesarRecActionPerformed
 
         BigDecimal orden;
-        Usuario u = cliente.Cliente.conectarU();
         DefaultTableModel df = (DefaultTableModel) this.tablaDatosPedido.getModel();
 
         for (int i = df.getRowCount() - 1; i >= 0; i--) {
@@ -486,45 +480,42 @@ public class DevolverPedido extends javax.swing.JFrame {
             }
         }
         orden = new BigDecimal(ordenIngresada);
-        try {
-            recepcionProd datosRec = u.getDatosPedidoRecibido(orden, this.id);
-            if (datosRec != null) {
+        RecepcionProd datosRec = getDatosPedidoRecibido(orden, this.id);
+        if (datosRec != null) {
 
-                this.rec_nomProv.setText(datosRec.getP().getNombre());
-                this.rec_nit.setText(datosRec.getP().getNIT());
-                this.rec_dir.setText(datosRec.getP().getDireccion());
-                this.rec_fax.setText(datosRec.getP().getTelefax());
-                this.rec_cel.setText(datosRec.getP().getTelefono());
-                this.numorden.setText(ordenIngresada);
-                this.recobs.setText(datosRec.getObservaciones());
-                ArrayList<itemRecep> articulos = datosRec.getArticulos();
-                float tot = 0;
-                int i=0;
-                for (itemRecep articulo : articulos) {
-                    ItemInventario d = u.buscarInfoItem(articulo.getCinterno());
-                    Object[] datos = new Object[12];
-                    datos[0] = d.getInventario();
-                    datos[1] = d.getNumero();
-                    datos[2] = d.getDescripcion();
-                    datos[3] = articulo.getcAprobada();
-                    datos[4] = d.getPresentacion();
-                    datos[5] = articulo.getPrecio();
-                    datos[6] = articulo.getcAprobada() * articulo.getPrecio();
-                    datos[7] = articulo.getfLlegada();
-                    datos[8] = articulo.getcCalidad();
-                    datos[9] = articulo.getcEsp();
-                    datos[10] = articulo.getfVencimiento();
-                    datos[11] = articulo.getmVerificacion().toString();
-                    df.addRow(datos);
-                    df.setValueAt(false, i, 12);
-                    this.recobs.setText(articulo.getObs());
-                    tot += articulo.getcAprobada() * articulo.getPrecio();
-                    this.total.setText(Float.toString(tot));
-                }
-                evProv ev = u.getEvaluacionProv(new Double(orden.toString()));
-                if(ev!=null)
-                {
-                    
+            this.rec_nomProv.setText(datosRec.getP().getNombre());
+            this.rec_nit.setText(datosRec.getP().getNIT());
+            this.rec_dir.setText(datosRec.getP().getDireccion());
+            this.rec_fax.setText(datosRec.getP().getTelefax());
+            this.rec_cel.setText(datosRec.getP().getTelefono());
+            this.numorden.setText(ordenIngresada);
+            this.recobs.setText(datosRec.getObservaciones());
+            ArrayList<ItemRecep> articulos = (ArrayList<ItemRecep>) datosRec.getArticulos();
+            float tot = 0;
+            int i = 0;
+            for (ItemRecep articulo : articulos) {
+                ItemInventario d = buscarInfoItem(articulo.getCinterno());
+                Object[] datos = new Object[12];
+                datos[0] = d.getInventario();
+                datos[1] = d.getNumero();
+                datos[2] = d.getDescripcion();
+                datos[3] = articulo.getCAprobada();
+                datos[4] = d.getPresentacion();
+                datos[5] = articulo.getPrecio();
+                datos[6] = articulo.getCAprobada() * articulo.getPrecio();
+                datos[7] = articulo.getFLlegada();
+                datos[8] = articulo.getCCalidad();
+                datos[9] = articulo.getCEsp();
+                datos[10] = articulo.getFVencimiento();
+                datos[11] = articulo.getMVerificacion().toString();
+                df.addRow(datos);
+                df.setValueAt(false, i, 12);
+                this.recobs.setText(articulo.getObs());
+                tot += articulo.getCAprobada() * articulo.getPrecio();
+                this.total.setText(Float.toString(tot));
+            }
+            EvProv ev = getEvaluacionProv(new Double(orden.toString()));
+            if (ev != null) {
                 this.ev1.setSelectedItem(ev.getEv1());
                 this.ev2.setSelectedItem(ev.getEv2());
                 this.ev3.setSelectedItem(ev.getEv3());
@@ -533,46 +524,61 @@ public class DevolverPedido extends javax.swing.JFrame {
                 this.ev6.setSelectedItem(ev.getEv6());
                 this.ev7.setSelectedItem(ev.getEv7());
                 this.ev8.setSelectedItem(ev.getEv8());
-                
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "No se encontró nada referente al número de orden dado");
+
             }
-        } catch (RemoteException ex) {
-            Logger.getLogger(DevolverPedido.class.getName()).log(Level.SEVERE, null, ex);
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró nada referente al número de orden dado");
         }
     }//GEN-LAST:event_btnProcesarRecActionPerformed
 
     private void btnEnviarRecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarRecActionPerformed
         DefaultTableModel df = (DefaultTableModel) this.tablaDatosPedido.getModel();
         String numorden1 = this.numorden.getText();
-        ArrayList<itemRecep> articulos = new ArrayList<>();
-        itemRecep ii;
-        Usuario u = cliente.Cliente.conectarU();
+        ArrayList<ItemRecep> articulos = new ArrayList<>();
+        ItemRecep ii;
         boolean devolver;
         for (int i = 0; i < df.getRowCount(); i++) {
-            if((boolean)df.getValueAt(i, 12)==true){
-                ii = new itemRecep(df.getValueAt(i, 1).toString(), this.recobs.getText(), new Float(df.getValueAt(i, 3).toString()), new Float(df.getValueAt(i, 5).toString()));
-                ii.setfLlegada((Date) df.getValueAt(i, 7));
-                ii.setcCalidad(df.getValueAt(i, 8).toString());
-                ii.setcEsp(df.getValueAt(i, 9).toString());
-                ii.setfVencimiento((Date) df.getValueAt(i, 10));
-                ii.setmVerificacion(df.getValueAt(i, 11));
-                articulos.add(ii);
+            if ((boolean) df.getValueAt(i, 12) == true) {
+                try {
+                    ii = new ItemRecep();
+                    ii.setCinterno(df.getValueAt(i, 1).toString());
+                    ii.setObs(this.recobs.getText());
+                    ii.setCAprobada(new Float(df.getValueAt(i, 3).toString()));
+                    ii.setPrecio(new Float(df.getValueAt(i, 5).toString()));
+                    GregorianCalendar g = new GregorianCalendar();
+                    g.setTime((Date) df.getValueAt(i, 7));
+                    ii.setFLlegada(DatatypeFactory.newInstance().newXMLGregorianCalendar(g));
+                    ii.setCCalidad(df.getValueAt(i, 8).toString());
+                    ii.setCEsp(df.getValueAt(i, 9).toString());
+                    g.setTime((Date) df.getValueAt(i, 10));
+                    ii.setFVencimiento(DatatypeFactory.newInstance().newXMLGregorianCalendar(g));
+                    ii.setMVerificacion(df.getValueAt(i, 11));
+                    articulos.add(ii);
+                } catch (DatatypeConfigurationException ex) {
+                    Logger.getLogger(DevolverPedido.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
-        try {
-            devolver = u.devolverPedido(new BigDecimal(numorden1), id, articulos);
-            u.borrarEvaluacion( new evProv(this.rec_nit.getText(), new Double(numorden1), this.ev1.getSelectedItem().toString(), this.ev2.getSelectedItem().toString(),
-                    this.ev3.getSelectedItem().toString(), this.ev4.getSelectedItem().toString(), this.ev5.getSelectedItem().toString(), this.ev6.getSelectedItem().toString(),
-                    this.ev7.getSelectedItem().toString(), this.ev8.getSelectedItem().toString()));
-            if (devolver) {
-                JOptionPane.showMessageDialog(null, "Hecho");
-            } else {
-                JOptionPane.showMessageDialog(null, "Ocurrió un error");
-            }
-        } catch (RemoteException ex) {
-            Logger.getLogger(DevolverPedido.class.getName()).log(Level.SEVERE, null, ex);
+        devolver = devolverPedido(new BigDecimal(numorden1), id, articulos);
+        EvProv ee = new EvProv();
+        ee.setNit(this.rec_nit.getText());
+        ee.setNumorden(new Double(numorden1));
+        ee.setEv1(this.ev1.getSelectedItem().toString());
+        ee.setEv2(this.ev2.getSelectedItem().toString());
+        ee.setEv3(this.ev3.getSelectedItem().toString());
+        ee.setEv4(this.ev4.getSelectedItem().toString());
+        ee.setEv5(this.ev5.getSelectedItem().toString());
+        ee.setEv6(this.ev6.getSelectedItem().toString());
+        ee.setEv7(this.ev7.getSelectedItem().toString());
+        ee.setEv8(this.ev8.getSelectedItem().toString());
+        borrarEvaluacion(ee);
+        if (devolver) {
+            JOptionPane.showMessageDialog(null, "Hecho");
+        } else {
+            JOptionPane.showMessageDialog(null, "Ocurrió un error");
+        }
+        {
+
         }    }//GEN-LAST:event_btnEnviarRecActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
@@ -671,5 +677,41 @@ public class DevolverPedido extends javax.swing.JFrame {
 
     private void setIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+    }
+
+    private static String getFecha() {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getFecha();
+    }
+
+    private static RecepcionProd getDatosPedidoRecibido(java.math.BigDecimal numorden, java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getDatosPedidoRecibido(numorden, id);
+    }
+
+    private static EvProv getEvaluacionProv(double numorden) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getEvaluacionProv(numorden);
+    }
+
+    private static ItemInventario buscarInfoItem(java.lang.String cinterno) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.buscarInfoItem(cinterno);
+    }
+
+    private static boolean devolverPedido(java.math.BigDecimal numOrden, java.lang.String idRec, java.util.List<logica.ItemRecep> articulos) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.devolverPedido(numOrden, idRec, articulos);
+    }
+
+    private static void borrarEvaluacion(logica.EvProv e) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        port.borrarEvaluacion(e);
     }
 }

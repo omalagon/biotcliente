@@ -8,7 +8,7 @@ package Usuario.Creaciones;
 import Usuario.Utils.ButtonEditor;
 import Usuario.Utils.EnumAcciones;
 import Usuario.Utils.ButtonRenderer;
-import EstructurasAux.ItemInventario;
+import logica.ItemInventario;
 import Usuario.MenuPrincipal;
 import Usuario.OCompra.verProveedores;
 import interfaces.Usuario;
@@ -239,13 +239,8 @@ public class CrearItem_Version2 extends javax.swing.JFrame {
         for (int i = df.getRowCount() - 1; i >= 0; i--) {
             df.removeRow(i);
         }
-        Usuario ad = cliente.Cliente.conectarU();
         ArrayList<ItemInventario> itemInventario = null;
-        try {
-            itemInventario = ad.itemInventarioAdmin();
-        } catch (RemoteException ex) {
-            Logger.getLogger(CrearItem_Version2.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        itemInventario = (ArrayList<ItemInventario>) itemInventarioAdmin();
         for (ItemInventario i : itemInventario) {
             Object[] aux = new Object[10];
             aux[0] = i.getNumero();
@@ -253,7 +248,7 @@ public class CrearItem_Version2 extends javax.swing.JFrame {
             aux[2] = i.getPresentacion();
             aux[3] = i.getCantidad();
             aux[4] = i.getPrecio();
-            aux[5] = i.getcCalidad();
+            aux[5] = i.getCCalidad();
             aux[6] = i.getCEsp();
             aux[7] = "Actualizar"+i.getNumero();
             aux[8] = "Eliminar"+i.getNumero();
@@ -354,6 +349,12 @@ public class CrearItem_Version2 extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 private void setIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+    }
+
+    private static java.util.List<logica.ItemInventario> itemInventarioAdmin() {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.itemInventarioAdmin();
     }
 
 }

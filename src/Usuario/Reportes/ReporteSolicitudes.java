@@ -5,9 +5,6 @@
  */
 package Usuario.Reportes;
 
-import EstructurasAux.ItemInventario;
-import EstructurasAux.datosFormatos;
-import EstructurasAux.solicitudPr;
 import Formatos.fdc001;
 import Usuario.MenuPrincipal;
 import interfaces.Usuario;
@@ -27,6 +24,10 @@ import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import logica.DatosFormatos;
+import logica.ItemInventario;
+import logica.SolicitudPr;
+import logica.Users;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 
 /**
@@ -52,8 +53,7 @@ public class ReporteSolicitudes extends javax.swing.JFrame {
         this.btnRefrescar.doClick();
         setIcon();
         tabla_sol.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            Usuario u = cliente.Cliente.conectarU();
-
+            
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 BigDecimal aux = new BigDecimal(tabla_sol.getValueAt(tabla_sol.getSelectedRow(), 0).toString());
@@ -68,23 +68,19 @@ public class ReporteSolicitudes extends javax.swing.JFrame {
 
                 }
 
-                try {
-                    System.out.println("entra");
-                    ArrayList<ItemInventario> items_numSol = u.getItems_numSol(aux);
-                    for (ItemInventario i : items_numSol) {
-                        Object[] datos = new Object[6];
-                        datos[0] = i.getCantidad();
-                        datos[1] = i.getNumero();
-                        datos[2] = i.getDescripcion();
-                        datos[3] = i.getCantidadSolicitada();
-                        datos[4] = i.getInventario();
-                        datos[5] = i.getPrecio();
-                        items.add(datos);
-                        df.addRow(datos);
-
-                    }
-                } catch (RemoteException ex) {
-                    Logger.getLogger(ReporteSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("entra");
+                ArrayList<ItemInventario> items_numSol = (ArrayList<ItemInventario>) getItemsNumSol(aux);
+                for (ItemInventario i : items_numSol) {
+                    Object[] datos = new Object[6];
+                    datos[0] = i.getCantidad();
+                    datos[1] = i.getNumero();
+                    datos[2] = i.getDescripcion();
+                    datos[3] = i.getCantidadSolicitada();
+                    datos[4] = i.getInventario();
+                    datos[5] = i.getPrecio();
+                    items.add(datos);
+                    df.addRow(datos);
+                    
                 }
 
             }
@@ -256,7 +252,6 @@ public class ReporteSolicitudes extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         fdc001 fdc = new fdc001();
-        Usuario u = cliente.Cliente.conectarU();
         String numSol = tabla_sol.getValueAt(tabla_sol.getSelectedRow(), 0).toString();
         String fecha = tabla_sol.getValueAt(tabla_sol.getSelectedRow(), 1).toString();
         String solicitante = tabla_sol.getValueAt(tabla_sol.getSelectedRow(), 3).toString();
@@ -264,14 +259,10 @@ public class ReporteSolicitudes extends javax.swing.JFrame {
         String area = null;
         String nombreAo = null;
         JOptionPane.showMessageDialog(null, "Obteniendo información de la solicitud", "Solicitud",JOptionPane.INFORMATION_MESSAGE);
-        datosFormatos datos= null;        
-        try {
-            area = u.getDatosUsuario((String) tabla_sol.getValueAt(tabla_sol.getSelectedRow(), 2)).getLab();
-            nombreAo = u.getUsuario(id);
-            datos= u.getDatos("1");
-        } catch (RemoteException ex) {
-            Logger.getLogger(ReporteSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        DatosFormatos datos= null;        
+        area = getDatosUsuario((String) tabla_sol.getValueAt(tabla_sol.getSelectedRow(), 2)).getLab();
+        nombreAo = getUsuario(id);
+        datos= getDatos("1");
         String rutaImagen;
         String property = System.getProperty("user.dir");
         System.out.println(property);
@@ -303,21 +294,16 @@ public class ReporteSolicitudes extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
-        Usuario u = cliente.Cliente.conectarU();
-        ArrayList<solicitudPr> sol = new ArrayList<>();
-        try {
-            sol = u.numsSol();
-        } catch (RemoteException ex) {
-            Logger.getLogger(ReporteSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ArrayList<SolicitudPr> sol = new ArrayList<>();
+        sol = (ArrayList<SolicitudPr>) numsSol();
         DefaultTableModel df = (DefaultTableModel) this.tabla_sol.getModel();
         for (int i = df.getRowCount() - 1; i >= 0; i--) {
             df.removeRow(i);
         }
-        for (solicitudPr s : sol) {
+        for (SolicitudPr s : sol) {
             Object[] datos = new Object[5];
-            datos[0] = s.getNum_sol();
-            datos[1] = new Date(s.getFecha().getTimeInMillis());
+            datos[0] = s.getNumSol();
+            datos[1] = new Date(s.getFecha().toGregorianCalendar().getTimeInMillis());
             datos[2] = s.getIdSolicitante();
             datos[3] = s.getNombreSolicitante();
             datos[4] = s.getObservaciones();
@@ -377,4 +363,34 @@ public class ReporteSolicitudes extends javax.swing.JFrame {
     private javax.swing.JTable tablaItems;
     private javax.swing.JTable tabla_sol;
     // End of variables declaration//GEN-END:variables
+
+    private static java.util.List<logica.ItemInventario> getItemsNumSol(java.math.BigDecimal numSol) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getItemsNumSol(numSol);
+    }
+
+    private static Users getDatosUsuario(java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getDatosUsuario(id);
+    }
+
+    private static String getUsuario(java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getUsuario(id);
+    }
+
+    private static DatosFormatos getDatos(java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getDatos(id);
+    }
+
+    private static java.util.List<logica.SolicitudPr> numsSol() {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.numsSol();
+    }
 }

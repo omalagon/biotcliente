@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import logica.Users;
 
 /**
  *
@@ -198,13 +199,11 @@ public class CrearUsuario_Version2 extends javax.swing.JFrame {
         for (int i = df.getRowCount() - 1; i >= 0; i--) {
             df.removeRow(i);
         }
-        Usuario u = cliente.Cliente.conectarU();
-        ArrayList<users> us;
-        try {
-            us = u.getUsuarios();
-            for (users uss : us) {
-                if(!uss.getId().toString().equalsIgnoreCase(id)){
-                    
+        ArrayList<Users> us;
+        us = (ArrayList<Users>) getUsuarios();
+        for (Users uss : us) {
+            if(!uss.getId().toString().equalsIgnoreCase(id)){
+                
                 Object[] aux = new Object[8];
                 aux[0] = uss.getId();
                 aux[1] = uss.getNombre();
@@ -216,10 +215,7 @@ public class CrearUsuario_Version2 extends javax.swing.JFrame {
                 aux[7] = "Permisos"+uss.getId();
                 
                 df.addRow(aux);
-                }
             }
-        } catch (RemoteException ex) {
-            Logger.getLogger(CrearUsuario_Version2.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnRefrescarActionPerformed
 
@@ -283,4 +279,10 @@ public class CrearUsuario_Version2 extends javax.swing.JFrame {
     private javax.swing.JLabel jlb_titulo;
     private javax.swing.JTable tablaVerUsuarios;
     // End of variables declaration//GEN-END:variables
+
+    private static java.util.List<logica.Users> getUsuarios() {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getUsuarios();
+    }
 }

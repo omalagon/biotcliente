@@ -5,7 +5,6 @@
  */
 package Usuario.Creaciones;
 
-import EstructurasAux.ItemInventario;
 import interfaces.Usuario;
 import java.awt.Toolkit;
 import java.rmi.RemoteException;
@@ -14,6 +13,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import logica.ItemInventario;
 
 /**
  *
@@ -48,22 +48,17 @@ public class CrearItem extends javax.swing.JFrame {
 
             @Override
             public void insertUpdate(DocumentEvent e) {
-                Usuario u = cliente.Cliente.conectarU();
-                try {
-                    System.out.println("hace algo");
-                    ItemInventario aux = u.buscarInfoItem(jtf_cinterno.getText());
-                    if (aux != null) {
-                        jtf_desc.setText(aux.getDescripcion());
-                        jtf_pres.setText(aux.getPresentacion());
-                        jtf_cantidad.setText(Float.toString(aux.getCantidad()));
-                        jtf_precio.setText(Float.toString(aux.getPrecio()));
-                        jtf_ccalidad.setText(aux.getcCalidad());
-                        jtf_cesp.setText(aux.getCEsp());
-                        existia = true;
-                        jLabel2.setVisible(existia);
-                    }
-                } catch (RemoteException ex) {
-                    Logger.getLogger(CrearProveedor.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("hace algo");
+                ItemInventario aux = buscarInfoItem(jtf_cinterno.getText());
+                if (aux != null) {
+                    jtf_desc.setText(aux.getDescripcion());
+                    jtf_pres.setText(aux.getPresentacion());
+                    jtf_cantidad.setText(Float.toString(aux.getCantidad()));
+                    jtf_precio.setText(Float.toString(aux.getPrecio()));
+                    jtf_ccalidad.setText(aux.getCCalidad());
+                    jtf_cesp.setText(aux.getCEsp());
+                    existia = true;
+                    jLabel2.setVisible(existia);
                 }
             }
 
@@ -393,7 +388,6 @@ public class CrearItem extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void crearItem() {
-        Usuario u = cliente.Cliente.conectarU();
         boolean valido;
         boolean asociado = false;
         int area = this.jcbbxArea.getSelectedIndex();
@@ -414,33 +408,29 @@ public class CrearItem extends javax.swing.JFrame {
             labo = "Compras";
         }
 
-        ItemInventario item = new ItemInventario(
-                this.jtf_cinterno.getText(),
-                this.jtf_desc.getText(),
-                this.jtf_pres.getText(),
-                new Float(this.jtf_cantidad.getText()),
-                new Float(this.jtf_precio.getText()),
-                this.jtf_ccalidad.getText(),
-                labo,
-                "",
-                this.jtf_cesp.getText());
-        try {
-            valido = u.crearItem(item);
-            if (!jtf_provAs.getText().isEmpty()) {
-                asociado = u.asociarItem(this.jtf_cinterno.getText(), this.jtf_provAs.getText(), this.jtf_precio.getText());
-            }
-            if (valido && asociado) {
-                JOptionPane.showMessageDialog(null, "Item creado y asociado");
-                JOptionPane.showMessageDialog(null, "Oprima \"Refrescar\" para ver los cambios");
-            } else if (valido) {
-                JOptionPane.showMessageDialog(null, "Item creado");
-                JOptionPane.showMessageDialog(null, "Oprima \"Refrescar\" para ver los cambios");
-            } else {
-                JOptionPane.showMessageDialog(null, "Error en la creación del ítem\nSugerencia: "
-                        + "Revise el inventario");
-            }
-        } catch (RemoteException ex) {
-            Logger.getLogger(CrearItem.class.getName()).log(Level.SEVERE, null, ex);
+        ItemInventario item = new ItemInventario();
+        item.setNumero(this.jtf_cinterno.getText());
+        item.setDescripcion(this.jtf_desc.getText());
+        item.setPresentacion(this.jtf_pres.getText());
+        item.setCantidad(new Float(this.jtf_cantidad.getText()));
+        item.setPrecio(new Float(this.jtf_precio.getText()));
+        item.setCCalidad(this.jtf_ccalidad.getText());
+        item.setInventario(labo);
+        item.setSucursal("");
+        item.setCEsp(this.jtf_cesp.getText());
+        valido = crearItem(item);
+        if (!jtf_provAs.getText().isEmpty()) {
+            asociado = asociarItem(this.jtf_cinterno.getText(), this.jtf_provAs.getText(), this.jtf_precio.getText());
+        }
+        if (valido && asociado) {
+            JOptionPane.showMessageDialog(null, "Item creado y asociado");
+            JOptionPane.showMessageDialog(null, "Oprima \"Refrescar\" para ver los cambios");
+        } else if (valido) {
+            JOptionPane.showMessageDialog(null, "Item creado");
+            JOptionPane.showMessageDialog(null, "Oprima \"Refrescar\" para ver los cambios");
+        } else {
+            JOptionPane.showMessageDialog(null, "Error en la creación del ítem\nSugerencia: "
+                    + "Revise el inventario");
         }
     }
 
@@ -449,7 +439,6 @@ public class CrearItem extends javax.swing.JFrame {
     }
 
     private void editarItem() {
-        Usuario u = cliente.Cliente.conectarU();
         boolean valido;
         boolean asociado = false;
         int area = this.jcbbxArea.getSelectedIndex();
@@ -470,36 +459,55 @@ public class CrearItem extends javax.swing.JFrame {
             labo = "Compras";
         }
 
-        ItemInventario item = new ItemInventario(
-                this.jtf_cinterno.getText(),
-                this.jtf_desc.getText(),
-                this.jtf_pres.getText(),
-                new Float(this.jtf_cantidad.getText()),
-                new Float(this.jtf_precio.getText()),
-                this.jtf_ccalidad.getText(),
-                labo,
-                "",
-                this.jtf_cesp.getText());
-        try {
-            valido = u.editarItem(item);
-            if (jtf_provAs.getText() == null || !jtf_provAs.getText().trim().equalsIgnoreCase("")) {
-                asociado = u.asociarItem(this.jtf_cinterno.getText(), this.jtf_provAs.getText(), this.jtf_precio.getText());
-
-            } else {
-                asociado = true;
-            }
-
-            if (valido && asociado) {
-                JOptionPane.showMessageDialog(null, "Item editado");
-                JOptionPane.showMessageDialog(null, "Oprima \"Refrescar\" para ver los cambios");
-            } else if (asociado == false) {
-                JOptionPane.showMessageDialog(null, "Item editado, pero ocurrió un error al asociarlo\nRevise el NIT del proveedor");
-            } else {
-                JOptionPane.showMessageDialog(null, "Error en la creación del ítem\nSugerencia: "
-                        + "Revise el inventario");
-            }
-        } catch (RemoteException ex) {
-            Logger.getLogger(CrearItem.class.getName()).log(Level.SEVERE, null, ex);
+        ItemInventario item = new ItemInventario();
+        item.setNumero(this.jtf_cinterno.getText());
+        item.setDescripcion(this.jtf_desc.getText());
+        item.setPresentacion(this.jtf_pres.getText());
+        item.setCantidad(new Float(this.jtf_cantidad.getText()));
+        item.setPrecio(new Float(this.jtf_precio.getText()));
+        item.setCCalidad(this.jtf_ccalidad.getText());
+        item.setInventario(labo);
+        item.setSucursal("");
+        item.setCEsp(this.jtf_cesp.getText());
+        valido = editarItem(item);
+        if (jtf_provAs.getText() == null || !jtf_provAs.getText().trim().equalsIgnoreCase("")) {
+            asociado = asociarItem(this.jtf_cinterno.getText(), this.jtf_provAs.getText(), this.jtf_precio.getText());
+            
+        } else {
+            asociado = true;
         }
+        if (valido && asociado) {
+            JOptionPane.showMessageDialog(null, "Item editado");
+            JOptionPane.showMessageDialog(null, "Oprima \"Refrescar\" para ver los cambios");
+        } else if (asociado == false) {
+            JOptionPane.showMessageDialog(null, "Item editado, pero ocurrió un error al asociarlo\nRevise el NIT del proveedor");
+        } else {
+            JOptionPane.showMessageDialog(null, "Error en la creación del ítem\nSugerencia: "
+                    + "Revise el inventario");
+        }
+    }
+
+    private static logica.ItemInventario buscarInfoItem(java.lang.String cinterno) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.buscarInfoItem(cinterno);
+    }
+
+    private static boolean crearItem(logica.ItemInventario item) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.crearItem(item);
+    }
+
+    private static boolean asociarItem(java.lang.String cinterno, java.lang.String nit, java.lang.String precio) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.asociarItem(cinterno, nit, precio);
+    }
+
+    private static boolean editarItem(logica.ItemInventario item) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.editarItem(item);
     }
 }

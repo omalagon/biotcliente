@@ -5,16 +5,8 @@
  */
 package Usuario.OCompra;
 
-import EstructurasAux.ItemInventario;
-import EstructurasAux.datosFormatos;
-import EstructurasAux.itemsOrdenCompra;
-import EstructurasAux.proveedor;
-import EstructurasAux.users;
-import Formatos.fdc002;
-import Usuario.Reportes.ReporteSolicitudes;
 import interfaces.Usuario;
 import java.awt.Toolkit;
-import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -24,16 +16,10 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import Usuario.solicitudes.MenuSolicitud;
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import logica.ItemInventario;
+import logica.Proveedor;
+import logica.Users;
 
 /**
  *
@@ -52,16 +38,11 @@ public class DesaprobarOCompra extends javax.swing.JFrame {
         initComponents();
         DesaprobarOCompra.id = id;
         setIcon();
-        Usuario u = cliente.Cliente.conectarU();
         String user = new String();
         this.setLocationRelativeTo(null);
-        try {
-            users datosUsuario = u.getDatosUsuario(id);
-            user = datosUsuario.getNombre();
-            area = datosUsuario.getLab();
-        } catch (RemoteException ex) {
-            Logger.getLogger(DesaprobarOCompra.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Users datosUsuario = getDatosUsuario(id);
+        user = datosUsuario.getNombre();
+        area = datosUsuario.getLab();
         tablaProveedor.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent event) {
@@ -303,20 +284,15 @@ public class DesaprobarOCompra extends javax.swing.JFrame {
     }//GEN-LAST:event_btnrefrescarActionPerformed
 
     private void btnGenerarFDC001ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarFDC001ActionPerformed
-        Usuario u = cliente.Cliente.conectarU();
         boolean valido = false;
         DefaultTableModel df_items =(DefaultTableModel) tablaContenido.getModel();
         for (int i = 0; i < df_items.getRowCount(); i++) {
             valido = (boolean) df_items.getValueAt(i, 7);
             if (valido) {
-                try {
-                    ItemInventario itm = new ItemInventario();
-                    itm.setNumSolAsociado(tablaContenido.getValueAt(i, 0).toString());
-                    itm.setNumero(tablaContenido.getValueAt(i, 1).toString());
-                    u.devolverOCompra(itm, new Double(tablaContenido.getValueAt(i, 8).toString()));
-                } catch (RemoteException ex) {
-                    Logger.getLogger(DesaprobarOCompra.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                ItemInventario itm = new ItemInventario();
+                itm.setNumSolAsociado(tablaContenido.getValueAt(i, 0).toString());
+                itm.setNumero(tablaContenido.getValueAt(i, 1).toString());
+                devolverOCompra(itm, new Double(tablaContenido.getValueAt(i, 8).toString()));
             }
         }
     }//GEN-LAST:event_btnGenerarFDC001ActionPerformed
@@ -365,20 +341,15 @@ public class DesaprobarOCompra extends javax.swing.JFrame {
     }
 
     private void llenarTablaProveedores() {
-        Usuario u = cliente.Cliente.conectarU();
         DefaultTableModel df_proveedores = (DefaultTableModel) this.tablaProveedor.getModel();
         for (int i = df_proveedores.getRowCount() - 1; i >= 0; i--) {
             df_proveedores.removeRow(i);
         }
-        ArrayList<proveedor> listaProveedores = null;
-        try {
-            listaProveedores = u.getProveedoresConSolicitudes("");
-        } catch (RemoteException ex) {
-            Logger.getLogger(DesaprobarOCompra.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ArrayList<Proveedor> listaProveedores = null;
+        listaProveedores = (ArrayList<Proveedor>) getProveedoresConSolicitudes("");
         GregorianCalendar fecha = new GregorianCalendar();
         if (listaProveedores!=null) {
-            for (proveedor s : listaProveedores) {
+            for (Proveedor s : listaProveedores) {
                 Object[] datos = new Object[6];
                 datos[0] = s.getNIT();
                 datos[1] = s.getNombre();
@@ -393,41 +364,33 @@ public class DesaprobarOCompra extends javax.swing.JFrame {
     }
 
     private void llenarTablaItems() {
-        Usuario u = cliente.Cliente.conectarU();
         DefaultTableModel df_items = (DefaultTableModel) this.tablaContenido.getModel();
 
         for (int i = df_items.getRowCount() - 1; i >= 0; i--) {
             df_items.removeRow(i);
         }
 
-        try {
-            itemAsociados = u.getItemxProveedorSolicitudes(tablaProveedor.getValueAt(tablaProveedor.getSelectedRow(), 0).toString(), "SI");
-        } catch (RemoteException ex) {
-            Logger.getLogger(DesaprobarOCompra.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        itemAsociados = (ArrayList<ItemInventario>) 
+                getItemxProveedorSolicitudes(tablaProveedor.getValueAt(tablaProveedor.getSelectedRow(), 0).toString(), "SI");
 
         //Info items
         int j = 0;
         float subtotal = 0;
         for (ItemInventario i : itemAsociados) {
 
-            try {
-                Object[] infoItems = new Object[9];
-                infoItems[0] = i.getNumSolAsociado();
-                infoItems[1] = i.getNumero();
-                infoItems[2] = i.getDescripcion();
-                infoItems[3] = i.getCantidadAprobada();
-                infoItems[4] = i.getPresentacion();
-                infoItems[5] = i.getPrecio();
-                infoItems[6] = i.getPrecio() * i.getCantidadAprobada();
-                infoItems[8] = u.buscarOcompra(i, tablaProveedor.getValueAt(tablaProveedor.getSelectedRow(), 0).toString());
-                subtotal += i.getPrecio() * i.getCantidadAprobada();
-                df_items.addRow(infoItems);
-                df_items.setValueAt(false, j, 7);
-                j++;
-            } catch (RemoteException ex) {
-                Logger.getLogger(DesaprobarOCompra.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            Object[] infoItems = new Object[9];
+            infoItems[0] = i.getNumSolAsociado();
+            infoItems[1] = i.getNumero();
+            infoItems[2] = i.getDescripcion();
+            infoItems[3] = i.getCantidadAprobada();
+            infoItems[4] = i.getPresentacion();
+            infoItems[5] = i.getPrecio();
+            infoItems[6] = i.getPrecio() * i.getCantidadAprobada();
+            infoItems[8] = buscarOcompra(i, tablaProveedor.getValueAt(tablaProveedor.getSelectedRow(), 0).toString());
+            subtotal += i.getPrecio() * i.getCantidadAprobada();
+            df_items.addRow(infoItems);
+            df_items.setValueAt(false, j, 7);
+            j++;
         }
 
     }
@@ -451,4 +414,34 @@ public class DesaprobarOCompra extends javax.swing.JFrame {
     private javax.swing.JTable tablaContenido;
     private javax.swing.JTable tablaProveedor;
     // End of variables declaration//GEN-END:variables
+
+    private static Users getDatosUsuario(java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getDatosUsuario(id);
+    }
+
+    private static boolean devolverOCompra(logica.ItemInventario itm, double numorden) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.devolverOCompra(itm, numorden);
+    }
+
+    private static java.util.List<logica.Proveedor> getProveedoresConSolicitudes(java.lang.String generado) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getProveedoresConSolicitudes(generado);
+    }
+
+    private static java.util.List<logica.ItemInventario> getItemxProveedorSolicitudes(java.lang.String proveedor, java.lang.String generado) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getItemxProveedorSolicitudes(proveedor, generado);
+    }
+
+    private static int buscarOcompra(logica.ItemInventario i, java.lang.String proveedor) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.buscarOcompra(i, proveedor);
+    }
 }

@@ -6,7 +6,6 @@
 package Usuario.Reportes;
 
 import EstructurasAux.permisos;
-import EstructurasAux.solicitudPr;
 import Usuario.MenuPrincipal;
 import Usuario.datos;
 import interfaces.Usuario;
@@ -428,7 +427,6 @@ public class MenuReportes extends javax.swing.JFrame {
                     + "menú Procedimientos->Solicitudes->Mis Solicitudes");
         } else {
             try {
-                Usuario u = cliente.Cliente.conectarU();
                 ReporteSolicitudesV2 reporte = new ReporteSolicitudesV2(id);
                 reporte.setVisible(true);
                 this.setVisible(false);

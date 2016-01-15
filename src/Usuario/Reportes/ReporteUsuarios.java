@@ -5,7 +5,6 @@
  */
 package Usuario.Reportes;
 
-import EstructurasAux.users;
 import interfaces.Usuario;
 import java.awt.Toolkit;
 import java.math.BigDecimal;
@@ -14,6 +13,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+import logica.Users;
 
 /**
  *
@@ -184,11 +184,8 @@ public class ReporteUsuarios extends javax.swing.JFrame {
         for (int i = df.getRowCount() - 1; i >= 0; i--) {
             df.removeRow(i);
         }
-        Usuario u = cliente.Cliente.conectarU();
-        ArrayList<users> us;
-        try {
-            us = u.getUsuarios();
-            for (users uss : us) {
+            ArrayList<Users> us = (ArrayList<Users>) getUsuarios();
+            for (Users uss : us) {
                 Object[] aux = new Object[4];
                 aux[0] = uss.getId();
                 aux[1] = uss.getNombre();
@@ -196,9 +193,7 @@ public class ReporteUsuarios extends javax.swing.JFrame {
                 aux[3] = uss.getLab();
                 df.addRow(aux);
             }
-        } catch (RemoteException ex) {
-            Logger.getLogger(ReporteUsuarios.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }//GEN-LAST:event_btnRefrescarActionPerformed
 
     private void btnInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInventarioActionPerformed
@@ -227,7 +222,7 @@ public class ReporteUsuarios extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(ReporteUsuarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         //</editor-fold>
 
         /* Create and display the form */
@@ -254,4 +249,10 @@ public class ReporteUsuarios extends javax.swing.JFrame {
     private javax.swing.JLabel jlb_titulo;
     private javax.swing.JTable tablaVerUsuarios;
     // End of variables declaration//GEN-END:variables
+
+    private static java.util.List<logica.Users> getUsuarios() {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getUsuarios();
+    }
 }

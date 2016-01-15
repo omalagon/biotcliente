@@ -5,38 +5,30 @@
  */
 package Usuario.Reportes;
 
-import Usuario.OCompra.*;
-import EstructurasAux.ItemInventario;
-import EstructurasAux.datosFormatos;
-import EstructurasAux.itemRecep;
 import EstructurasAux.itemsOrdenCompra;
-import EstructurasAux.proveedor;
-import EstructurasAux.recepcionProd;
-import EstructurasAux.users;
+import Usuario.OCompra.*;
 import Formatos.fdc002;
-import Usuario.Reportes.ReporteSolicitudes;
 import interfaces.Usuario;
 import java.awt.Toolkit;
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import Usuario.solicitudes.MenuSolicitud;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import logica.DatosFormatos;
+import logica.ItemInventario;
+import logica.ItemRecep;
+import logica.Proveedor;
+import logica.RecepcionProd;
 
 /**
  *
@@ -64,7 +56,6 @@ public class ReporteOCompra extends javax.swing.JFrame {
         this.jta_verObs.setLineWrap(true);
         this.jta_verObs.setEditable(false);
 
-        Usuario u = cliente.Cliente.conectarU();
         String user = new String();
         this.setLocationRelativeTo(null);
 
@@ -438,53 +429,48 @@ public class ReporteOCompra extends javax.swing.JFrame {
     }//GEN-LAST:event_btnrefrescarActionPerformed
 
     private void btnGenerarFDC001ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarFDC001ActionPerformed
-        try {
-            JOptionPane.showMessageDialog(null, "Recopilando información...");
-            Usuario u = cliente.Cliente.conectarU();
-            datosFormatos datos = u.getDatos("2");
-            proveedor datosProveedor = u.getDatosProveedor(this.lbl_nit.getText());
-            DefaultTableModel df_items = (DefaultTableModel) this.tablaContenido.getModel();
-            ArrayList<itemsOrdenCompra> listaItems = new ArrayList<itemsOrdenCompra>();
-            ArrayList<ItemInventario> aAprobar = new ArrayList<>();
-            for (int i = 0; i < df_items.getRowCount(); i++) {
-                ItemInventario get = this.itemAsociados.get(i);
-                aAprobar.add(get);
-                itemsOrdenCompra itm = new itemsOrdenCompra( get.getNumero(), get.getInventario(), get.getDescripcion(), get.getCantidadAprobada(),
-                        get.getPresentacion(), get.getPrecio(), "", new BigDecimal(0));
-                itm.setvTotal(itm.getCaprobada() * itm.getPrecioU());
-                listaItems.add(itm);
+        JOptionPane.showMessageDialog(null, "Recopilando información...");
+        DatosFormatos datos = getDatos("2");
+        Proveedor datosProveedor = getDatosProveedor(this.lbl_nit.getText());
+        DefaultTableModel df_items = (DefaultTableModel) this.tablaContenido.getModel();
+        ArrayList<itemsOrdenCompra> listaItems = new ArrayList<itemsOrdenCompra>();
+        ArrayList<ItemInventario> aAprobar = new ArrayList<>();
+        for (int i = 0; i < df_items.getRowCount(); i++) {
+            ItemInventario get = this.itemAsociados.get(i);
+            aAprobar.add(get);
+            itemsOrdenCompra itm = new itemsOrdenCompra( get.getNumero(), get.getInventario(), get.getDescripcion(), get.getCantidadAprobada(),
+                    get.getPresentacion(), get.getPrecio(), "", new BigDecimal(0));
+            itm.setvTotal(itm.getCaprobada() * itm.getPrecioU());
+            listaItems.add(itm);
+        }
+        String rutaImagen;
+        String property = System.getProperty("user.dir");
+        rutaImagen = property.concat("\\src\\Imagenes\\iconB.png");
+        HashMap<String, String> parametros = new HashMap<>();
+        parametros.put("image", rutaImagen);
+        parametros.put("fechaElab", getFecha());
+        parametros.put("oCompra", this.tablaOrdenes.getValueAt(this.tablaOrdenes.getSelectedRow(), 0).toString());
+        parametros.put("revision", datos.getRevision());
+        parametros.put("fechaact", datos.getFechaActualizacion());
+        parametros.put("titulo", datos.getTitulo());
+        parametros.put("Obs", this.jta_verObs.getText());
+        parametros.put("subtotal", this.lblSubtotal.getText());
+        parametros.put("nit", datosProveedor.getNIT());
+        parametros.put("nombreProv", datosProveedor.getNombre());
+        parametros.put("direccionProv", datosProveedor.getDireccion() + "-" + datosProveedor.getCelular());
+        parametros.put("fax", datosProveedor.getTelefax());
+        parametros.put("nombreProv", datosProveedor.getNombre());
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooser.showOpenDialog(this);
+        String path = chooser.getSelectedFile().getPath();
+        File archivo = fdc002.metodo(path, parametros, listaItems);
+        if (JOptionPane.showConfirmDialog(null, "¿Desea abrir el archivo?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            try {
+                Desktop.getDesktop().open(archivo);
+            } catch (IOException ex) {
+                Logger.getLogger(ReporteSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
             }
-            String rutaImagen;
-            String property = System.getProperty("user.dir");
-            rutaImagen = property.concat("\\src\\Imagenes\\iconB.png");
-            HashMap<String, String> parametros = new HashMap<>();
-            parametros.put("image", rutaImagen);
-            parametros.put("fechaElab", u.getFecha());
-            parametros.put("oCompra", this.tablaOrdenes.getValueAt(this.tablaOrdenes.getSelectedRow(), 0).toString());
-            parametros.put("revision", datos.getRevision());
-            parametros.put("fechaact", datos.getFechaActualizacion());
-            parametros.put("titulo", datos.getTitulo());
-            parametros.put("Obs", this.jta_verObs.getText());
-            parametros.put("subtotal", this.lblSubtotal.getText());
-            parametros.put("nit", datosProveedor.getNIT());
-            parametros.put("nombreProv", datosProveedor.getNombre());
-            parametros.put("direccionProv", datosProveedor.getDireccion() + "-" + datosProveedor.getCelular());
-            parametros.put("fax", datosProveedor.getTelefax());
-            parametros.put("nombreProv", datosProveedor.getNombre());
-            JFileChooser chooser = new JFileChooser();
-            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            chooser.showOpenDialog(this);
-            String path = chooser.getSelectedFile().getPath();
-            File archivo = fdc002.metodo(path, parametros, listaItems);
-            if (JOptionPane.showConfirmDialog(null, "¿Desea abrir el archivo?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                try {
-                    Desktop.getDesktop().open(archivo);
-                } catch (IOException ex) {
-                    Logger.getLogger(ReporteSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        } catch (RemoteException ex) {
-            Logger.getLogger(DesaprobarOCompra.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnGenerarFDC001ActionPerformed
 
@@ -532,55 +518,48 @@ public class ReporteOCompra extends javax.swing.JFrame {
     }
 
     private void llenarInfo() {
-        try {
-            Usuario u = cliente.Cliente.conectarU();
-            String numorden = this.tablaOrdenes.getValueAt(this.tablaOrdenes.getSelectedRow(), 0).toString();
-            recepcionProd datosRec = u.getDatosRec2(new BigDecimal(numorden), id);
-            this.lbl_nit.setText(datosRec.getP().getNIT());
-            this.lbl_nombre.setText(datosRec.getP().getNombre());
-            this.lbl_direccion.setText(datosRec.getP().getDireccion());
-            this.lbl_tel.setText(datosRec.getP().getTelefono());
-            this.lbl_fax.setText(datosRec.getP().getTelefax());
-            this.lbl_cel.setText(datosRec.getP().getCelular());
-
-            DefaultTableModel df_items = (DefaultTableModel) this.tablaContenido.getModel();
-            for (int i = df_items.getRowCount() - 1; i >= 0; i--) {
-                df_items.removeRow(i);
-            }
-            ArrayList<itemRecep> articulos = datosRec.getArticulos();
-            this.itemAsociados= new ArrayList<>();
-            float tot = 0;
-            int i = 0;
-            for (itemRecep articulo : articulos) {
-                ItemInventario d = u.buscarInfoItem(articulo.getCinterno());
-                Object[] datos = new Object[7];
-                datos[0] = d.getInventario();
-                datos[1] = d.getNumero();
-                datos[2] = d.getDescripcion();
-                datos[3] = articulo.getcAprobada();
-                datos[4] = d.getPresentacion();
-                datos[5] = articulo.getPrecio();
-                datos[6] = articulo.getcAprobada() * articulo.getPrecio();
-                d.setCantidadAprobada(articulo.getcAprobada());
-                d.setPrecio(articulo.getPrecio());
-                itemAsociados.add(d);
-                df_items.addRow(datos);
-                tot += articulo.getcAprobada() * articulo.getPrecio();
-                this.lblSubtotal.setText(Float.toString(tot));
-            }
-            this.jta_verObs.setText(datosRec.getObservaciones());
-        } catch (RemoteException ex) {
-            Logger.getLogger(ReporteOCompra.class.getName()).log(Level.SEVERE, null, ex);
+        String numorden = this.tablaOrdenes.getValueAt(this.tablaOrdenes.getSelectedRow(), 0).toString();
+        RecepcionProd datosRec = getDatosRec2(new BigDecimal(numorden), id);
+        this.lbl_nit.setText(datosRec.getP().getNIT());
+        this.lbl_nombre.setText(datosRec.getP().getNombre());
+        this.lbl_direccion.setText(datosRec.getP().getDireccion());
+        this.lbl_tel.setText(datosRec.getP().getTelefono());
+        this.lbl_fax.setText(datosRec.getP().getTelefax());
+        this.lbl_cel.setText(datosRec.getP().getCelular());
+        DefaultTableModel df_items = (DefaultTableModel) this.tablaContenido.getModel();
+        for (int i = df_items.getRowCount() - 1; i >= 0; i--) {
+            df_items.removeRow(i);
         }
+        ArrayList<ItemRecep> articulos = (ArrayList<ItemRecep>) datosRec.getArticulos();
+        this.itemAsociados= new ArrayList<>();
+        float tot = 0;
+        int i = 0;
+        for (ItemRecep articulo : articulos) {
+            ItemInventario d = buscarInfoItem(articulo.getCinterno());
+            Object[] datos = new Object[7];
+            datos[0] = d.getInventario();
+            datos[1] = d.getNumero();
+            datos[2] = d.getDescripcion();
+            datos[3] = articulo.getCAprobada();
+            datos[4] = d.getPresentacion();
+            datos[5] = articulo.getPrecio();
+            datos[6] = articulo.getCAprobada() * articulo.getPrecio();
+            d.setCantidadAprobada(articulo.getCAprobada());
+            d.setPrecio(articulo.getPrecio());
+            itemAsociados.add(d);
+            df_items.addRow(datos);
+            tot += articulo.getCAprobada() * articulo.getPrecio();
+            this.lblSubtotal.setText(Float.toString(tot));
+        }
+        this.jta_verObs.setText(datosRec.getObservaciones());
     }
 
     private void llenarOrdenes() throws RemoteException {
-        Usuario u = cliente.Cliente.conectarU();
         DefaultTableModel dfOrdenes = (DefaultTableModel) this.tablaOrdenes.getModel();
         for (int i = dfOrdenes.getRowCount() - 1; i >= 0; i--) {
             dfOrdenes.removeRow(i);
         }
-        ArrayList<Integer> numerosDeOrden = u.numerosDeOrden();
+        ArrayList<Integer> numerosDeOrden = (ArrayList<Integer>) numerosDeOrden();
         for (Integer i : numerosDeOrden) {
             Object[] infoItems = new Object[8];
             infoItems[0] = i;
@@ -628,5 +607,41 @@ public class ReporteOCompra extends javax.swing.JFrame {
     private javax.swing.JTable tablaContenido;
     private javax.swing.JTable tablaOrdenes;
     // End of variables declaration//GEN-END:variables
+
+    private static DatosFormatos getDatos(java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getDatos(id);
+    }
+
+    private static Proveedor getDatosProveedor(java.lang.String nit) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getDatosProveedor(nit);
+    }
+
+    private static String getFecha() {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getFecha();
+    }
+
+    private static RecepcionProd getDatosRec2(java.math.BigDecimal numorden, java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getDatosRec2(numorden, id);
+    }
+
+    private static ItemInventario buscarInfoItem(java.lang.String cinterno) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.buscarInfoItem(cinterno);
+    }
+
+    private static java.util.List<java.lang.Integer> numerosDeOrden() {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.numerosDeOrden();
+    }
 
 }

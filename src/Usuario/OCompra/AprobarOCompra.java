@@ -5,11 +5,7 @@
  */
 package Usuario.OCompra;
 
-import EstructurasAux.ItemInventario;
-import EstructurasAux.datosFormatos;
 import EstructurasAux.itemsOrdenCompra;
-import EstructurasAux.proveedor;
-import EstructurasAux.users;
 import Formatos.fdc002;
 import Usuario.Reportes.ReporteSolicitudes;
 import interfaces.Usuario;
@@ -34,6 +30,10 @@ import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import logica.DatosFormatos;
+import logica.ItemInventario;
+import logica.Proveedor;
+import logica.Users;
 
 /**
  *
@@ -53,16 +53,11 @@ public class AprobarOCompra extends javax.swing.JFrame {
         AprobarOCompra.id = id;
         setIcon();
         this.jta_verObs.setLineWrap(true);
-        Usuario u = cliente.Cliente.conectarU();
         String user = new String();
         this.setLocationRelativeTo(null);
-        try {
-            users datosUsuario = u.getDatosUsuario(id);
-            user = datosUsuario.getNombre();
-            area = datosUsuario.getLab();
-        } catch (RemoteException ex) {
-            Logger.getLogger(AprobarOCompra.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Users datosUsuario = getDatosUsuario(id);
+        user = datosUsuario.getNombre();
+        area = datosUsuario.getLab();
         tablaProveedor.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent event) {
@@ -402,59 +397,54 @@ public class AprobarOCompra extends javax.swing.JFrame {
     }//GEN-LAST:event_btnrefrescarActionPerformed
 
     private void btnGenerarFDC001ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarFDC001ActionPerformed
-        try {
-            JOptionPane.showMessageDialog(null, "Los ítem seleccionados se marcarán como generados. Recopilando información...");
-            Usuario u = cliente.Cliente.conectarU();
-            datosFormatos datos = u.getDatos("2");
-            proveedor datosProveedor = u.getDatosProveedor(tablaProveedor.getValueAt(tablaProveedor.getSelectedRow(), 0).toString());
-            DefaultTableModel df_items = (DefaultTableModel) this.tablaContenido.getModel();
-            ArrayList<itemsOrdenCompra> listaItems = new ArrayList<itemsOrdenCompra>();
-            ArrayList<ItemInventario> aAprobar = new ArrayList<>();
-            boolean valido = false;
-            for (int i = 0; i < df_items.getRowCount(); i++) {
-                valido = (boolean) df_items.getValueAt(i, 7);
-                if (valido) {
-                    ItemInventario get = this.itemAsociados.get(i);
-                    get.setNumSolAsociado(df_items.getValueAt(i, 0).toString());
-                    aAprobar.add(get);
-                    itemsOrdenCompra itm = new itemsOrdenCompra(df_items.getValueAt(i, 0).toString(),get.getNumero(), get.getInventario(), get.getDescripcion(), get.getCantidadAprobada(),
-                            get.getPresentacion(), get.getPrecio(), "", new BigDecimal(0));
-                    itm.setvTotal(itm.getCaprobada() * itm.getPrecioU());
-                    listaItems.add(itm);
-                }
+        JOptionPane.showMessageDialog(null, "Los ítem seleccionados se marcarán como generados. Recopilando información...");
+        DatosFormatos datos = getDatos("2");
+        Proveedor datosProveedor = getDatosProveedor(tablaProveedor.getValueAt(tablaProveedor.getSelectedRow(), 0).toString());
+        DefaultTableModel df_items = (DefaultTableModel) this.tablaContenido.getModel();
+        ArrayList<itemsOrdenCompra> listaItems = new ArrayList<itemsOrdenCompra>();
+        ArrayList<ItemInventario> aAprobar = new ArrayList<>();
+        boolean valido = false;
+        for (int i = 0; i < df_items.getRowCount(); i++) {
+            valido = (boolean) df_items.getValueAt(i, 7);
+            if (valido) {
+                ItemInventario get = this.itemAsociados.get(i);
+                get.setNumSolAsociado(df_items.getValueAt(i, 0).toString());
+                aAprobar.add(get);
+                itemsOrdenCompra itm = new itemsOrdenCompra(df_items.getValueAt(i, 0).toString(),get.getNumero(), get.getInventario(), get.getDescripcion(), get.getCantidadAprobada(),
+                        get.getPresentacion(), get.getPrecio(), "", new BigDecimal(0));
+                itm.setvTotal(itm.getCaprobada() * itm.getPrecioU());
+                listaItems.add(itm);
             }
-            Double numOrden = u.generarOCompra(aAprobar, id);
-            String rutaImagen;
-            String property = System.getProperty("user.dir");
-            rutaImagen = property.concat("\\src\\Imagenes\\iconB.png");
-            HashMap<String, String> parametros = new HashMap<>();
-            parametros.put("image", rutaImagen);
-            parametros.put("fechaElab", u.getFecha());
-            parametros.put("oCompra", Integer.toString(numOrden.intValue()));
-            parametros.put("revision", datos.getRevision());
-            parametros.put("fechaact", datos.getFechaActualizacion());
-            parametros.put("titulo", datos.getTitulo());
-            parametros.put("Obs", this.jta_verObs.getText());
-            parametros.put("subtotal", this.lblSubtotal.getText());
-            parametros.put("nit", datosProveedor.getNIT());
-            parametros.put("nombreProv", datosProveedor.getNombre());
-            parametros.put("direccionProv", datosProveedor.getDireccion() + "-" + datosProveedor.getCelular());
-            parametros.put("fax", datosProveedor.getTelefax());
-            parametros.put("nombreProv", datosProveedor.getNombre());
-            JFileChooser chooser = new JFileChooser();
-            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            chooser.showOpenDialog(this);
-            String path = chooser.getSelectedFile().getPath();
-            File archivo = fdc002.metodo(path, parametros, listaItems);
-            if (JOptionPane.showConfirmDialog(null, "¿Desea abrir el archivo?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                try {
-                    Desktop.getDesktop().open(archivo);
-                } catch (IOException ex) {
-                    Logger.getLogger(ReporteSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        }
+        Double numOrden = generarOCompra(aAprobar, id);
+        String rutaImagen;
+        String property = System.getProperty("user.dir");
+        rutaImagen = property.concat("\\src\\Imagenes\\iconB.png");
+        HashMap<String, String> parametros = new HashMap<>();
+        parametros.put("image", rutaImagen);
+        parametros.put("fechaElab", getFecha());
+        parametros.put("oCompra", Integer.toString(numOrden.intValue()));
+        parametros.put("revision", datos.getRevision());
+        parametros.put("fechaact", datos.getFechaActualizacion());
+        parametros.put("titulo", datos.getTitulo());
+        parametros.put("Obs", this.jta_verObs.getText());
+        parametros.put("subtotal", this.lblSubtotal.getText());
+        parametros.put("nit", datosProveedor.getNIT());
+        parametros.put("nombreProv", datosProveedor.getNombre());
+        parametros.put("direccionProv", datosProveedor.getDireccion() + "-" + datosProveedor.getCelular());
+        parametros.put("fax", datosProveedor.getTelefax());
+        parametros.put("nombreProv", datosProveedor.getNombre());
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooser.showOpenDialog(this);
+        String path = chooser.getSelectedFile().getPath();
+        File archivo = fdc002.metodo(path, parametros, listaItems);
+        if (JOptionPane.showConfirmDialog(null, "¿Desea abrir el archivo?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            try {
+                Desktop.getDesktop().open(archivo);
+            } catch (IOException ex) {
+                Logger.getLogger(ReporteSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (RemoteException ex) {
-            Logger.getLogger(DesaprobarOCompra.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnGenerarFDC001ActionPerformed
 
@@ -498,20 +488,15 @@ public class AprobarOCompra extends javax.swing.JFrame {
     }
 
     private void llenarTablaProveedores() {
-        Usuario u = cliente.Cliente.conectarU();
         DefaultTableModel df_proveedores = (DefaultTableModel) this.tablaProveedor.getModel();
         for (int i = df_proveedores.getRowCount() - 1; i >= 0; i--) {
             df_proveedores.removeRow(i);
         }
-        ArrayList<proveedor> listaProveedores = null;
-        try {
-            listaProveedores = u.getProveedoresConSolicitudes("NO");
-        } catch (RemoteException ex) {
-            Logger.getLogger(AprobarOCompra.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ArrayList<Proveedor> listaProveedores = null;
+        listaProveedores = (ArrayList<Proveedor>) getProveedoresConSolicitudes("NO");
         GregorianCalendar fecha = new GregorianCalendar();
         if (listaProveedores != null) {
-            for (proveedor s : listaProveedores) {
+            for (Proveedor s : listaProveedores) {
                 Object[] datos = new Object[6];
                 datos[0] = s.getNIT();
                 datos[1] = s.getNombre();
@@ -528,18 +513,13 @@ public class AprobarOCompra extends javax.swing.JFrame {
     }
 
     private void llenarTablaItems() {
-        Usuario u = cliente.Cliente.conectarU();
         DefaultTableModel df_items = (DefaultTableModel) this.tablaContenido.getModel();
 
         for (int i = df_items.getRowCount() - 1; i >= 0; i--) {
             df_items.removeRow(i);
         }
 
-        try {
-            itemAsociados = u.getItemxProveedorSolicitudes(tablaProveedor.getValueAt(tablaProveedor.getSelectedRow(), 0).toString(), "NO");
-        } catch (RemoteException ex) {
-            Logger.getLogger(AprobarOCompra.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        itemAsociados = (ArrayList<ItemInventario>) getItemxProveedorSolicitudes(tablaProveedor.getValueAt(tablaProveedor.getSelectedRow(), 0).toString(), "NO");
 
         //Info items
         int j = 0;
@@ -591,4 +571,46 @@ public class AprobarOCompra extends javax.swing.JFrame {
     private javax.swing.JTable tablaContenido;
     private javax.swing.JTable tablaProveedor;
     // End of variables declaration//GEN-END:variables
+
+    private static Users getDatosUsuario(java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getDatosUsuario(id);
+    }
+
+    private static DatosFormatos getDatos(java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getDatos(id);
+    }
+
+    private static Proveedor getDatosProveedor(java.lang.String nit) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getDatosProveedor(nit);
+    }
+
+    private static Double generarOCompra(java.util.List<logica.ItemInventario> listaItems, java.lang.String idAo) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.generarOCompra(listaItems, idAo);
+    }
+
+    private static String getFecha() {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getFecha();
+    }
+
+    private static java.util.List<logica.Proveedor> getProveedoresConSolicitudes(java.lang.String generado) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getProveedoresConSolicitudes(generado);
+    }
+
+    private static java.util.List<logica.ItemInventario> getItemxProveedorSolicitudes(java.lang.String proveedor, java.lang.String generado) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getItemxProveedorSolicitudes(proveedor, generado);
+    }
 }

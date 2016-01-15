@@ -13,13 +13,16 @@ import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import logica.DatosFormatos;
 
 /**
  *
  * @author Malagon
  */
 public class DatosDeFormatos extends javax.swing.JFrame {
-    private String id="";
+
+    private String id = "";
+
     /**
      * Creates new form DatosDeFormatos
      */
@@ -36,19 +39,18 @@ public class DatosDeFormatos extends javax.swing.JFrame {
 
             @Override
             public void itemStateChanged(ItemEvent e) {
-                try {
-                    Usuario u = cliente.Cliente.conectarU();
-                    datosFormatos datos = u.getDatos(jComboBox1.getSelectedIndex()==0?"1":"2");
-                    jTextField1.setText(datos.getRevision());
-                    jTextField2.setText(datos.getFechaActualizacion());
-                    jTextArea1.setText(datos.getTitulo());
-                } catch (RemoteException ex) {
-                    Logger.getLogger(DatosDeFormatos.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                /*logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+                logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+                DatosFormatos datos = port.getDatos(jComboBox1.getSelectedIndex() == 0 ? "1" : "2");
+*/
+                DatosFormatos datos= getDatos(jComboBox1.getSelectedIndex()==0?"1":"2");
+                System.out.println(datos.getTitulo());
+                jTextField1.setText(datos.getRevision());
+                jTextField2.setText(datos.getFechaActualizacion());
+                jTextArea1.setText(datos.getTitulo());
             }
         });
-        
-        
+
     }
 
     /**
@@ -176,18 +178,15 @@ public class DatosDeFormatos extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-            Usuario conectarU = cliente.Cliente.conectarU();
-            boolean editarFormato = conectarU.editarFormato(jComboBox1.getSelectedIndex()==0?1:2,new datosFormatos(this.jTextField1.getText(), this.jTextField2.getText(), this.jTextArea1.getText()));
-            if(editarFormato)
-            {
-                JOptionPane.showMessageDialog(null, "Hecho");
-            }
-            else{
-                JOptionPane.showMessageDialog(null, "Ocurrió un error");
-            }
-        } catch (RemoteException ex) {
-            Logger.getLogger(DatosDeFormatos.class.getName()).log(Level.SEVERE, null, ex);
+        DatosFormatos dt = new DatosFormatos();
+        dt.setRevision(this.jTextField1.getText());
+        dt.setFechaActualizacion(this.jTextField2.getText());
+        dt.setTitulo(this.jTextArea1.getText());
+        boolean editarFormato = editarFormato(jComboBox1.getSelectedIndex() == 0 ? 1 : 2, dt);
+        if (editarFormato) {
+            JOptionPane.showMessageDialog(null, "Hecho");
+        } else {
+            JOptionPane.showMessageDialog(null, "Ocurrió un error");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -240,4 +239,16 @@ public class DatosDeFormatos extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel jlb_titulo;
     // End of variables declaration//GEN-END:variables
+
+    private static DatosFormatos getDatos(java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getDatos(id);
+    }
+
+    private static boolean editarFormato(int formato, logica.DatosFormatos datos) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.editarFormato(formato, datos);
+    }
 }

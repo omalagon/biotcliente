@@ -6,12 +6,6 @@
 package Usuario.Reportes;
 
 import Usuario.Solicitudes.*;
-import EstructurasAux.ItemInventario;
-import EstructurasAux.datosFormatos;
-import EstructurasAux.itemxproveedor;
-import EstructurasAux.proveedor;
-import EstructurasAux.solicitudPr;
-import EstructurasAux.users;
 import Formatos.fdc001;
 import Usuario.Reportes.ReporteSolicitudes;
 import Usuario.Utils.InputDialogCBox;
@@ -28,13 +22,18 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import Usuario.solicitudes.MenuSolicitud;
-import cliente.Cliente;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import logica.DatosFormatos;
+import logica.ItemInventario;
+import logica.Itemxproveedor;
+import logica.Proveedor;
+import logica.SolicitudPr;
+import logica.Users;
 
 /**
  *
@@ -53,26 +52,20 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
         ReporteSolicitudesV2.id = id;
         setIcon();
         this.jta_verObs.setLineWrap(true);
-        Usuario u = cliente.Cliente.conectarU();
         String user = new String();
-        try {
-            users datosUsuario = u.getDatosUsuario(id);
-            user = datosUsuario.getNombre();
-            area = datosUsuario.getLab();
-        } catch (RemoteException ex) {
-            Logger.getLogger(ReporteSolicitudesV2.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Users datosUsuario = getDatosUsuario(id);
+        user = datosUsuario.getNombre();
+        area = datosUsuario.getLab();
         tablaSolicitudesNoRev.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent event) {
                 BigDecimal aux = new BigDecimal(tablaSolicitudesNoRev.getValueAt(tablaSolicitudesNoRev.getSelectedRow(), 0).toString());
-                Usuario u = cliente.Cliente.conectarU();
-
+                
                 DefaultTableModel df = (DefaultTableModel) tablaSolicitudesNoRev.getModel();
                 try {
                     llenarContenidoSol(new BigDecimal(tablaSolicitudesNoRev.getValueAt(tablaSolicitudesNoRev.getSelectedRow(), 0).toString()));
 
-                    jta_verObs.setText(u.getSolicitud(Integer.toString(aux.intValue())).getObservaciones());
+                    jta_verObs.setText(getSolicitud(Integer.toString(aux.intValue())).getObservaciones());
                     numSol = tablaSolicitudesNoRev.getValueAt(tablaSolicitudesNoRev.getSelectedRow(), 0).toString();
                 } catch (RemoteException ex) {
                     Logger.getLogger(ReporteSolicitudesV2.class.getName()).log(Level.SEVERE, null, ex);
@@ -86,23 +79,19 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
             df_NoRevisadas.removeRow(i);
         }
 
-        ArrayList<solicitudPr> solNoRev = null;
-        try {
-            solNoRev = u.getSolicitudes("", "");
-        } catch (RemoteException ex) {
-            Logger.getLogger(ReporteSolicitudesV2.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ArrayList<SolicitudPr> solNoRev = null;
+        solNoRev = (ArrayList<SolicitudPr>) getSolicitudes("", "");
         GregorianCalendar fecha = new GregorianCalendar();
-        for (solicitudPr s : solNoRev) {
-            fecha = s.getFecha();
+        for (SolicitudPr s : solNoRev) {
+            fecha = s.getFecha().toGregorianCalendar();
             Object[] datos = new Object[3];
-            datos[0] = s.getNum_sol();
+            datos[0] = s.getNumSol();
             datos[1] = fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR);
             datos[2] = s.getNombreSolicitante();
             df_NoRevisadas.addRow(datos);
         }
-        ArrayList<proveedor> todosProveedores = u.todosProveedores();
-        for (proveedor p : todosProveedores) {
+        ArrayList<Proveedor> todosProveedores = (ArrayList<Proveedor>) todosProveedores();
+        for (Proveedor p : todosProveedores) {
             mapProv.put(p.getNombre(), p.getNIT());
         }
     }
@@ -346,59 +335,54 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
 
     private void btnGenerarFDC001ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarFDC001ActionPerformed
 
-        try {
-            Usuario u = Cliente.conectarU();
-            DefaultTableModel dfTablaSol = (DefaultTableModel) this.tablaSolicitudesNoRev.getModel();
-            DefaultTableModel df_contenido = (DefaultTableModel) this.tablaContenido.getModel();
-            String numSol = dfTablaSol.getValueAt(tablaSolicitudesNoRev.getSelectedRow(), 0).toString();
-            if (numSol != null) {
-                solicitudPr solicitud = u.getSolicitud(numSol);
-                JOptionPane.showMessageDialog(null, "Obteniendo información de la solicitud", "Solicitud", JOptionPane.INFORMATION_MESSAGE);
-                ArrayList<ItemInventario> items_numSol = u.getItemsAprobado(new BigDecimal(numSol), "SI");
-                users datosSolicitante = u.getDatosUsuario(solicitud.getIdSolicitante());
-                users datosAO = u.getDatosUsuario(id);
-                fdc001 fdc = new fdc001();
-                datosFormatos datos = u.getDatos("1");
-                String rutaImagen;
-                String property = System.getProperty("user.dir");
-                System.out.println(property);
-                rutaImagen = property.concat("\\src\\Imagenes\\iconB.png");
-                HashMap<String, String> parametros = new HashMap<>();
-                parametros.put("revision", datos.getRevision());
-                parametros.put("cargo", datosSolicitante.getLab());
-                parametros.put("fechaAct", datos.getFechaActualizacion());
-                parametros.put("titulo", datos.getTitulo());
-                parametros.put("image", rutaImagen);
-                parametros.put("numsol", Integer.toString(new Double(numSol).intValue()));
-                parametros.put("fecha", new java.util.Date(solicitud.getFecha().getTimeInMillis()).toString());
-                parametros.put("area", datosSolicitante.getLab());
-                parametros.put("nombreRA", datosSolicitante.getNombre());
-                parametros.put("observaciones", this.jta_verObs.getText());
-                parametros.put("nombreAO", datosAO.getNombre());
-                JFileChooser chooser = new JFileChooser();
-                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                chooser.showOpenDialog(this);
-                String path = chooser.getSelectedFile().getPath();
-                ArrayList<String> proveedores = new ArrayList<>();
-                ArrayList<String> cantAprobada = new ArrayList<>();
-                ArrayList<String> numorden = new ArrayList<>();
-                for (int i = 0; i < df_contenido.getRowCount(); i++) {
-                    proveedores.add(df_contenido.getValueAt(i, 6).toString());
-                    cantAprobada.add(df_contenido.getValueAt(i, 5).toString());
-                    numorden.add(df_contenido.getValueAt(i, 7).toString());  
-                }
-
-                File archivo = fdc001.metodo(path, parametros, ItemInventario.toObjectArray(items_numSol, proveedores, cantAprobada, numorden));
-                if (JOptionPane.showConfirmDialog(null, "¿Desea abrir el archivo?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    try {
-                        Desktop.getDesktop().open(archivo);
-                    } catch (IOException ex) {
-                        Logger.getLogger(ReporteSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+        DefaultTableModel dfTablaSol = (DefaultTableModel) this.tablaSolicitudesNoRev.getModel();
+        DefaultTableModel df_contenido = (DefaultTableModel) this.tablaContenido.getModel();
+        String numSol = dfTablaSol.getValueAt(tablaSolicitudesNoRev.getSelectedRow(), 0).toString();
+        if (numSol != null) {
+            SolicitudPr solicitud = getSolicitud(numSol);
+            JOptionPane.showMessageDialog(null, "Obteniendo información de la solicitud", "Solicitud", JOptionPane.INFORMATION_MESSAGE);
+            ArrayList<ItemInventario> items_numSol = (ArrayList<ItemInventario>) getItemsAprobado(new BigDecimal(numSol), "SI");
+            Users datosSolicitante = getDatosUsuario(solicitud.getIdSolicitante());
+            Users datosAO = getDatosUsuario(id);
+            fdc001 fdc = new fdc001();
+            DatosFormatos datos = getDatos("1");
+            String rutaImagen;
+            String property = System.getProperty("user.dir");
+            System.out.println(property);
+            rutaImagen = property.concat("\\src\\Imagenes\\iconB.png");
+            HashMap<String, String> parametros = new HashMap<>();
+            parametros.put("revision", datos.getRevision());
+            parametros.put("cargo", datosSolicitante.getLab());
+            parametros.put("fechaAct", datos.getFechaActualizacion());
+            parametros.put("titulo", datos.getTitulo());
+            parametros.put("image", rutaImagen);
+            parametros.put("numsol", Integer.toString(new Double(numSol).intValue()));
+            parametros.put("fecha", new java.util.Date(solicitud.getFecha().toGregorianCalendar().getTimeInMillis()).toString());
+            parametros.put("area", datosSolicitante.getLab());
+            parametros.put("nombreRA", datosSolicitante.getNombre());
+            parametros.put("observaciones", this.jta_verObs.getText());
+            parametros.put("nombreAO", datosAO.getNombre());
+            JFileChooser chooser = new JFileChooser();
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            chooser.showOpenDialog(this);
+            String path = chooser.getSelectedFile().getPath();
+            ArrayList<String> proveedores = new ArrayList<>();
+            ArrayList<String> cantAprobada = new ArrayList<>();
+            ArrayList<String> numorden = new ArrayList<>();
+            for (int i = 0; i < df_contenido.getRowCount(); i++) {
+                proveedores.add(df_contenido.getValueAt(i, 6).toString());
+                cantAprobada.add(df_contenido.getValueAt(i, 5).toString());
+                numorden.add(df_contenido.getValueAt(i, 7).toString());
+            }  
+            
+            File archivo = fdc001.metodo(path, parametros, EstructurasAux.ItemInventario.toObjectArray(this.arrAux(items_numSol), proveedores, cantAprobada, numorden));
+            if (JOptionPane.showConfirmDialog(null, "¿Desea abrir el archivo?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                try {
+                    Desktop.getDesktop().open(archivo);
+                } catch (IOException ex) {
+                    Logger.getLogger(ReporteSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        } catch (RemoteException ex) {
-            Logger.getLogger(ReporteSolicitudesV2.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnGenerarFDC001ActionPerformed
 
@@ -446,35 +430,34 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
     }
 
     private void llenarContenidoSol(BigDecimal numsol) throws RemoteException {
-        Usuario n = cliente.Cliente.conectarU();
         DefaultTableModel df_contenido = (DefaultTableModel) this.tablaContenido.getModel();
 
         for (int i = df_contenido.getRowCount() - 1; i >= 0; i--) {
             df_contenido.removeRow(i);
         }
 
-        try {
-            itemsXSolicitud = n.getItemsAprobado(numsol, "SI");
-            if (!itemsXSolicitud.isEmpty()) {
-                for (ItemInventario i : itemsXSolicitud) {
-                    Object[] datos = new Object[8];
-                    datos[0] = i.getNumero();
-                    datos[1] = i.getInventario();
-                    datos[2] = i.getDescripcion();
-                    datos[3] = i.getCantidadSolicitada();
-                    datos[4] = i.getPrecio();
-                    datos[5] = n.getCantAprobada(numsol.toString(), i.getNumero());
-                    itemxproveedor itx =n.getProveedorAsociado(new itemxproveedor("", i.getPrecio(), i.getNumero())).get(0);
-                    datos[6] = itx.getNombre();
-                    ItemInventario j = i;
-                    j.setCantidadAprobada(new Float(datos[5].toString()));
-                    double num =n.buscarOrdenByNumSol(j, itx.getNIT(), this.tablaSolicitudesNoRev.getValueAt(tablaSolicitudesNoRev.getSelectedRow(), 0).toString());
-                    datos[7] = (num != -1 ? num:"");
-                    df_contenido.addRow(datos);
-                }
+        itemsXSolicitud = (ArrayList<ItemInventario>) getItemsAprobado(numsol, "SI");
+        if (!itemsXSolicitud.isEmpty()) {
+            for (ItemInventario i : itemsXSolicitud) {
+                Object[] datos = new Object[8];
+                datos[0] = i.getNumero();
+                datos[1] = i.getInventario();
+                datos[2] = i.getDescripcion();
+                datos[3] = i.getCantidadSolicitada();
+                datos[4] = i.getPrecio();
+                datos[5] = getCantAprobada(numsol.toString(), i.getNumero());
+                Itemxproveedor itemxproveedor = new Itemxproveedor();
+                itemxproveedor.setNombre("");
+                itemxproveedor.setPrecio(i.getPrecio());
+                itemxproveedor.setCinterno(i.getNumero());
+                Itemxproveedor itx =getProveedorAsociado(itemxproveedor).get(0);
+                datos[6] = itx.getNombre();
+                ItemInventario j = i;
+                j.setCantidadAprobada(new Float(datos[5].toString()));
+                double num = buscarOrdenByNumSol(j, itx.getNIT(), this.tablaSolicitudesNoRev.getValueAt(tablaSolicitudesNoRev.getSelectedRow(), 0).toString());
+                datos[7] = (num != -1 ? num:"");
+                df_contenido.addRow(datos);
             }
-        } catch (RemoteException ex) {
-            Logger.getLogger(ReporteSolicitudesV2.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -502,4 +485,83 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
     private javax.swing.JTable tablaContenido;
     private javax.swing.JTable tablaSolicitudesNoRev;
     // End of variables declaration//GEN-END:variables
+
+    private static Users getDatosUsuario(java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getDatosUsuario(id);
+    }
+
+    private static SolicitudPr getSolicitud(java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getSolicitud(id);
+    }
+
+    private static java.util.List<logica.SolicitudPr> getSolicitudes(java.lang.String revisado, java.lang.String idUsuario) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getSolicitudes(revisado, idUsuario);
+    }
+
+    private static java.util.List<logica.Proveedor> todosProveedores() {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.todosProveedores();
+    }
+
+    private static SolicitudPr getSolicitud_1(java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getSolicitud(id);
+    }
+
+    private static java.util.List<logica.ItemInventario> getItemsAprobado(java.math.BigDecimal numSol, java.lang.String aprobado) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getItemsAprobado(numSol, aprobado);
+    }
+
+    private static DatosFormatos getDatos(java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getDatos(id);
+    }
+
+    private static java.util.List<logica.Itemxproveedor> getProveedorAsociado(logica.Itemxproveedor i) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getProveedorAsociado(i);
+    }
+
+    private static String getCantAprobada(java.lang.String numSol, java.lang.String cinterno) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getCantAprobada(numSol, cinterno);
+    }
+
+    private static int buscarOrdenByNumSol(logica.ItemInventario i, java.lang.String proveedor, java.lang.String numSol) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.buscarOrdenByNumSol(i, proveedor, numSol);
+    }
+
+    private static java.util.List<logica.ItemInventario> getItemsAprobado_1(java.math.BigDecimal numSol, java.lang.String aprobado) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getItemsAprobado(numSol, aprobado);
+    }
+    
+    private ArrayList<EstructurasAux.ItemInventario> arrAux(ArrayList<ItemInventario> a)
+    {
+        ArrayList<EstructurasAux.ItemInventario> arr = new ArrayList<>();
+        for (ItemInventario i : a) {
+            EstructurasAux.ItemInventario itm = new EstructurasAux.ItemInventario(                   
+                    i.getNumero(), i.getDescripcion(), i.getPresentacion(),
+                    i.getCantidad(), i.getPrecio(), i.getCCalidad(), i.getInventario(),
+                    i.getSucursal(), i.getCEsp());
+            arr.add(itm);
+        }
+        return arr;
+    }
 }

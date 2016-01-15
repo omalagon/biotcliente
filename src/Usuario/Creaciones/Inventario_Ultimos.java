@@ -5,7 +5,7 @@
  */
 package Usuario.Creaciones;
 
-import EstructurasAux.ItemInventario;
+import logica.ItemInventario;
 import interfaces.Usuario;
 import java.awt.Toolkit;
 import java.math.BigDecimal;
@@ -185,13 +185,8 @@ public class Inventario_Ultimos extends javax.swing.JFrame {
         for (int i = df.getRowCount() - 1; i >= 0; i--) {
             df.removeRow(i);
         }
-        Usuario ad = cliente.Cliente.conectarU();
         ArrayList<ItemInventario> itemInventario = null;
-        try {
-            itemInventario = ad.ultimos();
-        } catch (RemoteException ex) {
-            Logger.getLogger(Inventario_Ultimos.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        itemInventario = (ArrayList<ItemInventario>) ultimos();
         for (ItemInventario i : itemInventario) {
             Object[] aux = new Object[8];
             aux[0] = i.getNumero();
@@ -199,7 +194,7 @@ public class Inventario_Ultimos extends javax.swing.JFrame {
             aux[2] = i.getPresentacion();
             aux[3] = i.getCantidad();
             aux[4] = i.getPrecio();
-            aux[5] = i.getcCalidad();
+            aux[5] = i.getCCalidad();
             aux[6] = i.getCEsp();
             aux[7] = i.getSucursal();
             
@@ -266,5 +261,11 @@ public class Inventario_Ultimos extends javax.swing.JFrame {
 
     private void setIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+    }
+
+    private static java.util.List<logica.ItemInventario> ultimos() {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.ultimos();
     }
 }

@@ -5,7 +5,6 @@
  */
 package Usuario.Reportes;
 
-import EstructurasAux.BuscarUsuario;
 import interfaces.Usuario;
 import java.awt.Toolkit;
 import java.math.BigDecimal;
@@ -15,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import logica.BuscarUsuario;
 
 /**
  *
@@ -221,22 +221,13 @@ public class Reportes_BuscarUsuario extends javax.swing.JFrame {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String nombre = this.jTFieldNombre.getText();
         String ide = this.jTFieldIdentificacion.getText();
-        Usuario u = cliente.Cliente.conectarU();
         ArrayList<BuscarUsuario> buscarEmpleado;
         if (nombre.isEmpty() == false && ide.isEmpty() == true) {
-            try {
-                buscarEmpleado = u.buscarEmpleado("nombre", nombre);
-                llenarTabla(buscarEmpleado);
-            } catch (RemoteException ex) {
-                Logger.getLogger(Reportes_BuscarUsuario.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            buscarEmpleado = (ArrayList<BuscarUsuario>) buscarEmpleado("nombre", nombre);
+            llenarTabla(buscarEmpleado);
         } else if (nombre.isEmpty() == true && ide.isEmpty() == false) {
-            try {
-                buscarEmpleado = u.buscarEmpleado("id", ide);
-                llenarTabla(buscarEmpleado);
-            } catch (RemoteException ex) {
-                Logger.getLogger(Reportes_BuscarUsuario.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            buscarEmpleado = (ArrayList<BuscarUsuario>) buscarEmpleado("id", ide);
+            llenarTabla(buscarEmpleado);
         } else {
             JOptionPane.showMessageDialog(null, "Realizó mal el procedimiento, intente de nuevo");
             this.jTFieldIdentificacion.setText("");
@@ -330,5 +321,11 @@ public class Reportes_BuscarUsuario extends javax.swing.JFrame {
             datos.add(b.getLab());*/
             df.addRow(datos);
         }
+    }
+
+    private static java.util.List<logica.BuscarUsuario> buscarEmpleado(java.lang.String parametro, java.lang.String valor) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.buscarEmpleado(parametro, valor);
     }
 }

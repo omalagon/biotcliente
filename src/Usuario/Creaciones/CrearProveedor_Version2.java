@@ -22,6 +22,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import logica.Proveedor;
 
 /**
  *
@@ -196,30 +197,23 @@ public class CrearProveedor_Version2 extends javax.swing.JFrame {
         for (int i = df.getRowCount() - 1; i >= 0; i--) {
             df.removeRow(i);
         }
-        Usuario u = cliente.Cliente.conectarU();
-        try {
-            ArrayList<proveedor> todosProveedores = u.todosProveedores();
-            ArrayList<Object> tabla = new ArrayList<>();
+        ArrayList<Proveedor> todosProveedores = (ArrayList<Proveedor>) todosProveedores();
+        ArrayList<Object> tabla = new ArrayList<>();
+        for (Proveedor t : todosProveedores) {
+            Object[] datos = new Object[8];
+            datos[0] = t.getNIT();
+            datos[1] = t.getNombre();
+            datos[2] = t.getDireccion();
+            datos[3] = t.getTelefono();
+            datos[4] = t.getCorreo();
+            datos[5] = "Actualizar" + t.getNIT();
+            datos[6] = "Eliminar" + t.getNIT();
+            datos[7] = "Ver" + t.getNIT();
+            tabla.add(datos);
+        }
+        for (Object t : tabla) {
 
-            for (proveedor t : todosProveedores) {
-                Object[] datos = new Object[8];
-                datos[0] = t.getNIT();
-                datos[1] = t.getNombre();
-                datos[2] = t.getDireccion();
-                datos[3] = t.getTelefono();
-                datos[4] = t.getCorreo();
-                datos[5] = "Actualizar" + t.getNIT();
-                datos[6] = "Eliminar" + t.getNIT();
-                datos[7] = "Ver" + t.getNIT();
-                tabla.add(datos);
-            }
-
-            for (Object t : tabla) {
-
-                df.addRow((Object[]) t);
-            }
-        } catch (RemoteException ex) {
-            Logger.getLogger(verProveedores.class.getName()).log(Level.SEVERE, null, ex);
+            df.addRow((Object[]) t);
         }
     }//GEN-LAST:event_btnRefrescarActionPerformed
 
@@ -301,5 +295,11 @@ public class CrearProveedor_Version2 extends javax.swing.JFrame {
 
     private void setIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+    }
+
+    private static java.util.List<logica.Proveedor> todosProveedores() {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.todosProveedores();
     }
 }

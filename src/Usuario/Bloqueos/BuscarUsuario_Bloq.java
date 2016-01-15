@@ -5,12 +5,13 @@
  */
 package Usuario.Bloqueos;
 
-import EstructurasAux.BuscarUsuario;
+import logica.BuscarUsuario;
 import interfaces.Usuario;
 import java.awt.Toolkit;
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -225,22 +226,13 @@ public class BuscarUsuario_Bloq extends javax.swing.JFrame {
     private void btn_BuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_BuscarActionPerformed
         String nombre = this.jtf_Nombre.getText();
         String ide = this.jtf_Identificacion.getText();
-        Usuario u = cliente.Cliente.conectarU();
-        ArrayList<BuscarUsuario> buscarEmpleado;
+        List<BuscarUsuario> buscarEmpleado;
         if (nombre.isEmpty() == false && ide.isEmpty() == true) {
-            try {
-                buscarEmpleado = u.buscarEmpleado("nombre", nombre);
-                llenarTabla(buscarEmpleado);
-            } catch (RemoteException ex) {
-                Logger.getLogger(BuscarUsuario_Bloq.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            buscarEmpleado = buscarEmpleado("nombre", nombre);
+            llenarTabla((ArrayList<BuscarUsuario>) buscarEmpleado);
         } else if (nombre.isEmpty() == true && ide.isEmpty() == false) {
-            try {
-                buscarEmpleado = u.buscarEmpleado("id", ide);
-                llenarTabla(buscarEmpleado);
-            } catch (RemoteException ex) {
-                Logger.getLogger(BuscarUsuario_Bloq.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            buscarEmpleado = buscarEmpleado("id", ide);
+            llenarTabla((ArrayList<BuscarUsuario>) buscarEmpleado);
         } else {
             JOptionPane.showMessageDialog(null, "Realizó mal el procedimiento, intente de nuevo");
             this.jtf_Identificacion.setText("");
@@ -336,5 +328,11 @@ public class BuscarUsuario_Bloq extends javax.swing.JFrame {
     private void setIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
 
+    }
+
+    private static List<BuscarUsuario> buscarEmpleado(java.lang.String parametro, java.lang.String valor) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.buscarEmpleado(parametro, valor);
     }
 }

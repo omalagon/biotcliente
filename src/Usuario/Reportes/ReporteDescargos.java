@@ -5,8 +5,6 @@
  */
 package Usuario.Reportes;
 
-import EstructurasAux.BuscarUsuario;
-import EstructurasAux.informeDescargos;
 import interfaces.Usuario;
 import java.awt.Toolkit;
 import java.math.BigDecimal;
@@ -19,6 +17,8 @@ import java.util.logging.Logger;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import logica.BuscarUsuario;
+import logica.InformeDescargos;
 
 /*
  *
@@ -51,32 +51,27 @@ public class ReporteDescargos extends javax.swing.JFrame {
         this.setLocation(600, 200);
         this.setSize(753, this.getHeight());
         setIcon();
-        Usuario u = cliente.Cliente.conectarU();
         String cabecera[] = {"Código", "Descripción", "Inventario Actual", "Gastado", "Fecha"};
-        ArrayList<informeDescargos> Informe;
+        ArrayList<InformeDescargos> Informe;
         DefaultTableModel df = (DefaultTableModel) this.tablaInformes.getModel();
         df.setColumnIdentifiers(cabecera);
         this.tablaInformes.setModel(df);
         for (int i = df.getRowCount() - 1; i >= 0; i--) {
             df.removeRow(i);
         }
-        try {
-            ArrayList<BuscarUsuario> buscarEmpleado = u.buscarEmpleado("id", busqueda.toString());
-            BuscarUsuario b = buscarEmpleado.get(0);
-            Informe = u.generarInformePorRA(b.getLab(), busqueda);
-            for (informeDescargos i : Informe) {
-                Object[] datos = new Object[5];
-                datos[0] = i.getCinterno();
-                datos[1] = i.getDescripcion();
-                datos[2] = i.getEninventario();
-                datos[3] = i.getEmpleado();
-                GregorianCalendar hoy = i.getFecha();
-                String cadenaFecha = hoy.get(Calendar.DAY_OF_MONTH) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/" + hoy.get(Calendar.YEAR);
-                datos[4] = cadenaFecha;
-                df.addRow(datos);
-            }
-        } catch (RemoteException ex) {
-            Logger.getLogger(ReporteDescargos.class.getName()).log(Level.SEVERE, null, ex);
+        ArrayList<BuscarUsuario> buscarEmpleado = (ArrayList<BuscarUsuario>) buscarEmpleado("id", busqueda.toString());
+        BuscarUsuario b = buscarEmpleado.get(0);
+        Informe = (ArrayList<InformeDescargos>) generarInformePorRA(b.getLab(), busqueda);
+        for (InformeDescargos i : Informe) {
+            Object[] datos = new Object[5];
+            datos[0] = i.getCinterno();
+            datos[1] = i.getDescripcion();
+            datos[2] = i.getEninventario();
+            datos[3] = i.getEmpleado();
+            GregorianCalendar hoy = i.getFecha().toGregorianCalendar();
+            String cadenaFecha = hoy.get(Calendar.DAY_OF_MONTH) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/" + hoy.get(Calendar.YEAR);
+            datos[4] = cadenaFecha;
+            df.addRow(datos);
         }
         if (this.tablaInformes.getRowCount() == 0) {
             JOptionPane.showMessageDialog(null, "No se han encontrado descargos para ese usuario");
@@ -204,8 +199,7 @@ public class ReporteDescargos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVerInformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerInformeActionPerformed
-        Usuario u = cliente.Cliente.conectarU();
-        ArrayList<informeDescargos> Informe;
+        ArrayList<InformeDescargos> Informe;
         String meses[] = {"ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"};
         String cabeceras[] = {"Código", "Descripción", "Inventario Actual", "Consumido", "Nombre", "Área"};
         this.list= new JList<String>( meses);
@@ -224,36 +218,30 @@ public class ReporteDescargos extends javax.swing.JFrame {
             }
         }
 
-        try {
-            if (list.getSelectedValue() != null && si_no == JOptionPane.YES_OPTION) {
-                if (aux < 10) {
-                    Informe = u.generarInforme("0".concat(Integer.toString(aux)));
-                } else {
-                    Informe = u.generarInforme(Integer.toString(aux));
-                }
-                
-                for (informeDescargos i : Informe) {
-                    Object[] datos = new Object[6];
-                    datos[0] = i.getCinterno();
-                    datos[1] = i.getDescripcion();
-                    datos[2] = i.getEninventario();
-                    datos[3] = i.getEmpleado();
-                    datos[4] = i.getNombre();
-                    datos[5] = i.getArea();
-                   
-                    df.addRow(datos);
-                }
+        if (list.getSelectedValue() != null && si_no == JOptionPane.YES_OPTION) {
+            if (aux < 10) {
+                Informe = (ArrayList<InformeDescargos>) generarInforme("0".concat(Integer.toString(aux)));
+            } else {
+                Informe = (ArrayList<InformeDescargos>) generarInforme(Integer.toString(aux));
             }
-
-        } catch (RemoteException ex) {
-            Logger.getLogger(ReporteDescargos.class.getName()).log(Level.SEVERE, null, ex);
+            
+            for (InformeDescargos i : Informe) {
+                Object[] datos = new Object[6];
+                datos[0] = i.getCinterno();
+                datos[1] = i.getDescripcion();
+                datos[2] = i.getEninventario();
+                datos[3] = i.getEmpleado();
+                datos[4] = i.getNombre();
+                datos[5] = i.getArea();
+                
+                df.addRow(datos);
+            }
         }
     }//GEN-LAST:event_btnVerInformeActionPerformed
 
     private void btnVerConsumoPorLabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerConsumoPorLabActionPerformed
-        Usuario u = cliente.Cliente.conectarU();
         String cabecera[] = {"Código", "Descripción", "Inventario Actual", "Consumido"};
-        ArrayList<informeDescargos> Informe;
+        ArrayList<InformeDescargos> Informe;
         DefaultTableModel df = (DefaultTableModel) this.tablaInformes.getModel();
         df.setColumnIdentifiers(cabecera);
         this.tablaInformes.setModel(df);
@@ -275,39 +263,34 @@ public class ReporteDescargos extends javax.swing.JFrame {
                 df.removeRow(i);
             }
         }
-        try {
-            if (list.getSelectedValue() != null && si_no == JOptionPane.YES_OPTION) {
-                if (aux < 10) {
-                    Informe = u.generarInformePorLab("0".concat(Integer.toString(aux)));
-                } else {
-                    Informe = u.generarInformePorLab(Integer.toString(aux));
-                }
-                for (informeDescargos i : Informe) {
-                    if (i.getInventario().equalsIgnoreCase("MA")) {
-                        contadorMA += 1;
-                    }
-                    if (i.getInventario().equalsIgnoreCase("MB")) {
-                        contadorMB += 1;
-                    }
-                    if (i.getInventario().equalsIgnoreCase("FQ")) {
-                        contadorFQ += 1;
-                    }
-                }
-                for (informeDescargos i : Informe) {
-                    Object[] datos = new Object[4];
-                    datos[0] = i.getCinterno();
-                    datos[1] = i.getDescripcion();
-                    datos[2] = i.getEninventario();
-                    datos[3] = i.getEmpleado();
-                    
-                    df.addRow(datos);
-
-                }
-
+        if (list.getSelectedValue() != null && si_no == JOptionPane.YES_OPTION) {
+            if (aux < 10) {
+                Informe = (ArrayList<InformeDescargos>) generarInformePorLab("0".concat(Integer.toString(aux)));
+            } else {
+                Informe = (ArrayList<InformeDescargos>) generarInformePorLab(Integer.toString(aux));
             }
-
-        } catch (RemoteException ex) {
-            Logger.getLogger(ReporteDescargos.class.getName()).log(Level.SEVERE, null, ex);
+            for (InformeDescargos i : Informe) {
+                if (i.getInventario().equalsIgnoreCase("MA")) {
+                    contadorMA += 1;
+                }
+                if (i.getInventario().equalsIgnoreCase("MB")) {
+                    contadorMB += 1;
+                }
+                if (i.getInventario().equalsIgnoreCase("FQ")) {
+                    contadorFQ += 1;
+                }
+            }
+            for (InformeDescargos i : Informe) {
+                Object[] datos = new Object[4];
+                datos[0] = i.getCinterno();
+                datos[1] = i.getDescripcion();
+                datos[2] = i.getEninventario();
+                datos[3] = i.getEmpleado();
+                
+                df.addRow(datos);
+                
+            }
+            
         }
     }//GEN-LAST:event_btnVerConsumoPorLabActionPerformed
 
@@ -369,5 +352,29 @@ public class ReporteDescargos extends javax.swing.JFrame {
     private void setIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
 
+    }
+
+    private static java.util.List<logica.BuscarUsuario> buscarEmpleado(java.lang.String parametro, java.lang.String valor) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.buscarEmpleado(parametro, valor);
+    }
+
+    private static java.util.List<logica.InformeDescargos> generarInformePorRA(java.lang.String mes, java.math.BigDecimal id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.generarInformePorRA(mes, id);
+    }
+
+    private static java.util.List<logica.InformeDescargos> generarInforme(java.lang.String mes) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.generarInforme(mes);
+    }
+
+    private static java.util.List<logica.InformeDescargos> generarInformePorLab(java.lang.String mes) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.generarInformePorLab(mes);
     }
 }

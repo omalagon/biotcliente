@@ -5,11 +5,9 @@
  */
 package Usuario.Descargos;
 
-import EstructurasAux.ItemInventario;
-import EstructurasAux.descargo;
-import EstructurasAux.users;
+import logica.ItemInventario;
+import logica.Descargo;
 import Usuario.solicitudes.MenuSolicitud;
-import cliente.Cliente;
 import interfaces.Usuario;
 import java.awt.Toolkit;
 import java.awt.event.ItemEvent;
@@ -21,6 +19,9 @@ import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import logica.Users;
 
 /**
  *
@@ -41,7 +42,6 @@ public class DescargoConsumos extends javax.swing.JFrame {
     public DescargoConsumos(String ide) {
         initComponents();
         DescargoConsumos.ide = ide;
-        Usuario u = cliente.Cliente.conectarU();
         String User = "";
         String area = "";
         setIcon();
@@ -50,39 +50,31 @@ public class DescargoConsumos extends javax.swing.JFrame {
         this.lblDesc.setText("");
         this.lblPres.setText("");
         this.jLabel7.setText("");
-        try {
-            users datosUsuario = u.getDatosUsuario(ide);
-            User = datosUsuario.getNombre();
-            area = datosUsuario.getLab();
-            itemInventarioAdmin = u.itemInventarioAdmin();
-        } catch (RemoteException ex) {
-            Logger.getLogger(DescargoConsumos.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Users datosUsuario = getDatosUsuario(ide);
+        User = datosUsuario.getNombre();
+        area = datosUsuario.getLab();
+        itemInventarioAdmin = (ArrayList<ItemInventario> )itemInventarioAdmin();
+        
         this.desc_Fecha.setText(cadenaFecha);
         this.desc_nombre.setText(User);
         this.desc_area.setText(area);
         actualizarListado(itemInventarioAdmin);
         this.desc_items.addItemListener(new ItemListener() {
 
-            Usuario u = cliente.Cliente.conectarU();
 
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     String item = (String) e.getItem();
-                    try {
-                        ItemInventario info = u.buscarInfoItem(item);
-                        if (info.getDescripcion().length() < 45) {
-                            lblDesc.setText(info.getDescripcion());
-                        } else {
-                            lblDesc.setText("-");
-                            JOptionPane.showMessageDialog(null, info.getDescripcion(), "Descripción del ítem", JOptionPane.INFORMATION_MESSAGE);
-                        }
-                        lblPres.setText(info.getPresentacion());
-                        jLabel7.setText(info.getInventario());
-                    } catch (RemoteException ex) {
-                        Logger.getLogger(DescargoConsumos.class.getName()).log(Level.SEVERE, null, ex);
+                    ItemInventario info = buscarInfoItem(item);
+                    if (info.getDescripcion().length() < 45) {
+                        lblDesc.setText(info.getDescripcion());
+                    } else {
+                        lblDesc.setText("-");
+                        JOptionPane.showMessageDialog(null, info.getDescripcion(), "Descripción del ítem", JOptionPane.INFORMATION_MESSAGE);
                     }
+                    lblPres.setText(info.getPresentacion());
+                    jLabel7.setText(info.getInventario());
                 }
             }
         });
@@ -415,26 +407,31 @@ public class DescargoConsumos extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "La cantidad ingresada debe ser mayor a cero");
             this.desc_cantidad.setText("");
         } else {
-            descargo d = new descargo(hoy, ide, this.desc_area.getText(), new Float(this.desc_cantidad.getText()), itemInventarioAdmin.get(selectedIndex).getNumero());
-            Usuario u = cliente.Cliente.conectarU();
-            boolean valido;
+            Descargo d = null;
             try {
-                valido = u.realizarDescargo(d);
-                if (valido) {
-                    if (JOptionPane.showConfirmDialog(null, "Descargo realizado exitosamente. ¿Desea realizar otro?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                        this.desc_cantidad.setText("");
-                        this.desc_items.setSelectedIndex(0);
-                    } else {
-                        MenuSolicitud menu = new MenuSolicitud(ide);
-                        menu.setVisible(true);
-                        this.dispose();
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Ocurrió un error en el proceso.");
-                }
-
-            } catch (RemoteException ex) {
+                d = new Descargo();
+                d.setFecha(DatatypeFactory.newInstance().newXMLGregorianCalendar(hoy));
+                d.setId(ide);
+                d.setArea(this.desc_area.getText());
+                d.setCantidad(new Float(this.desc_cantidad.getText()));
+                d.setCinterno(itemInventarioAdmin.get(selectedIndex).getNumero());
+            } catch (DatatypeConfigurationException ex) {
                 Logger.getLogger(DescargoConsumos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            boolean valido;
+            valido = realizarDescargo(d);
+            if (valido) {
+                if (JOptionPane.showConfirmDialog(null, "Descargo realizado exitosamente. ¿Desea realizar otro?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    this.desc_cantidad.setText("");
+                    this.desc_items.setSelectedIndex(0);
+                } else {
+                    MenuSolicitud menu = new MenuSolicitud(ide);
+                    menu.setVisible(true);
+                    this.dispose();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Ocurrió un error en el proceso.");
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -458,18 +455,13 @@ public class DescargoConsumos extends javax.swing.JFrame {
     }//GEN-LAST:event_jtfPresActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        Usuario U = Cliente.conectarU();
-        try {
-            ArrayList<ItemInventario> listado
-                    = U.busquedaItem(this.jtfDesc.getText(), this.jtfPres.getText(), this.jtfInv.getText());
-            if (listado.size() == 0) {
-                JOptionPane.showMessageDialog(null, "La búsqueda no arrojó resultados, la lista de ítems se mantiene como estaba");
-            } else {
-                actualizarListado(listado);
-                JOptionPane.showMessageDialog(null, "Los resultados de la búsqueda se ven reflejados en el campo \"Item\"");
-            }
-        } catch (RemoteException ex) {
-            Logger.getLogger(DescargoConsumos.class.getName()).log(Level.SEVERE, null, ex);
+        ArrayList<ItemInventario> listado
+                = (ArrayList<ItemInventario>) busquedaItem(this.jtfDesc.getText(), this.jtfPres.getText(), this.jtfInv.getText());
+        if (listado.size() == 0) {
+            JOptionPane.showMessageDialog(null, "La búsqueda no arrojó resultados, la lista de ítems se mantiene como estaba");
+        } else {
+            actualizarListado(listado);
+            JOptionPane.showMessageDialog(null, "Los resultados de la búsqueda se ven reflejados en el campo \"Item\"");
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
@@ -568,5 +560,35 @@ public class DescargoConsumos extends javax.swing.JFrame {
         for (ItemInventario i : lista) {
             desc_items.addItem((String)i.getNumero());
         }
+    }
+
+    private static Users getDatosUsuario(java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getDatosUsuario(id);
+    }
+
+    private static java.util.List<logica.ItemInventario> itemInventarioAdmin() {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.itemInventarioAdmin();
+    }
+
+    private static ItemInventario buscarInfoItem(java.lang.String cinterno) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.buscarInfoItem(cinterno);
+    }
+
+    private static boolean realizarDescargo(logica.Descargo d) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.realizarDescargo(d);
+    }
+
+    private static java.util.List<logica.ItemInventario> busquedaItem(java.lang.String descripcion, java.lang.String presentacion, java.lang.String inv) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.busquedaItem(descripcion, presentacion, inv);
     }
 }

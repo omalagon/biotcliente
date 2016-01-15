@@ -133,21 +133,16 @@ public class CambioClave extends javax.swing.JFrame {
     private void btn_CambiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CambiarActionPerformed
         String anterior = this.jtf_anterior.getText();
         String nueva = this.jtf_nueva.getText();
-        Usuario u = cliente.Cliente.conectarU();
         boolean validar;
-        try {
-            validar = u.verificarClave(anterior, id);
-            System.out.println(validar);
-            if (validar) {
-
-                if (u.cambiarClave(nueva, id)) {
-                    JOptionPane.showMessageDialog(null, "La clave fue cambiada exitosamente");
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "La clave anterior es incorrecta");
+        validar = verificarClave(anterior, id);
+        System.out.println(validar);
+        if (validar) {
+            
+            if (cambiarClave(nueva, id)) {
+                JOptionPane.showMessageDialog(null, "La clave fue cambiada exitosamente");
             }
-        } catch (RemoteException ex) {
-            Logger.getLogger(CambioClave.class.getName()).log(Level.SEVERE, null, ex);
+        } else {
+            JOptionPane.showMessageDialog(null, "La clave anterior es incorrecta");
         }
     }//GEN-LAST:event_btn_CambiarActionPerformed
 
@@ -208,5 +203,17 @@ public class CambioClave extends javax.swing.JFrame {
 
     private void setIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+    }
+
+    private static boolean verificarClave(java.lang.String anterior, java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.verificarClave(anterior, id);
+    }
+
+    private static boolean cambiarClave(java.lang.String nueva, java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.cambiarClave(nueva, id);
     }
 }

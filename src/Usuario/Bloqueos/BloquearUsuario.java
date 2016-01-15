@@ -191,26 +191,21 @@ public class BloquearUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_buscarActionPerformed
 
     private void btn_BloquearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_BloquearActionPerformed
-        Usuario u = cliente.Cliente.conectarU();
         boolean cambiarClave =false;
-        try {
-            System.out.println(this.jtf_id.getText());
-            cambiarClave = u.cambiarClave("@1mp0s1bl3@", this.jtf_id.getText());
-            if (cambiarClave) {
-                JOptionPane.showMessageDialog(null, "Usuario Bloqueado");
-                MenuPrincipal menu = new MenuPrincipal(id);
-                menu.setVisible(true);
-                this.setVisible(false);
-
-            } else {
-                JOptionPane.showMessageDialog(null, "No se pudo bloquear el usuario");
-            }
-            System.out.println(cambiarClave);
-        } catch (RemoteException ex) {
-            Logger.getLogger(BloquearUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        System.out.println(this.jtf_id.getText());
+        cambiarClave = cambiarClave("@1mp0s1bl3@", this.jtf_id.getText());
+        if (cambiarClave) {
+            JOptionPane.showMessageDialog(null, "Usuario Bloqueado");
+            MenuPrincipal menu = new MenuPrincipal(id);
+            menu.setVisible(true);
+            this.setVisible(false);
+            
+        } else {
+            JOptionPane.showMessageDialog(null, "No se pudo bloquear el usuario");
         }
-
-
+        System.out.println(cambiarClave);
+        
+        
     }//GEN-LAST:event_btn_BloquearActionPerformed
 
     private void btn_volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_volverActionPerformed
@@ -267,5 +262,11 @@ public class BloquearUsuario extends javax.swing.JFrame {
 
     private void setIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+    }
+
+    private static boolean cambiarClave(java.lang.String nueva, java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.cambiarClave(nueva, id);
     }
 }

@@ -5,13 +5,8 @@
  */
 package Usuario.Reportes;
 
-import Usuario.Recepciones.*;
-import EstructurasAux.ItemInventario;
-import EstructurasAux.datosFormatos;
-import EstructurasAux.evProv;
 import EstructurasAux.infoItems;
-import EstructurasAux.itemRecep;
-import EstructurasAux.recepcionProd;
+import Usuario.Recepciones.*;
 import Formatos.fdc002;
 import Formatos.fdc002Recepciones;
 import Usuario.solicitudes.MenuSolicitud;
@@ -38,6 +33,11 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import logica.DatosFormatos;
+import logica.EvProv;
+import logica.ItemInventario;
+import logica.ItemRecep;
+import logica.RecepcionProd;
 
 /**
  *
@@ -64,7 +64,7 @@ public class ReporteRecepciones extends javax.swing.JFrame {
             fecRec.setCellEditor(new JDateChooserCellEditor());
             TableColumn fecVen = this.tablaDatosPedido.getColumnModel().getColumn(10);
             fecVen.setCellEditor(new JDateChooserCellEditor());
-            this.jlblrecFecha.setText(cliente.Cliente.conectarU().getFecha());
+            this.jlblrecFecha.setText(getFecha());
             setIcon();
 
             tablaOrdenes.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -521,71 +521,74 @@ public class ReporteRecepciones extends javax.swing.JFrame {
 
     private void btnEnviarRecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarRecActionPerformed
         {
-            try {
-                DefaultTableModel df = (DefaultTableModel) this.tablaDatosPedido.getModel();
-                String numorden1 = this.tablaOrdenes.getValueAt(this.tablaOrdenes.getSelectedRow(), 0).toString();
-                Usuario u = cliente.Cliente.conectarU();
-                ArrayList<infoItems> lstItems = new ArrayList<>();
-                for (int i = 0; i < df.getRowCount(); i++) {
-                    lstItems.add(new infoItems(
-                            df.getValueAt(i, 1).toString(),
-                            df.getValueAt(i, 2).toString(),
-                            df.getValueAt(i, 3).toString(),
-                            df.getValueAt(i, 4).toString(),
-                            df.getValueAt(i, 5).toString(),
-                            df.getValueAt(i, 6).toString(),
-                            df.getValueAt(i, 7).toString(),
-                            df.getValueAt(i, 8).toString(),
-                            df.getValueAt(i, 9).toString(),
-                            df.getValueAt(i, 10).toString(),
-                            df.getValueAt(i, 11).toString()));
-                }
-                System.out.println(df.getValueAt(0, 8).toString());
-                evProv evProv = new evProv(this.rec_nit.getText(), new Double(numorden1), this.ev1.getSelectedItem().toString(), this.ev2.getSelectedItem().toString(),
-                        this.ev3.getSelectedItem().toString(), this.ev4.getSelectedItem().toString(), this.ev5.getSelectedItem().toString(), this.ev6.getSelectedItem().toString(),
-                        this.ev7.getSelectedItem().toString(), this.ev8.getSelectedItem().toString());
-                JOptionPane.showMessageDialog(null, "Recopilando información...");
-                datosFormatos datos = u.getDatos("2");
-                String rutaImagen;
-                String property = System.getProperty("user.dir");
-                rutaImagen = property.concat("\\src\\Imagenes\\iconB.png");
-                HashMap<String, String> parametros = new HashMap<>();
-                parametros.put("image", rutaImagen);
-                parametros.put("fechaElab", u.getFecha());
-                parametros.put("oCompra", this.tablaOrdenes.getValueAt(this.tablaOrdenes.getSelectedRow(), 0).toString());
-                parametros.put("revision", datos.getRevision());
-                parametros.put("fechaact", datos.getFechaActualizacion());
-                parametros.put("titulo", datos.getTitulo());
-                parametros.put("Obs", this.recobs.getText());
-                parametros.put("subtotal", this.total.getText());
-                parametros.put("nit", this.rec_nit.getText());
-                parametros.put("nombreProv", this.rec_nomProv.getText());
-                parametros.put("direccionProv", this.rec_dir.getText() + "-" + this.rec_cel.getText());
-                parametros.put("fax", this.rec_fax.getText());
-                parametros.put("1_sPreventa", this.ev1.getSelectedItem().toString());
-                parametros.put("2_AUsuario", this.ev2.getSelectedItem().toString());
-                parametros.put("3_SCalidad", this.ev3.getSelectedItem().toString());
-                parametros.put("4_fEntrega", this.ev4.getSelectedItem().toString());
-                parametros.put("5_completos", this.ev5.getSelectedItem().toString());
-                parametros.put("6_CRequisitos", this.ev6.getSelectedItem().toString());
-                parametros.put("7_CCalidad", this.ev7.getSelectedItem().toString());
-                parametros.put("8_Conformidad", this.ev8.getSelectedItem().toString());
-                JFileChooser chooser = new JFileChooser();
-                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                chooser.showOpenDialog(this);
-                String path = chooser.getSelectedFile().getPath();
-                File archivo = fdc002Recepciones.metodo(path, parametros, lstItems);
-                if (JOptionPane.showConfirmDialog(null, "¿Desea abrir el archivo?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    try {
-                        Desktop.getDesktop().open(archivo);
-                    } catch (IOException ex) {
-                        Logger.getLogger(ReporteSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            } catch (RemoteException ex) {
-                Logger.getLogger(ReporteRecepciones.class.getName()).log(Level.SEVERE, null, ex);
+            DefaultTableModel df = (DefaultTableModel) this.tablaDatosPedido.getModel();
+            String numorden1 = this.tablaOrdenes.getValueAt(this.tablaOrdenes.getSelectedRow(), 0).toString();
+            ArrayList<infoItems> lstItems = new ArrayList<>();
+            for (int i = 0; i < df.getRowCount(); i++) {
+                lstItems.add(new infoItems(
+                        df.getValueAt(i, 1).toString(),
+                        df.getValueAt(i, 2).toString(),
+                        df.getValueAt(i, 3).toString(),
+                        df.getValueAt(i, 4).toString(),
+                        df.getValueAt(i, 5).toString(),
+                        df.getValueAt(i, 6).toString(),
+                        df.getValueAt(i, 7).toString(),
+                        df.getValueAt(i, 8).toString(),
+                        df.getValueAt(i, 9).toString(),
+                        df.getValueAt(i, 10).toString(),
+                        df.getValueAt(i, 11).toString()));
             }
-            
+            System.out.println(df.getValueAt(0, 8).toString());
+            EvProv evProv = new EvProv();
+            evProv.setNit(this.rec_nit.getText());
+            evProv.setNumorden(new Double(numorden1));
+            evProv.setEv1(this.ev1.getSelectedItem().toString());
+            evProv.setEv2(this.ev2.getSelectedItem().toString());
+            evProv.setEv3(this.ev3.getSelectedItem().toString());
+            evProv.setEv4(this.ev4.getSelectedItem().toString());
+            evProv.setEv5(this.ev5.getSelectedItem().toString());
+            evProv.setEv6(this.ev6.getSelectedItem().toString());
+            evProv.setEv7(this.ev7.getSelectedItem().toString());
+            evProv.setEv8(this.ev8.getSelectedItem().toString());
+            JOptionPane.showMessageDialog(null, "Recopilando información...");
+            DatosFormatos datos = getDatos("2");
+            String rutaImagen;
+            String property = System.getProperty("user.dir");
+            rutaImagen = property.concat("\\src\\Imagenes\\iconB.png");
+            HashMap<String, String> parametros = new HashMap<>();
+            parametros.put("image", rutaImagen);
+            parametros.put("fechaElab", getFecha());
+            parametros.put("oCompra", this.tablaOrdenes.getValueAt(this.tablaOrdenes.getSelectedRow(), 0).toString());
+            parametros.put("revision", datos.getRevision());
+            parametros.put("fechaact", datos.getFechaActualizacion());
+            parametros.put("titulo", datos.getTitulo());
+            parametros.put("Obs", this.recobs.getText());
+            parametros.put("subtotal", this.total.getText());
+            parametros.put("nit", this.rec_nit.getText());
+            parametros.put("nombreProv", this.rec_nomProv.getText());
+            parametros.put("direccionProv", this.rec_dir.getText() + "-" + this.rec_cel.getText());
+            parametros.put("fax", this.rec_fax.getText());
+            parametros.put("1_sPreventa", this.ev1.getSelectedItem().toString());
+            parametros.put("2_AUsuario", this.ev2.getSelectedItem().toString());
+            parametros.put("3_SCalidad", this.ev3.getSelectedItem().toString());
+            parametros.put("4_fEntrega", this.ev4.getSelectedItem().toString());
+            parametros.put("5_completos", this.ev5.getSelectedItem().toString());
+            parametros.put("6_CRequisitos", this.ev6.getSelectedItem().toString());
+            parametros.put("7_CCalidad", this.ev7.getSelectedItem().toString());
+            parametros.put("8_Conformidad", this.ev8.getSelectedItem().toString());
+            JFileChooser chooser = new JFileChooser();
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            chooser.showOpenDialog(this);
+            String path = chooser.getSelectedFile().getPath();
+            File archivo = fdc002Recepciones.metodo(path, parametros, lstItems);
+            if (JOptionPane.showConfirmDialog(null, "¿Desea abrir el archivo?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                try {
+                    Desktop.getDesktop().open(archivo);
+                } catch (IOException ex) {
+                    Logger.getLogger(ReporteSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
         }    }//GEN-LAST:event_btnEnviarRecActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
@@ -688,7 +691,6 @@ public class ReporteRecepciones extends javax.swing.JFrame {
 
     private void llenarInfo() {
         BigDecimal orden;
-        Usuario u = cliente.Cliente.conectarU();
         DefaultTableModel df = (DefaultTableModel) this.tablaDatosPedido.getModel();
 
         for (int i = df.getRowCount() - 1; i >= 0; i--) {
@@ -696,78 +698,115 @@ public class ReporteRecepciones extends javax.swing.JFrame {
         }
         String ordenIngresada = this.tablaOrdenes.getValueAt(this.tablaOrdenes.getSelectedRow(), 0).toString();
         orden = new BigDecimal(ordenIngresada);
-        try {
-            recepcionProd datosRec = u.getDatosPedidoRecibido(orden, this.id);
-            if (datosRec != null) {
-
-                this.rec_nomProv.setText(datosRec.getP().getNombre());
-                this.rec_nit.setText(datosRec.getP().getNIT());
-                this.rec_dir.setText(datosRec.getP().getDireccion());
-                this.rec_fax.setText(datosRec.getP().getTelefax());
-                this.rec_cel.setText(datosRec.getP().getTelefono());
-                this.recobs.setText(datosRec.getObservaciones());
-                ArrayList<itemRecep> articulos = datosRec.getArticulos();
-                float tot = 0;
-                int i = 0;
-                for (itemRecep articulo : articulos) {
-                    ItemInventario d = u.buscarInfoItem(articulo.getCinterno());
-                    Object[] datos = new Object[12];
-                    datos[0] = d.getInventario();
-                    datos[1] = d.getNumero();
-                    datos[2] = d.getDescripcion();
-                    datos[3] = articulo.getcAprobada();
-                    datos[4] = d.getPresentacion();
-                    datos[5] = articulo.getPrecio();
-                    datos[6] = articulo.getcAprobada() * articulo.getPrecio();
-                    datos[7] = articulo.getfLlegada();
-                    datos[8] = articulo.getcCalidad();
-                    datos[9] = articulo.getcEsp();
-                    datos[10] = articulo.getfVencimiento();
-                    datos[11] = articulo.getmVerificacion().toString();
-                    df.addRow(datos);
-                    this.recobs.setText(articulo.getObs());
-                    tot += articulo.getcAprobada() * articulo.getPrecio();
-                    this.total.setText(Float.toString(tot));
-                }
-                evProv ev = u.getEvaluacionProv(new Double(orden.toString()));
-                if (ev != null) {
-
-                    this.ev1.setSelectedItem(ev.getEv1());
-                    this.ev2.setSelectedItem(ev.getEv2());
-                    this.ev3.setSelectedItem(ev.getEv3());
-                    this.ev4.setSelectedItem(ev.getEv4());
-                    this.ev5.setSelectedItem(ev.getEv5());
-                    this.ev6.setSelectedItem(ev.getEv6());
-                    this.ev7.setSelectedItem(ev.getEv7());
-                    this.ev8.setSelectedItem(ev.getEv8());
-                    this.ev1.setEditable(false);
-                    this.ev2.setEditable(false);
-                    this.ev3.setEditable(false);
-                    this.ev4.setEditable(false);
-                    this.ev5.setEditable(false);
-                    this.ev6.setEditable(false);
-                    this.ev7.setEditable(false);
-                    this.ev8.setEditable(false);
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "No se encontró nada referente al número de orden dado");
+        RecepcionProd datosRec = getDatosPedidoRecibido(orden, this.id);
+        if (datosRec != null) {
+            
+            this.rec_nomProv.setText(datosRec.getP().getNombre());
+            this.rec_nit.setText(datosRec.getP().getNIT());
+            this.rec_dir.setText(datosRec.getP().getDireccion());
+            this.rec_fax.setText(datosRec.getP().getTelefax());
+            this.rec_cel.setText(datosRec.getP().getTelefono());
+            this.recobs.setText(datosRec.getObservaciones());
+            ArrayList<ItemRecep> articulos = (ArrayList<ItemRecep>) datosRec.getArticulos();
+            float tot = 0;
+            int i = 0;
+            for (ItemRecep articulo : articulos) {
+                ItemInventario d = buscarInfoItem(articulo.getCinterno());
+                Object[] datos = new Object[12];
+                datos[0] = d.getInventario();
+                datos[1] = d.getNumero();
+                datos[2] = d.getDescripcion();
+                datos[3] = articulo.getCAprobada();
+                datos[4] = d.getPresentacion();
+                datos[5] = articulo.getPrecio();
+                datos[6] = articulo.getCAprobada() * articulo.getPrecio();
+                datos[7] = articulo.getFLlegada();
+                datos[8] = articulo.getCCalidad();
+                datos[9] = articulo.getCEsp();
+                datos[10] = articulo.getFVencimiento();
+                datos[11] = articulo.getMVerificacion().toString();
+                df.addRow(datos);
+                this.recobs.setText(articulo.getObs());
+                tot += articulo.getCAprobada() * articulo.getPrecio();
+                this.total.setText(Float.toString(tot));
             }
-        } catch (RemoteException ex) {
-            Logger.getLogger(DevolverPedido.class.getName()).log(Level.SEVERE, null, ex);
+            EvProv ev = getEvaluacionProv(new Double(orden.toString()));
+            if (ev != null) {
+                
+                this.ev1.setSelectedItem(ev.getEv1());
+                this.ev2.setSelectedItem(ev.getEv2());
+                this.ev3.setSelectedItem(ev.getEv3());
+                this.ev4.setSelectedItem(ev.getEv4());
+                this.ev5.setSelectedItem(ev.getEv5());
+                this.ev6.setSelectedItem(ev.getEv6());
+                this.ev7.setSelectedItem(ev.getEv7());
+                this.ev8.setSelectedItem(ev.getEv8());
+                this.ev1.setEditable(false);
+                this.ev2.setEditable(false);
+                this.ev3.setEditable(false);
+                this.ev4.setEditable(false);
+                this.ev5.setEditable(false);
+                this.ev6.setEditable(false);
+                this.ev7.setEditable(false);
+                this.ev8.setEditable(false);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró nada referente al número de orden dado");
         }
     }
 
     private void llenarOrdenes() throws RemoteException {
-        Usuario u = cliente.Cliente.conectarU();
         DefaultTableModel dfOrdenes = (DefaultTableModel) this.tablaOrdenes.getModel();
         for (int i = dfOrdenes.getRowCount() - 1; i >= 0; i--) {
             dfOrdenes.removeRow(i);
         }
-        ArrayList<Integer> numerosDeOrden = u.numerosDeOrdenRecibidas();
+        ArrayList<Integer> numerosDeOrden = (ArrayList<Integer>) numerosDeOrdenRecibidas();
         for (Integer i : numerosDeOrden) {
             Object[] infoItems = new Object[8];
             infoItems[0] = i;
             dfOrdenes.addRow(infoItems);
         }
+    }
+
+    private static String getFecha() {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getFecha();
+    }
+
+    private static DatosFormatos getDatos(java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getDatos(id);
+    }
+
+    private static String getFecha_1() {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getFecha();
+    }
+
+    private static RecepcionProd getDatosPedidoRecibido(java.math.BigDecimal numorden, java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getDatosPedidoRecibido(numorden, id);
+    }
+
+    private static ItemInventario buscarInfoItem(java.lang.String cinterno) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.buscarInfoItem(cinterno);
+    }
+
+    private static EvProv getEvaluacionProv(double numorden) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getEvaluacionProv(numorden);
+    }
+
+    private static java.util.List<java.lang.Integer> numerosDeOrdenRecibidas() {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.numerosDeOrdenRecibidas();
     }
 }

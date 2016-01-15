@@ -5,14 +5,6 @@
  */
 package Usuario.Utils;
 
-import EstructurasAux.ItemInventario;
-import EstructurasAux.proveedor;
-import EstructurasAux.users;
-import static Usuario.Bloqueos.BloquearUsuario.id;
-import Usuario.Creaciones.CrearItem;
-import Usuario.Creaciones.CrearProveedor;
-import Usuario.Creaciones.CrearUsuario;
-import Usuario.Creaciones.PermisosUsuario;
 import interfaces.Usuario;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -22,7 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -72,15 +63,10 @@ public class BtnEditorOcultar extends DefaultCellEditor {
     public Object getCellEditorValue() {
         boolean huboCambios = false;
         if (clicked) {
-            Usuario ad = cliente.Cliente.conectarU();
             System.out.println(this.idUsuario);
             System.out.println(this.idRecurso);
             System.out.println(this.tipoRecurso);
-            try {
-                huboCambios =ad.ocultar(this.idUsuario, this.idRecurso, this.tipoRecurso);
-            } catch (RemoteException ex) {
-                Logger.getLogger(BtnEditorOcultar.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            huboCambios =ocultar(this.idUsuario, this.idRecurso, this.tipoRecurso);
         }
         if (huboCambios) {
             JOptionPane.showMessageDialog(null, "Oprima \"Refrescar\" para ver los cambios");
@@ -98,5 +84,11 @@ public class BtnEditorOcultar extends DefaultCellEditor {
     @Override
     protected void fireEditingStopped() {
         super.fireEditingStopped(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private static boolean ocultar(java.lang.String idUsuario, java.lang.String idRecurso, java.lang.String tipoRecurso) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.ocultar(idUsuario, idRecurso, tipoRecurso);
     }
 }

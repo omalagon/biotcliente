@@ -5,7 +5,6 @@
  */
 package Usuario.Reportes;
 
-import EstructurasAux.ItemInventario;
 import interfaces.Usuario;
 import java.awt.Desktop;
 import java.awt.Toolkit;
@@ -21,6 +20,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import logica.ItemInventario;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -214,13 +214,8 @@ public class ReporteInventario extends javax.swing.JFrame {
         for (int i = df.getRowCount() - 1; i >= 0; i--) {
             df.removeRow(i);
         }
-        Usuario ad = cliente.Cliente.conectarU();
         ArrayList<ItemInventario> itemInventario = null;
-        try {
-            itemInventario = ad.itemInventarioAdmin();
-        } catch (RemoteException ex) {
-            Logger.getLogger(ReporteInventario.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        itemInventario = (ArrayList<ItemInventario>) itemInventarioAdmin();
         for (ItemInventario i : itemInventario) {
             Object[] aux = new Object[7];
             aux[0] = i.getNumero();
@@ -228,14 +223,13 @@ public class ReporteInventario extends javax.swing.JFrame {
             aux[2] = i.getPresentacion();
             aux[3] = i.getCantidad();
             aux[4] = i.getPrecio();
-            aux[5] = i.getcCalidad();
+            aux[5] = i.getCCalidad();
             aux[6] = i.getCEsp();
             df.addRow(aux);
         }
     }//GEN-LAST:event_btnRefrescarActionPerformed
 
     private void btnInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInventarioActionPerformed
-        Usuario u = cliente.Cliente.conectarU();
         try {
             File xls;
             JFileChooser chooser = new JFileChooser();
@@ -338,8 +332,7 @@ public class ReporteInventario extends javax.swing.JFrame {
         try {
             archivo = new FileOutputStream(xls);
             hoja = libro.createSheet("Inventario");
-            Usuario u= cliente.Cliente.conectarU();
-            todos = u.itemInventarioAdmin();
+            todos = (ArrayList<ItemInventario>) itemInventarioAdmin();
             int i = 0;
 
             for (int j = 0; j < 8; j++) {
@@ -397,7 +390,7 @@ public class ReporteInventario extends javax.swing.JFrame {
                     hoja.autoSizeColumn(j);
                     j++;
                     aux = fila.createCell(j);
-                    aux.setCellValue(t.getcCalidad());
+                    aux.setCellValue(t.getCCalidad());
                     hoja.autoSizeColumn(j);
                     j++;
                     aux = fila.createCell(j);
@@ -417,5 +410,17 @@ public class ReporteInventario extends javax.swing.JFrame {
         }
 
         return xls;
+    }
+
+    private static java.util.List<logica.ItemInventario> itemInventarioAdmin() {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.itemInventarioAdmin();
+    }
+
+    private static java.util.List<logica.ItemInventario> itemInventarioAdmin_1() {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.itemInventarioAdmin();
     }
 }

@@ -5,9 +5,6 @@
  */
 package Usuario.Utils;
 
-import EstructurasAux.ItemInventario;
-import EstructurasAux.proveedor;
-import EstructurasAux.users;
 import static Usuario.Bloqueos.BloquearUsuario.id;
 import Usuario.Creaciones.CrearItem;
 import Usuario.Creaciones.CrearProveedor;
@@ -26,6 +23,9 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import logica.ItemInventario;
+import logica.Proveedor;
+import logica.Users;
 
 /**
  *
@@ -75,7 +75,6 @@ public class ButtonEditor extends DefaultCellEditor {
     public Object getCellEditorValue() {
         boolean huboCambios = false;
         if (clicked) {
-            Usuario ad = cliente.Cliente.conectarU();
             switch (this.recurso.trim()) {
                 case "item":
                     switch (accion) {
@@ -84,37 +83,38 @@ public class ButtonEditor extends DefaultCellEditor {
                             cr.setVisible(true);
                             break;
                         case ELIMINAR:
-                            try {
-                                int dialogResult = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el " + recurso + idRecurso + "?", "Alerta", JOptionPane.YES_NO_OPTION);
-                                if (dialogResult == 0) {
-                                    huboCambios = ad.eliminarItem(new ItemInventario(idRecurso, "", "", new Float("0"), new Float("0"), "", "", "", ""));
-                                } else {
-                                    //No hace nada
-                                }
-                            } catch (RemoteException ex) {
-                                Logger.getLogger(ButtonEditor.class.getName()).log(Level.SEVERE, null, ex);
+                            int dialogResult = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el " + recurso + idRecurso + "?", "Alerta", JOptionPane.YES_NO_OPTION);
+                            if (dialogResult == 0) {
+                                ItemInventario itm =new ItemInventario();
+                                itm.setNumero(idRecurso);
+                                itm.setDescripcion("");
+                                itm.setPresentacion("");
+                                itm.setCantidad(0);
+                                itm.setPrecio(0);
+                                itm.setCCalidad("");
+                                itm.setInventario("");
+                                itm.setSucursal("");
+                                itm.setCEsp("");
+                                huboCambios = eliminarItem(itm);
+                            } else {
+                                //No hace nada
                             }
                             break;
                         case VER: {
                             String msg = "";
-                            try {
-                                ItemInventario find = ad.buscarInfoItem(idRecurso);
-                                msg = "<html>"
-                                        + "Código Interno:" + find.getNumero() + "<br></br>"
-                                        + "Descripción:   " + find.getDescripcion() + "<br></br>"
-                                        + "Presentación:  " + find.getPresentacion() + "<br></br>"
-                                        + "Cantidad:      " + find.getCantidad() + "<br></br>"
-                                        + "Precio:        " + find.getPrecio() + "<br></br>"
-                                        + "Cert Calidad:  " + find.getcCalidad() + "<br></br>"
-                                        + "Cump Especific:" + find.getCEsp() + "<br></br>"
-                                        + "</html>";
-
-                                JOptionPane j = new JOptionPane(msg);
-                                JDialog di = j.createDialog("Información del ítem");
-                                di.setVisible(true);
-                            } catch (RemoteException ex) {
-                                Logger.getLogger(ButtonEditor.class.getName()).log(Level.SEVERE, null, ex);
-                            }
+                            ItemInventario find = buscarInfoItem(idRecurso);
+                            msg = "<html>"
+                                    + "Código Interno:" + find.getNumero() + "<br></br>"
+                                    + "Descripción:   " + find.getDescripcion() + "<br></br>"
+                                    + "Presentación:  " + find.getPresentacion() + "<br></br>"
+                                    + "Cantidad:      " + find.getCantidad() + "<br></br>"
+                                    + "Precio:        " + find.getPrecio() + "<br></br>"
+                                    + "Cert Calidad:  " + find.getCCalidad() + "<br></br>"
+                                    + "Cump Especific:" + find.getCEsp() + "<br></br>"
+                                    + "</html>";
+                            JOptionPane j = new JOptionPane(msg);
+                            JDialog di = j.createDialog("Información del ítem");
+                            di.setVisible(true);
                         }
                         break;
                     }
@@ -123,20 +123,15 @@ public class ButtonEditor extends DefaultCellEditor {
                     switch (accion) {
                         case VER: {
                             String msg = "";
-                            try {
-                                ItemInventario find = ad.buscarInfoItem(idRecurso);
-                                msg = "<html>"
-                                        + "Código Interno:" + find.getNumero() + "<br></br>"
-                                        + "Descripción:   " + find.getDescripcion() + "<br></br>"
-                                        + "Presentación:  " + find.getPresentacion() + "<br></br>"
-                                        + "</html>";
-
-                                JOptionPane j = new JOptionPane(msg);
-                                JDialog di = j.createDialog("Información del ítem");
-                                di.setVisible(true);
-                            } catch (RemoteException ex) {
-                                Logger.getLogger(ButtonEditor.class.getName()).log(Level.SEVERE, null, ex);
-                            }
+                            ItemInventario find = buscarInfoItem(idRecurso);
+                            msg = "<html>"
+                                    + "Código Interno:" + find.getNumero() + "<br></br>"
+                                    + "Descripción:   " + find.getDescripcion() + "<br></br>"
+                                    + "Presentación:  " + find.getPresentacion() + "<br></br>"
+                                    + "</html>";
+                            JOptionPane j = new JOptionPane(msg);
+                            JDialog di = j.createDialog("Información del ítem");
+                            di.setVisible(true);
                         }
                         break;
                     }
@@ -148,38 +143,29 @@ public class ButtonEditor extends DefaultCellEditor {
                             cr.setVisible(true);
                             break;
                         case ELIMINAR:
-                            try {
-                                int dialogResult = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el " + recurso + idRecurso + "?", "Alerta", JOptionPane.YES_NO_OPTION);
-                                if (dialogResult == 0) {
-                                    huboCambios = ad.EliminarProveedor(idRecurso);
-                                } else {
-                                    //No hace nada
-                                }
-                            } catch (RemoteException ex) {
-                                Logger.getLogger(ButtonEditor.class.getName()).log(Level.SEVERE, null, ex);
+                            int dialogResult = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el " + recurso + idRecurso + "?", "Alerta", JOptionPane.YES_NO_OPTION);
+                            if (dialogResult == 0) {
+                                huboCambios = eliminarProveedor(idRecurso);
+                            } else {
+                                //No hace nada
                             }
                             break;
                         case VER: {
                             String msg = "";
-                            try {
-                                proveedor find = ad.getDatosProveedor(idRecurso);
-                                msg = "<html>"
-                                        + "NIT:" + find.getNIT() + "<br></br>"
-                                        + "Nombre:   " + find.getNombre() + "<br></br>"
-                                        + "Dirección:  " + find.getDireccion() + "<br></br>"
-                                        + "Teléfono:      " + find.getTelefono() + "<br></br>"
-                                        + "Telefax:        " + find.getTelefax() + "<br></br>"
-                                        + "Celular:  " + find.getCelular() + "<br></br>"
-                                        + "Correo:" + find.getCorreo() + "<br></br>"
-                                        + "Contacto:" + find.getContacto() + "<br></br>"
-                                        + "</html>";
-
-                                JOptionPane j = new JOptionPane(msg);
-                                JDialog di = j.createDialog("Información del proveedor");
-                                di.setVisible(true);
-                            } catch (RemoteException ex) {
-                                Logger.getLogger(ButtonEditor.class.getName()).log(Level.SEVERE, null, ex);
-                            }
+                            Proveedor find = getDatosProveedor(idRecurso);
+                            msg = "<html>"
+                                    + "NIT:" + find.getNIT() + "<br></br>"
+                                    + "Nombre:   " + find.getNombre() + "<br></br>"
+                                    + "Dirección:  " + find.getDireccion() + "<br></br>"
+                                    + "Teléfono:      " + find.getTelefono() + "<br></br>"
+                                    + "Telefax:        " + find.getTelefax() + "<br></br>"
+                                    + "Celular:  " + find.getCelular() + "<br></br>"
+                                    + "Correo:" + find.getCorreo() + "<br></br>"
+                                    + "Contacto:" + find.getContacto() + "<br></br>"
+                                    + "</html>";
+                            JOptionPane j = new JOptionPane(msg);
+                            JDialog di = j.createDialog("Información del proveedor");
+                            di.setVisible(true);
                         }
                         break;
                     }
@@ -191,34 +177,25 @@ public class ButtonEditor extends DefaultCellEditor {
                             cu.setVisible(true);
                             break;
                         case ELIMINAR:
-                            try {
-                                int dialogResult = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el " + recurso + idRecurso + "?", "Alerta", JOptionPane.YES_NO_OPTION);
-                                if (dialogResult == 0) {
-                                    huboCambios = ad.EliminarUsuario(idRecurso);
-                                } else {
-                                    //No hace nada
-                                }
-                            } catch (RemoteException ex) {
-                                Logger.getLogger(ButtonEditor.class.getName()).log(Level.SEVERE, null, ex);
+                            int dialogResult = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el " + recurso + idRecurso + "?", "Alerta", JOptionPane.YES_NO_OPTION);
+                            if (dialogResult == 0) {
+                                huboCambios = eliminarUsuario(idRecurso);
+                            } else {
+                                //No hace nada
                             }
                             break;
                         case VER:
                             String msg = "";
-                            try {
-                                users find = ad.getDatosUsuario(idRecurso);
-                                msg = "<html>"
-                                        + "Identificación:      " + find.getId() + "<br></br>"
-                                        + "Nombre:" + find.getNombre() + "<br></br>"
-                                        + "Correo:   " + find.getCorreo() + "<br></br>"
-                                        + "Laboratorio:  " + find.getLab() + "<br></br>"
-                                        + "</html>";
-
-                                JOptionPane j = new JOptionPane(msg);
-                                JDialog di = j.createDialog("Información del proveedor");
-                                di.setVisible(true);
-                            } catch (RemoteException ex) {
-                                Logger.getLogger(ButtonEditor.class.getName()).log(Level.SEVERE, null, ex);
-                            }
+                            Users find = getDatosUsuario(idRecurso);
+                            msg = "<html>"
+                                    + "Identificación:      " + find.getId() + "<br></br>"
+                                    + "Nombre:" + find.getNombre() + "<br></br>"
+                                    + "Correo:   " + find.getCorreo() + "<br></br>"
+                                    + "Laboratorio:  " + find.getLab() + "<br></br>"
+                                    + "</html>";
+                            JOptionPane j = new JOptionPane(msg);
+                            JDialog di = j.createDialog("Información del proveedor");
+                            di.setVisible(true);
 
                             break;
                         case PERMISOS: {
@@ -250,5 +227,41 @@ public class ButtonEditor extends DefaultCellEditor {
     @Override
     protected void fireEditingStopped() {
         super.fireEditingStopped(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private static logica.ItemInventario buscarInfoItem(java.lang.String cinterno) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.buscarInfoItem(cinterno);
+    }
+
+    private static boolean eliminarItem(logica.ItemInventario item) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.eliminarItem(item);
+    }
+
+    private static boolean eliminarProveedor(java.lang.String nit) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.eliminarProveedor(nit);
+    }
+
+    private static Proveedor getDatosProveedor(java.lang.String nit) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getDatosProveedor(nit);
+    }
+
+    private static boolean eliminarUsuario(java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.eliminarUsuario(id);
+    }
+
+    private static Users getDatosUsuario(java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getDatosUsuario(id);
     }
 }

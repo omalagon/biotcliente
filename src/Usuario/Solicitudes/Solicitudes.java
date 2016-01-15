@@ -5,10 +5,6 @@
  */
 package Usuario.solicitudes;
 
-import EstructurasAux.ItemInventario;
-import EstructurasAux.datosFormatos;
-import EstructurasAux.solicitudPr;
-import EstructurasAux.users;
 import Formatos.fdc001;
 import Usuario.Reportes.ReporteSolicitudes;
 import Usuario.Utils.BtnEditorOcultar;
@@ -16,7 +12,6 @@ import Usuario.Utils.ButtonEditor;
 import Usuario.Utils.ButtonRenderer;
 import Usuario.Utils.EnumAcciones;
 import Usuario.Utils.InputDialogCBox;
-import cliente.Cliente;
 import interfaces.Usuario;
 import java.awt.Desktop;
 import java.awt.Toolkit;
@@ -40,6 +35,12 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import logica.DatosFormatos;
+import logica.ItemInventario;
+import logica.SolicitudPr;
+import logica.Users;
 
 /**
  *
@@ -54,7 +55,7 @@ public class Solicitudes extends javax.swing.JFrame {
     private static String cadenaFecha = hoy.get(Calendar.DAY_OF_MONTH) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/" + hoy.get(Calendar.YEAR);
     private String area = null;
     String usuario = null;
-    private ArrayList<solicitudPr> solicitudes = null;
+    private ArrayList<SolicitudPr> solicitudes = null;
     private ArrayList<Object[]> items = new ArrayList<>();
     private EnumAcciones acciones;
     /**
@@ -67,17 +68,12 @@ public class Solicitudes extends javax.swing.JFrame {
     Solicitudes(String id) {
         initComponents();
         setIcon();
-        Usuario u = cliente.Cliente.conectarU();
         Solicitudes.id = id;
         this.setLocationRelativeTo(null);
         this.setSize(1050, this.getHeight());
-        try {
-            users datosUsuario = u.getDatosUsuario(id);
-            this.area = datosUsuario.getLab();
-            this.usuario = datosUsuario.getNombre();
-        } catch (RemoteException ex) {
-            Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Users datosUsuario =getDatosUsuario(id);
+        this.area = datosUsuario.getLab();
+        this.usuario = datosUsuario.getNombre();
 
         this.jTFieldAreaProcesoSolicitante.setText(area);
         this.jTFieldAreaProcesoSolicitante.setEditable(false);
@@ -120,8 +116,6 @@ public class Solicitudes extends javax.swing.JFrame {
         });
 
         tablaVerSolicitudes.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            Usuario u = cliente.Cliente.conectarU();
-
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 BigDecimal aux = new BigDecimal(tablaVerSolicitudes.getValueAt(tablaVerSolicitudes.getSelectedRow(), 0).toString());
@@ -133,22 +127,18 @@ public class Solicitudes extends javax.swing.JFrame {
                     items.remove(i);
                 }
 
-                try {
-                    ArrayList<ItemInventario> items_numSol = u.getItems_numSol(aux);
-                    for (ItemInventario i : items_numSol) {
-                        Object[] datos = new Object[3];
-                        datos[0] = i.getNumero();
-                        datos[1] = i.getDescripcion();
-                        datos[2] = i.getCantidadSolicitada();
-                        items.add(datos);
-                        df.addRow(datos);
-
-                    }
-                    jta_verObs.setText(u.getSolicitud(Integer.toString(aux.intValue())).getObservaciones());
-                } catch (RemoteException ex) {
-                    Logger.getLogger(ReporteSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
+                ArrayList<ItemInventario> items_numSol = (ArrayList<ItemInventario>) getItemsNumSol(aux);
+                for (ItemInventario i : items_numSol) {
+                    Object[] datos = new Object[3];
+                    datos[0] = i.getNumero();
+                    datos[1] = i.getDescripcion();
+                    datos[2] = i.getCantidadSolicitada();
+                    items.add(datos);
+                    df.addRow(datos);
+                    
                 }
-
+                jta_verObs.setText(getSolicitud(Integer.toString(aux.intValue())).getObservaciones());
+                
             }
         });
 
@@ -625,23 +615,18 @@ public class Solicitudes extends javax.swing.JFrame {
 
     private void btnRefrescarSolicitudesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarSolicitudesActionPerformed
         DefaultTableModel df = (DefaultTableModel) this.tablaVerSolicitudes.getModel();
-        Usuario u = cliente.Cliente.conectarU();
-
+        
         for (int i = df.getRowCount() - 1; i >= 0; i--) {
             df.removeRow(i);
         }
-        try {
-            solicitudes = u.getIdSolicitud(Solicitudes.id);
-        } catch (RemoteException ex) {
-            Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        solicitudes = (ArrayList<SolicitudPr>) getIdSolicitud(Solicitudes.id);
         GregorianCalendar fecha;
-        for (solicitudPr s : solicitudes) {
-            fecha = s.getFecha();
+        for (SolicitudPr s : solicitudes) {
+            fecha = s.getFecha().toGregorianCalendar();
             Object[] datos = new Object[3];
-            datos[0] = s.getNum_sol();
+            datos[0] = s.getNumSol();
             datos[1] = fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR);
-            datos[2] = "Ocultar"+s.getNum_sol();
+            datos[2] = "Ocultar"+s.getNumSol();
             df.addRow(datos);
         }
     }//GEN-LAST:event_btnRefrescarSolicitudesActionPerformed
@@ -661,13 +646,17 @@ public class Solicitudes extends javax.swing.JFrame {
     private void BotonEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonEnviarActionPerformed
         try {
             DefaultTableModel df = (DefaultTableModel) Solicitudes.jTableIngresarItems.getModel();
-            Usuario u = cliente.Cliente.conectarU();
-            users datosUsuario = u.getDatosUsuario(id);
-            solicitudPr sol = new solicitudPr(hoy, this.Observaciones.getText(), null, Solicitudes.id, jTFieldNombreSolicitante.getText(), datosUsuario.getLab());
+            Users datosUsuario = getDatosUsuario(id);
+            SolicitudPr sol = new SolicitudPr();
+            sol.setFecha(DatatypeFactory.newInstance().newXMLGregorianCalendar(hoy));
+            sol.setObservaciones(this.Observaciones.getText());
+            sol.setNumSol(null);
+            sol.setIdSolicitante(Solicitudes.id);
+            sol.setNombreSolicitante(jTFieldNombreSolicitante.getText());
+            sol.setArea(datosUsuario.getLab());
             Integer numSol = 0;
             int ite = 0;
             boolean aceptado = true;
-
             for (ItemInventario i : itemsSolicitud) {
                 if (df.getValueAt(ite, 5) != null) {
                     if (new Float(df.getValueAt(ite, 5).toString()) > 0) {
@@ -679,7 +668,7 @@ public class Solicitudes extends javax.swing.JFrame {
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Ingrese la cantidad solicitada");
-
+                    
                 }
             }
             for (ItemInventario ii : itemsSolicitud) {
@@ -687,70 +676,63 @@ public class Solicitudes extends javax.swing.JFrame {
                     aceptado = false;
                 }
             }
-
             if (aceptado == true) {
-                numSol = u.crearSolicitud(sol, Solicitudes.itemsSolicitud);
+                numSol = crearSolicitud(sol, Solicitudes.itemsSolicitud);
                 if (numSol != 0) {
                     JOptionPane.showMessageDialog(null, "El número de la solicitud hecha es:  " + numSol);
                 } else {
                     JOptionPane.showMessageDialog(null, "No fue posible realizar la solicitud");
-
+                    
                 }
             }
-
             this.btnRefrescarSolicitudes.doClick();
             this.Observaciones.setText("");
             for (int i = df.getRowCount() - 1; i >= 0; i--) {
                 df.removeRow(i);
             }
-        } catch (RemoteException ex) {
+        } catch (DatatypeConfigurationException ex) {
             Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_BotonEnviarActionPerformed
 
     private void btnGenerarFDC001ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarFDC001ActionPerformed
-        Usuario u = Cliente.conectarU();
         ArrayList<Object> aux = new ArrayList<>();
         DefaultTableModel df = (DefaultTableModel) this.tablaVerSolicitudes.getModel();
         String numSol = df.getValueAt(this.tablaVerSolicitudes.getSelectedRow(), 0).toString();
         if (numSol != null) {
-            try {
-                solicitudPr solicitud = u.getSolicitud(numSol);
-                JOptionPane.showMessageDialog(null, "Obteniendo información de la solicitud", "Solicitud", JOptionPane.INFORMATION_MESSAGE);
-                ArrayList<ItemInventario> items_numSol = u.getItems_numSol(new BigDecimal(numSol));
-                users datosUsuario = u.getDatosUsuario(this.id);
-                fdc001 fdc = new fdc001();
-                datosFormatos datos = u.getDatos("1");
-                String rutaImagen;
-                String property = System.getProperty("user.dir");
-                System.out.println(property);
-                rutaImagen = property.concat("\\src\\Imagenes\\iconB.png");
-                HashMap<String, String> parametros = new HashMap<>();
-                parametros.put("revision", datos.getRevision());
-                parametros.put("cargo", datosUsuario.getLab());
-                parametros.put("fechaAct", datos.getFechaActualizacion());
-                parametros.put("titulo", datos.getTitulo());
-                parametros.put("image", rutaImagen);
-                parametros.put("numsol", numSol);
-                parametros.put("fecha", new java.util.Date(solicitud.getFecha().getTimeInMillis()).toString());
-                parametros.put("area", datosUsuario.getLab());
-                parametros.put("nombreRA", datosUsuario.getNombre());
-                parametros.put("observaciones", this.Observaciones.getText());
-                parametros.put("nombreAO", "");
-                JFileChooser chooser = new JFileChooser();
-                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                chooser.showOpenDialog(this);
-                String path = chooser.getSelectedFile().getPath();
-                File archivo = fdc001.metodo(path, parametros, ItemInventario.toObjectArray(items_numSol));
-                if (JOptionPane.showConfirmDialog(null, "¿Desea abrir el archivo?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    try {
-                        Desktop.getDesktop().open(archivo);
-                    } catch (IOException ex) {
-                        Logger.getLogger(ReporteSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+            SolicitudPr solicitud = getSolicitud(numSol);
+            JOptionPane.showMessageDialog(null, "Obteniendo información de la solicitud", "Solicitud", JOptionPane.INFORMATION_MESSAGE);
+            ArrayList<ItemInventario> items_numSol = (ArrayList<ItemInventario>) getItemsNumSol(new BigDecimal(numSol));
+            Users datosUsuario = getDatosUsuario(this.id);
+            fdc001 fdc = new fdc001();
+            DatosFormatos datos = getDatos("1");
+            String rutaImagen;
+            String property = System.getProperty("user.dir");
+            System.out.println(property);
+            rutaImagen = property.concat("\\src\\Imagenes\\iconB.png");
+            HashMap<String, String> parametros = new HashMap<>();
+            parametros.put("revision", datos.getRevision());
+            parametros.put("cargo", datosUsuario.getLab());
+            parametros.put("fechaAct", datos.getFechaActualizacion());
+            parametros.put("titulo", datos.getTitulo());
+            parametros.put("image", rutaImagen);
+            parametros.put("numsol", numSol);
+            parametros.put("fecha", new java.util.Date(solicitud.getFecha().toGregorianCalendar().getTimeInMillis()).toString());
+            parametros.put("area", datosUsuario.getLab());
+            parametros.put("nombreRA", datosUsuario.getNombre());
+            parametros.put("observaciones", this.Observaciones.getText());
+            parametros.put("nombreAO", "");
+            JFileChooser chooser = new JFileChooser();
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            chooser.showOpenDialog(this);
+            String path = chooser.getSelectedFile().getPath();
+            File archivo = fdc001.metodo(path, parametros, EstructurasAux.ItemInventario.toObjectArray(this.arrAux(items_numSol)));
+            if (JOptionPane.showConfirmDialog(null, "¿Desea abrir el archivo?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                try {
+                    Desktop.getDesktop().open(archivo);
+                } catch (IOException ex) {
+                    Logger.getLogger(ReporteSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } catch (RemoteException ex) {
-                Logger.getLogger(Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_btnGenerarFDC001ActionPerformed
@@ -864,4 +846,52 @@ public class Solicitudes extends javax.swing.JFrame {
         }
     }
 
+    private static Users getDatosUsuario(java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getDatosUsuario(id);
+    }
+
+    private static java.util.List<logica.ItemInventario> getItemsNumSol(java.math.BigDecimal numSol) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getItemsNumSol(numSol);
+    }
+
+    private static SolicitudPr getSolicitud(java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getSolicitud(id);
+    }
+
+    private static java.util.List<logica.SolicitudPr> getIdSolicitud(java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getIdSolicitud(id);
+    }
+
+    private static Integer crearSolicitud(logica.SolicitudPr sol, java.util.List<logica.ItemInventario> itemsSolicitud) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.crearSolicitud(sol, itemsSolicitud);
+    }
+
+    private static DatosFormatos getDatos(java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getDatos(id);
+    }
+
+    private ArrayList<EstructurasAux.ItemInventario> arrAux(ArrayList<ItemInventario> a)
+    {
+        ArrayList<EstructurasAux.ItemInventario> arr = new ArrayList<>();
+        for (ItemInventario i : a) {
+            EstructurasAux.ItemInventario itm = new EstructurasAux.ItemInventario(                   
+                    i.getNumero(), i.getDescripcion(), i.getPresentacion(),
+                    i.getCantidad(), i.getPrecio(), i.getCCalidad(), i.getInventario(),
+                    i.getSucursal(), i.getCEsp());
+            arr.add(itm);
+        }
+        return arr;
+    }
 }

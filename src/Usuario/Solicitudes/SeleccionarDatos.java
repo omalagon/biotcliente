@@ -5,7 +5,6 @@
  */
 package Usuario.solicitudes;
 
-import EstructurasAux.ItemInventario;
 import Usuario.MenuPrincipal;
 import interfaces.Usuario;
 import java.awt.Toolkit;
@@ -15,6 +14,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+import logica.ItemInventario;
 
 /**
  *
@@ -198,13 +198,8 @@ public class SeleccionarDatos extends javax.swing.JFrame {
         for (int i = df.getRowCount() - 1; i >= 0; i--) {
             df.removeRow(i);
         }
-        Usuario u = cliente.Cliente.conectarU();
         ArrayList<ItemInventario> itemInventario = null;
-        try {
-            itemInventario = u.itemInventarioAdmin();
-        } catch (RemoteException ex) {
-            Logger.getLogger(SeleccionarDatos.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        itemInventario = (ArrayList<ItemInventario>) itemInventarioAdmin();
         int j = 0;
         for (ItemInventario i : itemInventario) {
             Object[] aux = new Object[4];
@@ -225,7 +220,6 @@ public class SeleccionarDatos extends javax.swing.JFrame {
 
     private void btnAgregarItmsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarItmsActionPerformed
         DefaultTableModel df = (DefaultTableModel) this.tablaInventario.getModel();
-        Usuario u = cliente.Cliente.conectarU();
         boolean valido;
         ItemInventario itm;
         ArrayList<ItemInventario> itemsSeleccionados = new ArrayList<>();
@@ -297,5 +291,11 @@ public class SeleccionarDatos extends javax.swing.JFrame {
 
     private void setIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+    }
+
+    private static java.util.List<logica.ItemInventario> itemInventarioAdmin() {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.itemInventarioAdmin();
     }
 }

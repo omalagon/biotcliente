@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import logica.Users;
 
 /**
  *
@@ -52,18 +53,13 @@ public class CrearUsuario extends javax.swing.JFrame {
 
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    Usuario u = cliente.Cliente.conectarU();
-                    try {
-                        System.out.println("hace algo");
-                        users aux = u.getDatosUsuario(jtf_id.getText());
-                        if (aux != null) {
-                            jtf_nombre.setText(aux.getNombre());
-                            jtf_correo.setText(aux.getCorreo());
-                            existia = true;
-                            jLabel2.setVisible(existia);
-                        }
-                    } catch (RemoteException ex) {
-                        Logger.getLogger(CrearProveedor.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("hace algo");
+                    Users aux = getDatosUsuario(jtf_id.getText());
+                    if (aux != null) {
+                        jtf_nombre.setText(aux.getNombre());
+                        jtf_correo.setText(aux.getCorreo());
+                        existia = true;
+                        jLabel2.setVisible(existia);
                     }
                 }
 
@@ -244,7 +240,11 @@ public class CrearUsuario extends javax.swing.JFrame {
 
     private void btn_AceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_AceptarActionPerformed
         if (existia == false) {
-            this.crearUsuario();
+            try {
+                this.crearUsuario();
+            } catch (RemoteException ex) {
+                Logger.getLogger(CrearUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             this.editarUsuario();
         }
@@ -327,7 +327,7 @@ public class CrearUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_nombre;
     // End of variables declaration//GEN-END:variables
 
-    private void crearUsuario() {
+    private void crearUsuario() throws RemoteException {
         String identificacion = this.jtf_id.getText();
         String nombre = this.jtf_nombre.getText();
         String correo = this.jtf_correo.getText();
@@ -348,11 +348,16 @@ public class CrearUsuario extends javax.swing.JFrame {
         if (area == 3) {
             labo = "EQ";
         }
-        Usuario ad = cliente.Cliente.conectarU();
         if (val == true && identificacion.isEmpty() == false && nombre.isEmpty()
                 == false && correo.isEmpty() == false && psw.isEmpty() == false) {
-            try {
-                creado = ad.crearUsuario(identificacion, nombre, correo, psw, labo, id);
+            
+                Users uu = new Users();
+                uu.setId(new BigDecimal(identificacion));
+                uu.setNombre(nombre);
+                uu.setCorreo(correo);
+                uu.setLab(labo);
+                
+                creado = crearUsuario(uu,id);
                 if (creado == true) {
                     JOptionPane.showMessageDialog(null, "Usuario creado satisfactoriamente");
                     PermisosUsuario perm = new PermisosUsuario(id, this.jtf_id.getText());
@@ -360,9 +365,7 @@ public class CrearUsuario extends javax.swing.JFrame {
                 } else {
                     JOptionPane.showMessageDialog(null, "No se pudo crear el usuario");
                 }
-            } catch (RemoteException ex) {
-                Logger.getLogger(CrearUsuario.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            
         } else {
             JOptionPane.showMessageDialog(null, "Ingrese todos los campos");
         }
@@ -418,23 +421,40 @@ public class CrearUsuario extends javax.swing.JFrame {
         if (area == 3) {
             labo = "EQ";
         }
-        Usuario ad = cliente.Cliente.conectarU();
         if (val == true && identificacion.isEmpty() == false && nombre.isEmpty()
                 == false && correo.isEmpty() == false && psw.isEmpty() == false) {
-            try {
-                users uuuu = new users(new BigDecimal(identificacion.trim()), nombre, correo, labo);
-                editado = ad.EditarUsuario(uuuu);
-                if (editado == true) {
-                    JOptionPane.showMessageDialog(null, "Usuario editado satisfactoriamente");
-                } else {
-                    JOptionPane.showMessageDialog(null, "No se pudo editar el usuario");
-                }
-            } catch (RemoteException ex) {
-                Logger.getLogger(CrearUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            Users uuuu = new Users();
+            uuuu.setId(new BigDecimal(identificacion.trim()));
+                uuuu.setNombre(nombre);
+                uuuu.setCorreo(correo);
+                uuuu.setLab(labo);
+            editado = editarUsuario(uuuu);
+            if (editado == true) {
+                JOptionPane.showMessageDialog(null, "Usuario editado satisfactoriamente");
+            } else {
+                JOptionPane.showMessageDialog(null, "No se pudo editar el usuario");
             }
         } else {
             JOptionPane.showMessageDialog(null, "Ingrese todos los campos");
         }
 
+    }
+
+    private static Users getDatosUsuario(java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getDatosUsuario(id);
+    }
+
+    private static boolean crearUsuario(logica.Users u, java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.crearUsuario(u, id);
+    }
+
+    private static boolean editarUsuario(logica.Users u) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.editarUsuario(u);
     }
 }

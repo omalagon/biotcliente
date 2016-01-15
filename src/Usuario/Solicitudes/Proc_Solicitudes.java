@@ -5,10 +5,6 @@
  */
 package Usuario.Solicitudes;
 
-import EstructurasAux.ItemInventario;
-import EstructurasAux.proveedor;
-import EstructurasAux.solicitudPr;
-import EstructurasAux.users;
 import Usuario.Reportes.itemxProveedor;
 import Usuario.Reportes.verProveedores;
 import interfaces.Usuario;
@@ -29,6 +25,10 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableColumn;
+import logica.ItemInventario;
+import logica.Proveedor;
+import logica.SolicitudPr;
+import logica.Users;
 
 /**
  *
@@ -43,69 +43,51 @@ public class Proc_Solicitudes extends javax.swing.JFrame {
     HashMap<String, String> mapProv = new HashMap<String, String>();
 
     public Proc_Solicitudes(String id){
-        try {
-            initComponents();
-            Proc_Solicitudes.id = id;
-            setIcon();
-            this.jta_verObs.setLineWrap(true);
-            this.jta_verObs.setEditable(false);
-            Usuario u = cliente.Cliente.conectarU();
-            String user = new String();
-            try {
-                users datosUsuario = u.getDatosUsuario(id);
-                user = datosUsuario.getNombre();
-                area = datosUsuario.getLab();
-            } catch (RemoteException ex) {
-                Logger.getLogger(Proc_Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            tablaSolicitudesNoRev.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-                @Override
-                public void valueChanged(ListSelectionEvent event) {
-                    BigDecimal aux = new BigDecimal(tablaSolicitudesNoRev.getValueAt(tablaSolicitudesNoRev.getSelectedRow(), 0).toString());
-                    Usuario u = cliente.Cliente.conectarU();
-                    
-                    DefaultTableModel df = (DefaultTableModel) tablaSolicitudesNoRev.getModel();
-                    llenarContenidoSol(new BigDecimal(tablaSolicitudesNoRev.getValueAt(tablaSolicitudesNoRev.getSelectedRow(), 0).toString()));
-                    try {
-                        jta_verObs.setText(u.getSolicitud(Integer.toString(aux.intValue())).getObservaciones());
-                        numSol = tablaSolicitudesNoRev.getValueAt(tablaSolicitudesNoRev.getSelectedRow(), 0).toString();
-                    } catch (RemoteException ex) {
-                        Logger.getLogger(Proc_Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
+        initComponents();
+        Proc_Solicitudes.id = id;
+        setIcon();
+        this.jta_verObs.setLineWrap(true);
+        this.jta_verObs.setEditable(false);
+        String user = new String();
+        Users datosUsuario = getDatosUsuario(id);
+        user = datosUsuario.getNombre();
+        area = datosUsuario.getLab();
+        tablaSolicitudesNoRev.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent event) {
+                BigDecimal aux = new BigDecimal(tablaSolicitudesNoRev.getValueAt(tablaSolicitudesNoRev.getSelectedRow(), 0).toString());
                 
-            });
-            this.setLocationRelativeTo(null);
-            DefaultTableModel df_NoRevisadas = (DefaultTableModel) this.tablaSolicitudesNoRev.getModel();
-            for (int i = df_NoRevisadas.getRowCount() - 1; i >= 0; i--) {
-                df_NoRevisadas.removeRow(i);
+                DefaultTableModel df = (DefaultTableModel) tablaSolicitudesNoRev.getModel();
+                llenarContenidoSol(new BigDecimal(tablaSolicitudesNoRev.getValueAt(tablaSolicitudesNoRev.getSelectedRow(), 0).toString()));
+                jta_verObs.setText(getSolicitud(Integer.toString(aux.intValue())).getObservaciones());
+                numSol = tablaSolicitudesNoRev.getValueAt(tablaSolicitudesNoRev.getSelectedRow(), 0).toString();
             }
-            ArrayList<solicitudPr> solNoRev = null;
-            try {
-                solNoRev = u.getSolicitudes("NO", id);
-            } catch (RemoteException ex) {
-                Logger.getLogger(Proc_Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            GregorianCalendar fecha = new GregorianCalendar();
-            for (solicitudPr s : solNoRev) {
-                fecha = s.getFecha();
-                Object[] datos = new Object[3];
-                datos[0] = s.getNum_sol();
-                datos[1] = fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR);
-                datos[2] = s.getNombreSolicitante();
-                df_NoRevisadas.addRow(datos);
-            }
-            TableColumn cCalidadCell = this.tablaContenido.getColumnModel().getColumn(7);
-            JComboBox<String> Apro_NITProv = new JComboBox<String>();
-            ArrayList<proveedor> todosProveedores = u.todosProveedores();
-            for (proveedor p : todosProveedores) {
-                Apro_NITProv.addItem(p.getNombre());
+            
+        });
+        this.setLocationRelativeTo(null);
+        DefaultTableModel df_NoRevisadas = (DefaultTableModel) this.tablaSolicitudesNoRev.getModel();
+        for (int i = df_NoRevisadas.getRowCount() - 1; i >= 0; i--) {
+            df_NoRevisadas.removeRow(i);
+        }
+        ArrayList<SolicitudPr> solNoRev = null;
+        solNoRev = (ArrayList<SolicitudPr>) getSolicitudes("NO", id);
+        GregorianCalendar fecha = new GregorianCalendar();
+        for (SolicitudPr s : solNoRev) {
+            fecha = s.getFecha().toGregorianCalendar();
+            Object[] datos = new Object[3];
+            datos[0] = s.getNumSol();
+            datos[1] = fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR);
+            datos[2] = s.getNombreSolicitante();
+            df_NoRevisadas.addRow(datos);
+        }
+        TableColumn cCalidadCell = this.tablaContenido.getColumnModel().getColumn(7);
+        JComboBox<String> Apro_NITProv = new JComboBox<String>();
+        ArrayList<Proveedor> todosProveedores = (ArrayList<Proveedor>) todosProveedores();
+        for (Proveedor p : todosProveedores) {
+            Apro_NITProv.addItem(p.getNombre());
             mapProv.put(p.getNombre(), p.getNIT());
         }
-            cCalidadCell.setCellEditor(new DefaultCellEditor(Apro_NITProv));
-        } catch (RemoteException ex) {
-            Logger.getLogger(Proc_Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        cCalidadCell.setCellEditor(new DefaultCellEditor(Apro_NITProv));
     }
 
     /**
@@ -368,43 +350,38 @@ public class Proc_Solicitudes extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        try {
-            DefaultTableModel df_contenido = (DefaultTableModel) this.tablaContenido.getModel();
-            Usuario u = cliente.Cliente.conectarU();
-            boolean valido;
-            ItemInventario itm;
-            ArrayList<ItemInventario> itemsAprobados = new ArrayList<>();
-            boolean aprobarItems = false;
-            ArrayList<String> arrProv = new ArrayList<>();
-            for (int i = 0; i < df_contenido.getRowCount(); i++) {
-                valido = (boolean) df_contenido.getValueAt(i, 6);
-                if (valido) {
-                    itm = this.itemsXSolicitud.get(i);
-                    String cadPrecio = df_contenido.getValueAt(i, 4).toString();
-                    String cadCantAprobada = df_contenido.getValueAt(i, 5).toString();
-                    String cadProveedor = df_contenido.getValueAt(i, 7).toString();
-                    String nitProveedor = "";
-                    if (!cadPrecio.equalsIgnoreCase("") && !cadCantAprobada.equalsIgnoreCase("")
-                            && !cadProveedor.equalsIgnoreCase("")) {
-                        float precio = new Float(cadPrecio);
-                        float cantAprobada = new Float(cadCantAprobada);
-                        itm.setPrecio(precio);
-                        itm.setCantidadSolicitada(cantAprobada); //Se cambia por la cantidad aprobada
-                        nitProveedor = this.mapProv.get(cadProveedor);
-                        arrProv.add(nitProveedor);
-                        itemsAprobados.add(itm);
-                    }
+        DefaultTableModel df_contenido = (DefaultTableModel) this.tablaContenido.getModel();
+        boolean valido;
+        ItemInventario itm;
+        ArrayList<ItemInventario> itemsAprobados = new ArrayList<>();
+        boolean aprobarItems = false;
+        ArrayList<String> arrProv = new ArrayList<>();
+        for (int i = 0; i < df_contenido.getRowCount(); i++) {
+            valido = (boolean) df_contenido.getValueAt(i, 6);
+            if (valido) {
+                itm = this.itemsXSolicitud.get(i);
+                String cadPrecio = df_contenido.getValueAt(i, 4).toString();
+                String cadCantAprobada = df_contenido.getValueAt(i, 5).toString();
+                String cadProveedor = df_contenido.getValueAt(i, 7).toString();
+                String nitProveedor = "";
+                if (!cadPrecio.equalsIgnoreCase("") && !cadCantAprobada.equalsIgnoreCase("")
+                        && !cadProveedor.equalsIgnoreCase("")) {
+                    float precio = new Float(cadPrecio);
+                    float cantAprobada = new Float(cadCantAprobada);
+                    itm.setPrecio(precio);
+                    itm.setCantidadSolicitada(cantAprobada); //Se cambia por la cantidad aprobada
+                    nitProveedor = this.mapProv.get(cadProveedor);
+                    arrProv.add(nitProveedor);
+                    itemsAprobados.add(itm);
                 }
             }
-            
-            solicitudPr sol = new solicitudPr(new BigDecimal(numSol), id);
-            aprobarItems = u.aprobarItems(itemsAprobados, sol, arrProv);
-            
-            if (aprobarItems) {
-                JOptionPane.showMessageDialog(null, "La solicitud ha sido aprobada");
-            }
-        } catch (RemoteException ex) {
-            Logger.getLogger(Proc_Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        SolicitudPr sol = new SolicitudPr();
+        sol.setNumSol(new BigDecimal(numSol));
+        sol.setIdAO(id);
+        aprobarItems = aprobarItems(itemsAprobados, sol, arrProv);
+        if (aprobarItems) {
+            JOptionPane.showMessageDialog(null, "La solicitud ha sido aprobada");
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -453,18 +430,13 @@ public class Proc_Solicitudes extends javax.swing.JFrame {
     }
 
     private void llenarContenidoSol(BigDecimal numsol) {
-        Usuario n = cliente.Cliente.conectarU();
         DefaultTableModel df_contenido = (DefaultTableModel) this.tablaContenido.getModel();
 
         for (int i = df_contenido.getRowCount() - 1; i >= 0; i--) {
             df_contenido.removeRow(i);
         }
 
-        try {
-            itemsXSolicitud = n.getItemsAprobado(numsol, "NO");
-        } catch (RemoteException ex) {
-            Logger.getLogger(Proc_Solicitudes.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        itemsXSolicitud = (ArrayList<ItemInventario>) getItemsAprobado(numsol, "NO");
         int j = 0;
         for (ItemInventario i : itemsXSolicitud) {
             Object[] datos = new Object[6];
@@ -505,4 +477,40 @@ public class Proc_Solicitudes extends javax.swing.JFrame {
     private javax.swing.JTable tablaContenido;
     private javax.swing.JTable tablaSolicitudesNoRev;
     // End of variables declaration//GEN-END:variables
+
+    private static Users getDatosUsuario(java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getDatosUsuario(id);
+    }
+
+    private static SolicitudPr getSolicitud(java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getSolicitud(id);
+    }
+
+    private static java.util.List<logica.SolicitudPr> getSolicitudes(java.lang.String revisado, java.lang.String idUsuario) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getSolicitudes(revisado, idUsuario);
+    }
+
+    private static java.util.List<logica.Proveedor> todosProveedores() {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.todosProveedores();
+    }
+
+    private static boolean aprobarItems(java.util.List<logica.ItemInventario> items, logica.SolicitudPr sol, java.util.List<java.lang.String> proveedor) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.aprobarItems(items, sol, proveedor);
+    }
+
+    private static java.util.List<logica.ItemInventario> getItemsAprobado(java.math.BigDecimal numSol, java.lang.String aprobado) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getItemsAprobado(numSol, aprobado);
+    }
 }

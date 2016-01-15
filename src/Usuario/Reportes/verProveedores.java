@@ -5,7 +5,6 @@
  */
 package Usuario.Reportes;
 
-import EstructurasAux.proveedor;
 import interfaces.Usuario;
 import java.awt.Desktop;
 import java.awt.Toolkit;
@@ -21,6 +20,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import logica.Proveedor;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -40,31 +40,24 @@ public class verProveedores extends javax.swing.JFrame {
         initComponents();
         setIcon();
         this.setLocationRelativeTo(null);
-        Usuario u = cliente.Cliente.conectarU();
-        try {
-            ArrayList<proveedor> todosProveedores = u.todosProveedores();
-            ArrayList<Object> tabla = new ArrayList<>();
-            
-            for (proveedor t : todosProveedores) {
-                Object[] datos = new Object[8];
-                datos[0] = t.getNIT();
-                datos[1] = t.getNombre();
-                datos[2] = t.getDireccion();
-                datos[3] = t.getTelefono();
-                datos[4] = t.getTelefax();
-                datos[5] = t.getCelular();
-                datos[6] = t.getCorreo();
-                datos[7] = t.getContacto();
-                tabla.add(datos);
-            }
-            
+        ArrayList<Proveedor> todosProveedores = (ArrayList<Proveedor>) todosProveedores();
+        ArrayList<Object> tabla = new ArrayList<>();
+        for (Proveedor t : todosProveedores) {
+            Object[] datos = new Object[8];
+            datos[0] = t.getNIT();
+            datos[1] = t.getNombre();
+            datos[2] = t.getDireccion();
+            datos[3] = t.getTelefono();
+            datos[4] = t.getTelefax();
+            datos[5] = t.getCelular();
+            datos[6] = t.getCorreo();
+            datos[7] = t.getContacto();
+            tabla.add(datos);
+        }
         DefaultTableModel df = (DefaultTableModel)this.jTable1.getModel();
         for (Object t : tabla) {
-        
-        df.addRow((Object[]) t);
-        }    
-        } catch (RemoteException ex) {
-            Logger.getLogger(verProveedores.class.getName()).log(Level.SEVERE, null, ex);
+            
+            df.addRow((Object[]) t);
         }
     }
 
@@ -204,7 +197,6 @@ public class verProveedores extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCerrarActionPerformed
 
     private void btnProveedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProveedoresActionPerformed
-        Usuario u = cliente.Cliente.conectarU();
         try {
             File xls;
             JFileChooser chooser = new JFileChooser();
@@ -286,13 +278,12 @@ public class verProveedores extends javax.swing.JFrame {
         Workbook libro = new HSSFWorkbook();
         FileOutputStream archivo;
         Sheet hoja;
-        ArrayList<proveedor> todos;
+        ArrayList<Proveedor> todos;
         try {
             xls.createNewFile();
             archivo = new FileOutputStream(xls);
             hoja = libro.createSheet("Lista_Proveedores");
-            Usuario u = cliente.Cliente.conectarU();
-            todos =u.todosProveedores();
+            todos =(ArrayList<Proveedor>) todosProveedores();
             int i = 0;
             for (int j = 0; j < 8; j++) {
                 Row fila = hoja.createRow(i);
@@ -326,7 +317,7 @@ public class verProveedores extends javax.swing.JFrame {
                 }
             }
 
-            for (proveedor t : todos) {
+            for (Proveedor t : todos) {
                 Row fila = hoja.createRow(i);
                 Cell aux;
                 for (int j = 0; j < 7; j++) {
@@ -377,6 +368,12 @@ public class verProveedores extends javax.swing.JFrame {
         }
 
         return xls;
+    }
+
+    private static java.util.List<logica.Proveedor> todosProveedores() {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.todosProveedores();
     }
     
     

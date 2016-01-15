@@ -5,7 +5,7 @@
  */
 package Usuario.Descargos;
 
-import EstructurasAux.ItemInventario;
+import logica.ItemInventario;
 import Usuario.Utils.ButtonEditor;
 import Usuario.Utils.ButtonRenderer;
 import Usuario.Utils.EnumAcciones;
@@ -46,14 +46,9 @@ public class VerInventario extends javax.swing.JFrame {
         for (int i = df.getRowCount() - 1; i >= 0; i--) {
             df.removeRow(i);
         }
-        Usuario u = cliente.Cliente.conectarU();
         
         ArrayList<ItemInventario> itemInventario = null;
-        try {
-            itemInventario = u.itemInventarioAdmin();
-        } catch (RemoteException ex) {
-            Logger.getLogger(VerInventario.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        itemInventario = (ArrayList<ItemInventario>) itemInventarioAdmin();
         
         for (ItemInventario i : itemInventario) {
             Object[] aux = new Object[5];
@@ -249,5 +244,11 @@ public class VerInventario extends javax.swing.JFrame {
 
     private void setIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+    }
+
+    private static java.util.List<logica.ItemInventario> itemInventarioAdmin() {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.itemInventarioAdmin();
     }
 }

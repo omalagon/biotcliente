@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import logica.Permisos;
 
 /**
  * 
@@ -22,12 +23,22 @@ public class datos implements Serializable{
     
     public permisos lista(String id)
     {
-        Usuario u =cliente.Cliente.conectarU();
-        try {
-            listadoPermisos = u.lista(id);
-        } catch (RemoteException ex) {
-            Logger.getLogger(datos.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Permisos l = lista_1(id);
+        listadoPermisos = new permisos(id,
+                l.getCrearItem(), l.getCrearProveedor(),
+                l.getCrearUsuario(), l.getDescargarConsumos(),
+                l.getRecibirPedidos(), l.getGenRepDescargos(), 
+                l.getGenRepInventario(), l.getGenRepUsuarios(),
+                l.getGenRepProveedores(), l.getGenRepItemxProveedor(),
+                l.getSolicitarProductos(),l.getRealizarCotizaciones(),
+                l.getAprobarCotizaciones(), l.getGenerarOrdenesCompra(),
+                l.getBloquearUsuario(), l.getGenfdc001());
         return listadoPermisos;
+    }
+
+    private static Permisos lista_1(java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.lista(id);
     }
 }

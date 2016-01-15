@@ -5,16 +5,11 @@
  */
 package Usuario.Creaciones;
 
-import EstructurasAux.proveedor;
-import Usuario.MenuPrincipal;
-import interfaces.Usuario;
 import java.awt.Toolkit;
-import java.rmi.RemoteException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import logica.Proveedor;
 
 /**
  *
@@ -46,23 +41,18 @@ public class CrearProveedor extends javax.swing.JFrame {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
 
-                    Usuario u = cliente.Cliente.conectarU();
-                    try {
-                        proveedor datosProveedor = u.getDatosProveedor(jtf_nit.getText());
-                        if (datosProveedor != null) {
-                            jtf_nombre.setText(datosProveedor.getNombre());
-                            jtf_dir.setText(datosProveedor.getDireccion());
-                            jtf_tel.setText(datosProveedor.getTelefono());
-                            jtf_fax.setText(datosProveedor.getTelefax());
-                            jtf_ciudad.setText(datosProveedor.getCiudad());
-                            jtf_correo.setText(datosProveedor.getCorreo());
-                            jtf_cel.setText(datosProveedor.getCelular());
-                            jtf_contacto.setText(datosProveedor.getContacto());
-
-                            existia = true;
-                        }
-                    } catch (RemoteException ex) {
-                        Logger.getLogger(CrearProveedor.class.getName()).log(Level.SEVERE, null, ex);
+                    Proveedor datosProveedor = getDatosProveedor(jtf_nit.getText());
+                    if (datosProveedor != null) {
+                        jtf_nombre.setText(datosProveedor.getNombre());
+                        jtf_dir.setText(datosProveedor.getDireccion());
+                        jtf_tel.setText(datosProveedor.getTelefono());
+                        jtf_fax.setText(datosProveedor.getTelefax());
+                        jtf_ciudad.setText(datosProveedor.getCiudad());
+                        jtf_correo.setText(datosProveedor.getCorreo());
+                        jtf_cel.setText(datosProveedor.getCelular());
+                        jtf_contacto.setText(datosProveedor.getContacto());
+                        
+                        existia = true;
                     }
 
                 }
@@ -376,45 +366,66 @@ public class CrearProveedor extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void crearProv() {
-        Usuario u = cliente.Cliente.conectarU();
         boolean valido;
-        try {
-            valido = u.CrearProveedor(
-                    this.jtf_nit.getText(), this.jtf_nombre.getText(), this.jtf_dir.getText(), this.jtf_tel.getText(),
-                    this.jtf_fax.getText(), this.jtf_ciudad.getText(), this.jtf_correo.getText(), this.jtf_cel.getText(), this.jtf_contacto.getText()
-            );
-            if (valido) {
-                JOptionPane.showMessageDialog(null, "Proveedor Creado");
-            } else {
-                JOptionPane.showMessageDialog(null, "Error creando al proveedor");
-            }
-
-        } catch (RemoteException ex) {
-            Logger.getLogger(CrearProveedor.class.getName()).log(Level.SEVERE, null, ex);
+        Proveedor p = new Proveedor();
+        p.setNIT(this.jtf_nit.getText());
+        p.setNombre(this.jtf_nombre.getText());
+        p.setDireccion(this.jtf_dir.getText());
+        p.setTelefono(this.jtf_tel.getText());
+        p.setTelefax(this.jtf_fax.getText());
+        p.setCiudad(this.jtf_ciudad.getText());
+        p.setCorreo(this.jtf_correo.getText());
+        p.setCelular(this.jtf_cel.getText());
+        p.setContacto(this.jtf_contacto.getText());
+        
+        valido = crearProveedor(p);
+        if (valido) {
+            JOptionPane.showMessageDialog(null, "Proveedor Creado");
+        } else {
+            JOptionPane.showMessageDialog(null, "Error creando al proveedor");
         }
     }
 
     private void editarProv() {
-        Usuario u = cliente.Cliente.conectarU();
         boolean valido;
-        try {
-            valido = u.EditarProveedor(
-                    this.jtf_nit.getText(), this.jtf_nombre.getText(), this.jtf_dir.getText(), this.jtf_tel.getText(),
-                    this.jtf_fax.getText(), this.jtf_ciudad.getText(), this.jtf_correo.getText(), this.jtf_cel.getText(),
-                    this.jtf_contacto.getText()
-            );
-            if (valido) {
-                JOptionPane.showMessageDialog(null, "Proveedor Editado");
-            } else {
-                JOptionPane.showMessageDialog(null, "Error creando al proveedor");
-            }
-
-        } catch (RemoteException ex) {
-            Logger.getLogger(CrearProveedor.class.getName()).log(Level.SEVERE, null, ex);
+        Proveedor p = new Proveedor();
+        p.setNIT(this.jtf_nit.getText());
+        p.setNombre(this.jtf_nombre.getText());
+        p.setDireccion(this.jtf_dir.getText());
+        p.setTelefono(this.jtf_tel.getText());
+        p.setTelefax(this.jtf_fax.getText());
+        p.setCiudad(this.jtf_ciudad.getText());
+        p.setCorreo(this.jtf_correo.getText());
+        p.setCelular(this.jtf_cel.getText());
+        p.setContacto(this.jtf_contacto.getText());
+        
+        valido = editarProveedor(p);
+        if (valido) {
+            JOptionPane.showMessageDialog(null, "Proveedor Editado");
+        } else {
+            JOptionPane.showMessageDialog(null, "Error creando al proveedor");
         }
     }
 
     private void setIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+    }
+
+    private static Proveedor getDatosProveedor(java.lang.String nit) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.getDatosProveedor(nit);
+    }
+
+    private static boolean crearProveedor(logica.Proveedor p) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.crearProveedor(p);
+    }
+
+    private static boolean editarProveedor(logica.Proveedor p) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.editarProveedor(p);
     }
 }

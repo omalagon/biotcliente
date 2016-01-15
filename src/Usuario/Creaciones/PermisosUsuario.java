@@ -7,7 +7,6 @@ package Usuario.Creaciones;
 
 import EstructurasAux.permisos;
 import Usuario.MenuPrincipal;
-import cliente.Cliente;
 import interfaces.Usuario;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -16,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import logica.Permisos;
 
 /**
  *
@@ -43,25 +43,24 @@ public class PermisosUsuario extends javax.swing.JFrame {
         for (int i = 0; i < df.getRowCount(); i++) {
             df.setValueAt(false, i, 2);
         }
-        Usuario u = Cliente.conectarU();
-        permisos lista = u.lista(idUsNuevo);
+        Permisos lista = lista(idUsNuevo);
         if (lista != null) {
             List<Integer> lstPermisos = new ArrayList<>();
-            lstPermisos.add(lista.isCrearItem());
-            lstPermisos.add(lista.isCrearProveedor());
-            lstPermisos.add(lista.isCrearUsuario());
-            lstPermisos.add(lista.isDescargarConsumos());
-            lstPermisos.add(lista.isRecibirPedidos());
-            lstPermisos.add(lista.isGenRepDescargos());
-            lstPermisos.add(lista.isGenRepInventario());
-            lstPermisos.add(lista.isGenRepUsuarios());
-            lstPermisos.add(lista.isGenRepProveedores());
-            lstPermisos.add(lista.isGenRepItemxProveedor());
-            lstPermisos.add(lista.isSolicitarProductos());
-            lstPermisos.add(lista.isRealizarCotizaciones());
-            lstPermisos.add(lista.isAprobarCotizaciones());
-            lstPermisos.add(lista.isGenerarOrdenesCompra());
-            lstPermisos.add(lista.isBloquearUsuario());
+            lstPermisos.add(lista.getCrearItem());
+            lstPermisos.add(lista.getCrearProveedor());
+            lstPermisos.add(lista.getCrearUsuario());
+            lstPermisos.add(lista.getDescargarConsumos());
+            lstPermisos.add(lista.getRecibirPedidos());
+            lstPermisos.add(lista.getGenRepDescargos());
+            lstPermisos.add(lista.getGenRepInventario());
+            lstPermisos.add(lista.getGenRepUsuarios());
+            lstPermisos.add(lista.getGenRepProveedores());
+            lstPermisos.add(lista.getGenRepItemxProveedor());
+            lstPermisos.add(lista.getSolicitarProductos());
+            lstPermisos.add(lista.getRealizarCotizaciones());
+            lstPermisos.add(lista.getAprobarCotizaciones());
+            lstPermisos.add(lista.getGenerarOrdenesCompra());
+            lstPermisos.add(lista.getBloquearUsuario());
             lstPermisos.add(lista.getGenfdc001());
             for (int i = 0; i < lstPermisos.size(); i++) {
                 df.setValueAt((lstPermisos.get(i) == 1 ? true : false), i, 2);
@@ -215,7 +214,6 @@ public class PermisosUsuario extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         DefaultTableModel df = (DefaultTableModel) this.jTable1.getModel();
         ArrayList<Integer> listado = new ArrayList<>();
-        Usuario u = cliente.Cliente.conectarU();
         for (int i = 0; i < df.getRowCount(); i++) {
             boolean aux = (Boolean) jTable1.getValueAt(i, 2);
             if (aux) {
@@ -226,18 +224,27 @@ public class PermisosUsuario extends javax.swing.JFrame {
 
         }
         
-        permisos per = new permisos(this.idUsNuevo, listado.get(0), listado.get(1), listado.get(2), listado.get(3),
-                listado.get(4), listado.get(5), listado.get(6),
-                listado.get(7), listado.get(8), listado.get(9),
-                listado.get(10), listado.get(11), listado.get(12),
-                listado.get(13), listado.get(14), listado.get(15));
-        try {
-            boolean AsignarPermisos = u.AsignarPermisos(per);
-            if (AsignarPermisos) {
-                JOptionPane.showMessageDialog(null, "Los permisos han sido asignados");
-            }
-        } catch (RemoteException ex) {
-            Logger.getLogger(PermisosUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        Permisos per = new Permisos();
+        per.setId(this.idUsNuevo);
+        per.setCrearItem(listado.get(0));
+        per.setCrearProveedor(listado.get(1));
+        per.setCrearUsuario(listado.get(2));
+        per.setDescargarConsumos(listado.get(3));
+        per.setRecibirPedidos(listado.get(4));
+        per.setGenRepDescargos(listado.get(5));
+        per.setGenRepInventario(listado.get(6));
+        per.setGenRepUsuarios(listado.get(7));
+        per.setGenRepProveedores(listado.get(8));
+        per.setGenRepItemxProveedor(listado.get(9));
+        per.setSolicitarProductos(listado.get(10));
+        per.setRealizarCotizaciones(listado.get(11));
+        per.setAprobarCotizaciones(listado.get(12));
+        per.setGenerarOrdenesCompra(listado.get(13));
+        per.setBloquearUsuario(listado.get(14));
+        per.setGenfdc001(listado.get(15));
+        boolean AsignarPermisos = AsignarPermisos(per);
+        if (AsignarPermisos) {
+            JOptionPane.showMessageDialog(null, "Los permisos han sido asignados");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -286,4 +293,16 @@ public class PermisosUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_volver;
     private javax.swing.JLabel lbl_volver1;
     // End of variables declaration//GEN-END:variables
+
+    private static Permisos lista(java.lang.String id) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.lista(id);
+    }
+
+    private static boolean AsignarPermisos(logica.Permisos p) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.asignarPermisos(p);
+    }
 }

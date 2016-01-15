@@ -209,13 +209,8 @@ public class InicioSesion extends javax.swing.JFrame {
         String psw = new String(lbl_psw.getPassword());
         String cadenaError = "Verifique nombre, contraseña y tipo de usuario";
         boolean validarTipoUsuario = false;
-
-        Usuario u = cliente.Cliente.conectarU();
-        if (u == null) {
-            JOptionPane.showMessageDialog(null, "Error en la conexion con el servidor");
-        } else {
-            try {
-                validarTipoUsuario = u.validarUsuario(usuario, psw);
+        
+                validarTipoUsuario = validarUsuario(usuario, psw);
                 System.out.println(validarTipoUsuario);
                 System.out.println(usuario);
                 System.out.println(psw);
@@ -230,10 +225,7 @@ public class InicioSesion extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, cadenaError);
                 }
 
-            } catch (RemoteException ex) {
-                Logger.getLogger(InicioSesion.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        
     }//GEN-LAST:event_btn_IngresarActionPerformed
 
     private void lbl_IdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lbl_IdActionPerformed
@@ -295,6 +287,12 @@ public class InicioSesion extends javax.swing.JFrame {
 
     private void setIcon() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
+    }
+
+    private static boolean validarUsuario(java.lang.String identificacion, java.lang.String contrasena) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.validarUsuario(identificacion, contrasena);
     }
 
 }
