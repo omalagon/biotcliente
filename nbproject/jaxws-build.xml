@@ -18,8 +18,8 @@
     </target>
     <target name="wsimport-client-LogicaBiotrends" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/LogicaBiotrends"/>
-        <property name="wsdl-LogicaBiotrends" location="xml-resources/web-service-references/LogicaBiotrends/wsdl/192.168.0.5_8080/LogicaBiotrends/LogicaBiotrends.wsdl"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/LogicaBiotrends" destdir="${build.generated.dir}/jax-wsCache/LogicaBiotrends" wsdl="${wsdl-LogicaBiotrends}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://192.168.0.5:8080/LogicaBiotrends/LogicaBiotrends?wsdl" xnocompile="true" xendorsed="true">
+        <property name="wsdl-LogicaBiotrends" location="xml-resources/web-service-references/LogicaBiotrends/wsdl/192.168.10.166_8080/LogicaBiotrends/LogicaBiotrends.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/LogicaBiotrends" destdir="${build.generated.dir}/jax-wsCache/LogicaBiotrends" wsdl="${wsdl-LogicaBiotrends}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://192.168.10.166:8080/LogicaBiotrends/LogicaBiotrends?WSDL" xnocompile="true" xendorsed="true">
             <depends file="${wsdl-LogicaBiotrends}"/>
             <produces dir="${build.generated.dir}/jax-wsCache/LogicaBiotrends"/>
         </wsimport>

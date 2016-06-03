@@ -310,20 +310,12 @@ public class ReporteRecepciones extends javax.swing.JFrame {
 
         jLabel23.setText("Nombre Proveedor/Prestador del servicio");
 
-        rec_dir.setText("fffff");
-
         jLabel24.setText("NIT");
-
-        rec_cel.setText("cccc");
 
         jLabel22.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel22.setText("Datos Proveedor");
 
-        rec_nomProv.setText("ffff");
-
         jLabel26.setText("Celular");
-
-        rec_nit.setText("oooo");
 
         jLabel25.setText("Dirección");
 
@@ -425,7 +417,7 @@ public class ReporteRecepciones extends javax.swing.JFrame {
                             .addComponent(jSeparator8)
                             .addGroup(jPanel9Layout.createSequentialGroup()
                                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 345, Short.MAX_VALUE))))
+                                .addGap(0, 354, Short.MAX_VALUE))))
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)

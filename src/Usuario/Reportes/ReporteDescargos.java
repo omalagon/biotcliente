@@ -69,7 +69,7 @@ public class ReporteDescargos extends javax.swing.JFrame {
             datos[2] = i.getEninventario();
             datos[3] = i.getEmpleado();
             GregorianCalendar hoy = i.getFecha().toGregorianCalendar();
-            String cadenaFecha = hoy.get(Calendar.DAY_OF_MONTH) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/" + hoy.get(Calendar.YEAR);
+            String cadenaFecha = hoy.get(Calendar.YEAR) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/"+ hoy.get(Calendar.DAY_OF_MONTH);
             datos[4] = cadenaFecha;
             df.addRow(datos);
         }

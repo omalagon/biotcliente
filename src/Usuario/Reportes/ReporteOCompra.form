@@ -447,9 +447,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_tel">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel21"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel11">
           <Properties>
@@ -457,14 +454,8 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_cel">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel23"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_direccion">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel20"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel12">
           <Properties>
@@ -477,19 +468,10 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_fax">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel22"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_nombre">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel19"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_nit">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel18"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel15">
           <Properties>

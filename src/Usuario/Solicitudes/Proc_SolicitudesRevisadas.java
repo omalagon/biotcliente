@@ -90,7 +90,7 @@ public class Proc_SolicitudesRevisadas extends javax.swing.JFrame {
             fecha = s.getFecha().toGregorianCalendar();
             Object[] datos = new Object[4];
             datos[0] = s.getNumSol();
-            datos[1] = fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR);
+            datos[1] = fecha.get(Calendar.YEAR) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/"+ fecha.get(Calendar.DAY_OF_MONTH);
             datos[2] = s.getNombreSolicitante();
             datos[3] = "Ocultar"+s.getNumSol();
             df_NoRevisadas.addRow(datos);
@@ -414,6 +414,7 @@ public class Proc_SolicitudesRevisadas extends javax.swing.JFrame {
             SolicitudPr solicitud = getSolicitud(numSol);
             JOptionPane.showMessageDialog(null, "Obteniendo información de la solicitud", "Solicitud", JOptionPane.INFORMATION_MESSAGE);
             ArrayList<ItemInventario> items_numSol = (ArrayList<ItemInventario>) getItemsAprobado(new BigDecimal(numSol), "SI");
+            
             Users datosSolicitante = getDatosUsuario(solicitud.getIdSolicitante());
             Users datosAO = getDatosUsuario(id);
             fdc001 fdc = new fdc001();
@@ -429,7 +430,8 @@ public class Proc_SolicitudesRevisadas extends javax.swing.JFrame {
             parametros.put("titulo", datos.getTitulo());
             parametros.put("image", rutaImagen);
             parametros.put("numsol", numSol);
-            parametros.put("fecha", new java.util.Date(solicitud.getFecha().toGregorianCalendar().getTimeInMillis()).toString());
+            GregorianCalendar fecha = solicitud.getFecha().toGregorianCalendar();
+            parametros.put("fecha", fecha.get(Calendar.YEAR) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/"+ fecha.get(Calendar.DAY_OF_MONTH));
             parametros.put("area", datosSolicitante.getLab());
             parametros.put("nombreRA", datosSolicitante.getNombre());
             parametros.put("observaciones", this.jta_verObs.getText());

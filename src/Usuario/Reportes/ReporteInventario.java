@@ -34,7 +34,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 public class ReporteInventario extends javax.swing.JFrame {
 
     private static String id = null;
-
+    private ArrayList<ItemInventario> itemInventario = null;
     /**
      * Creates new form ReporteInventario
      */
@@ -49,7 +49,7 @@ public class ReporteInventario extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setSize(654, this.getHeight());
         this.btnRefrescar.doClick();
-
+        
     }
 
     /**
@@ -153,11 +153,11 @@ public class ReporteInventario extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Codigo", "Descripción", "Presentación", "Cantidad", "Precio", "Cert. Calidad", "Cumpl Especificaciones"
+                "Codigo", "Descripción", "Presentación", "Cantidad", "Precio", "Cert. Calidad", "Cumpl Especificaciones", "Inventario"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -214,10 +214,10 @@ public class ReporteInventario extends javax.swing.JFrame {
         for (int i = df.getRowCount() - 1; i >= 0; i--) {
             df.removeRow(i);
         }
-        ArrayList<ItemInventario> itemInventario = null;
+        
         itemInventario = (ArrayList<ItemInventario>) itemInventarioAdmin();
         for (ItemInventario i : itemInventario) {
-            Object[] aux = new Object[7];
+            Object[] aux = new Object[8];
             aux[0] = i.getNumero();
             aux[1] = i.getDescripcion();
             aux[2] = i.getPresentacion();
@@ -225,6 +225,7 @@ public class ReporteInventario extends javax.swing.JFrame {
             aux[4] = i.getPrecio();
             aux[5] = i.getCCalidad();
             aux[6] = i.getCEsp();
+            aux[7] = i.getInventario();
             df.addRow(aux);
         }
     }//GEN-LAST:event_btnRefrescarActionPerformed
@@ -332,10 +333,10 @@ public class ReporteInventario extends javax.swing.JFrame {
         try {
             archivo = new FileOutputStream(xls);
             hoja = libro.createSheet("Inventario");
-            todos = (ArrayList<ItemInventario>) itemInventarioAdmin();
+            todos = this.itemInventario;
             int i = 0;
 
-            for (int j = 0; j < 8; j++) {
+            for (int j = 0; j < 9; j++) {
                 Row fila = hoja.createRow(i);
                 Cell aux;
                 if (i == 0) {
@@ -361,6 +362,9 @@ public class ReporteInventario extends javax.swing.JFrame {
                     aux = fila.createCell(j);
                     aux.setCellValue("Cump. Especificaciones");
                     j++;
+                    aux = fila.createCell(j);
+                    aux.setCellValue("Inventario");
+                    j++;
                     i++;
                 }
             }
@@ -368,7 +372,7 @@ public class ReporteInventario extends javax.swing.JFrame {
             for (ItemInventario t : todos) {
                 Row fila = hoja.createRow(i);
                 Cell aux;
-                for (int j = 0; j < 8; j++) {
+                for (int j = 0; j < 9; j++) {
                     aux = fila.createCell(j);
                     aux.setCellValue(t.getNumero());
                     hoja.autoSizeColumn(j);
@@ -395,6 +399,10 @@ public class ReporteInventario extends javax.swing.JFrame {
                     j++;
                     aux = fila.createCell(j);
                     aux.setCellValue(t.getCEsp());
+                    hoja.autoSizeColumn(j);
+                    j++;
+                    aux = fila.createCell(j);
+                    aux.setCellValue(t.getInventario());
                     hoja.autoSizeColumn(j);
                     j++;
                 }

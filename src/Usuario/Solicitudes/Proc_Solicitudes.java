@@ -76,7 +76,7 @@ public class Proc_Solicitudes extends javax.swing.JFrame {
             fecha = s.getFecha().toGregorianCalendar();
             Object[] datos = new Object[3];
             datos[0] = s.getNumSol();
-            datos[1] = fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR);
+            datos[1] = fecha.get(Calendar.YEAR) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/"+ fecha.get(Calendar.DAY_OF_MONTH);
             datos[2] = s.getNombreSolicitante();
             df_NoRevisadas.addRow(datos);
         }

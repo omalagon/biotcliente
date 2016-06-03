@@ -96,6 +96,7 @@ public class fdc001 implements JRDataSource {
             System.out.println(p[5]);
             System.out.println("====================================\n");
         }
+        System.out.println(parametros.get("fecha"));
         InputStream inputStream = null;
         JasperPrint jasperPrint = null;
         fdc001 datasource = new fdc001();

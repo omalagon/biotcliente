@@ -80,7 +80,7 @@
                               <Component id="jSeparator8" alignment="0" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
                                   <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="345" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="354" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -677,9 +677,6 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="rec_dir">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="fffff"/>
-              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel24">
               <Properties>
@@ -687,9 +684,6 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="rec_cel">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="cccc"/>
-              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel22">
               <Properties>
@@ -700,9 +694,6 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="rec_nomProv">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="ffff"/>
-              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel26">
               <Properties>
@@ -710,9 +701,6 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="rec_nit">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="oooo"/>
-              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel25">
               <Properties>

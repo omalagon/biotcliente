@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Metro/2.3 (tags/2.3-7528; 2013-04-29T19:34:10+0000) JAXWS-RI/2.2.8 JAXWS/2.2 svn-revision#unknown. --><xs:schema xmlns:tns="http://Logica/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://Logica/">
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is Metro/2.3.1-b419 (branches/2.3.1.x-7937; 2014-08-04T08:11:03+0000) JAXWS-RI/2.2.10-b140803.1500 JAXWS-API/2.2.11 JAXB-RI/2.2.10-b140802.1033 JAXB-API/2.2.12-b140109.1041 svn-revision#unknown. --><xs:schema xmlns:tns="http://Logica/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://Logica/">
 
 <xs:element name="AsignarPermisos" type="tns:AsignarPermisos"/>
 
@@ -452,6 +452,28 @@
 </xs:sequence>
 </xs:complexType>
 
+<xs:complexType name="crearUsuario">
+<xs:sequence>
+<xs:element name="u" type="tns:users" minOccurs="0"/>
+<xs:element name="id" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="users">
+<xs:sequence>
+<xs:element name="correo" type="xs:string" minOccurs="0"/>
+<xs:element name="id" type="xs:decimal" minOccurs="0"/>
+<xs:element name="lab" type="xs:string" minOccurs="0"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="crearUsuarioResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="recibirPedido">
 <xs:sequence>
 <xs:element name="numOrden" type="xs:decimal" minOccurs="0"/>
@@ -475,28 +497,6 @@
 </xs:complexType>
 
 <xs:complexType name="recibirPedidoResponse">
-<xs:sequence>
-<xs:element name="return" type="xs:boolean"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="crearUsuario">
-<xs:sequence>
-<xs:element name="u" type="tns:users" minOccurs="0"/>
-<xs:element name="id" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="users">
-<xs:sequence>
-<xs:element name="correo" type="xs:string" minOccurs="0"/>
-<xs:element name="id" type="xs:decimal" minOccurs="0"/>
-<xs:element name="lab" type="xs:string" minOccurs="0"/>
-<xs:element name="nombre" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="crearUsuarioResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:boolean"/>
 </xs:sequence>
@@ -584,6 +584,18 @@
 </xs:sequence>
 </xs:complexType>
 
+<xs:complexType name="buscarInfoItem">
+<xs:sequence>
+<xs:element name="cinterno" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarInfoItemResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:itemInventario" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="desasociarItem">
 <xs:sequence>
 <xs:element name="cinterno" type="xs:string" minOccurs="0"/>
@@ -595,18 +607,6 @@
 <xs:complexType name="desasociarItemResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:boolean"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="buscarInfoItem">
-<xs:sequence>
-<xs:element name="cinterno" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="buscarInfoItemResponse">
-<xs:sequence>
-<xs:element name="return" type="tns:itemInventario" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -645,6 +645,16 @@
 </xs:sequence>
 </xs:complexType>
 
+<xs:complexType name="getUsuarios">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="getUsuariosResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:users" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="EditarUsuario">
 <xs:sequence>
 <xs:element name="u" type="tns:users" minOccurs="0"/>
@@ -654,16 +664,6 @@
 <xs:complexType name="EditarUsuarioResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:boolean"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="getUsuarios">
-<xs:sequence/>
-</xs:complexType>
-
-<xs:complexType name="getUsuariosResponse">
-<xs:sequence>
-<xs:element name="return" type="tns:users" minOccurs="0" maxOccurs="unbounded"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -691,6 +691,16 @@
 </xs:sequence>
 </xs:complexType>
 
+<xs:complexType name="itemInventarioAdmin">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="itemInventarioAdminResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:itemInventario" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="getUsuario">
 <xs:sequence>
 <xs:element name="id" type="xs:string" minOccurs="0"/>
@@ -700,16 +710,6 @@
 <xs:complexType name="getUsuarioResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="itemInventarioAdmin">
-<xs:sequence/>
-</xs:complexType>
-
-<xs:complexType name="itemInventarioAdminResponse">
-<xs:sequence>
-<xs:element name="return" type="tns:itemInventario" minOccurs="0" maxOccurs="unbounded"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -855,19 +855,6 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="getItemsAprobado">
-<xs:sequence>
-<xs:element name="numSol" type="xs:decimal" minOccurs="0"/>
-<xs:element name="aprobado" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="getItemsAprobadoResponse">
-<xs:sequence>
-<xs:element name="return" type="tns:itemInventario" minOccurs="0" maxOccurs="unbounded"/>
-</xs:sequence>
-</xs:complexType>
-
 <xs:complexType name="buscarEmpleado">
 <xs:sequence>
 <xs:element name="parametro" type="xs:string" minOccurs="0"/>
@@ -889,6 +876,19 @@
 <xs:element name="lab" type="xs:string" minOccurs="0"/>
 <xs:element name="nombre" type="xs:string" minOccurs="0"/>
 <xs:element name="psw" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getItemsAprobado">
+<xs:sequence>
+<xs:element name="numSol" type="xs:decimal" minOccurs="0"/>
+<xs:element name="aprobado" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getItemsAprobadoResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:itemInventario" minOccurs="0" maxOccurs="unbounded"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -1024,18 +1024,6 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="generarInforme">
-<xs:sequence>
-<xs:element name="mes" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="generarInformeResponse">
-<xs:sequence>
-<xs:element name="return" type="tns:informeDescargos" minOccurs="0" maxOccurs="unbounded"/>
-</xs:sequence>
-</xs:complexType>
-
 <xs:complexType name="ultimos">
 <xs:sequence/>
 </xs:complexType>
@@ -1053,6 +1041,18 @@
 <xs:complexType name="todosProveedoresResponse">
 <xs:sequence>
 <xs:element name="return" type="tns:proveedor" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="generarInforme">
+<xs:sequence>
+<xs:element name="mes" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="generarInformeResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:informeDescargos" minOccurs="0" maxOccurs="unbounded"/>
 </xs:sequence>
 </xs:complexType>
 

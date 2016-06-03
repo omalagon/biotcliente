@@ -52,7 +52,7 @@ public class Solicitudes extends javax.swing.JFrame {
     private static final GregorianCalendar hoy = new GregorianCalendar();
     public static ArrayList<ItemInventario> itemsSolicitud = new ArrayList<>();
     private ArrayList<ItemInventario> aux = new ArrayList<>();
-    private static String cadenaFecha = hoy.get(Calendar.DAY_OF_MONTH) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/" + hoy.get(Calendar.YEAR);
+    private static String cadenaFecha = hoy.get(Calendar.YEAR) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/"+ hoy.get(Calendar.DAY_OF_MONTH);
     private String area = null;
     String usuario = null;
     private ArrayList<SolicitudPr> solicitudes = null;
@@ -615,11 +615,11 @@ public class Solicitudes extends javax.swing.JFrame {
 
     private void btnRefrescarSolicitudesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarSolicitudesActionPerformed
         DefaultTableModel df = (DefaultTableModel) this.tablaVerSolicitudes.getModel();
-        
         for (int i = df.getRowCount() - 1; i >= 0; i--) {
             df.removeRow(i);
         }
         solicitudes = (ArrayList<SolicitudPr>) getIdSolicitud(Solicitudes.id);
+        
         GregorianCalendar fecha;
         for (SolicitudPr s : solicitudes) {
             fecha = s.getFecha().toGregorianCalendar();
@@ -720,7 +720,7 @@ public class Solicitudes extends javax.swing.JFrame {
             parametros.put("fecha", new java.util.Date(solicitud.getFecha().toGregorianCalendar().getTimeInMillis()).toString());
             parametros.put("area", datosUsuario.getLab());
             parametros.put("nombreRA", datosUsuario.getNombre());
-            parametros.put("observaciones", this.Observaciones.getText());
+            parametros.put("observaciones", this.jta_verObs.getText());
             parametros.put("nombreAO", "");
             JFileChooser chooser = new JFileChooser();
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -890,6 +890,7 @@ public class Solicitudes extends javax.swing.JFrame {
                     i.getNumero(), i.getDescripcion(), i.getPresentacion(),
                     i.getCantidad(), i.getPrecio(), i.getCCalidad(), i.getInventario(),
                     i.getSucursal(), i.getCEsp());
+            itm.setCantidadSolicitada(i.getCantidadSolicitada());
             arr.add(itm);
         }
         return arr;

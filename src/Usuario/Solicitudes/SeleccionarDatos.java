@@ -11,8 +11,10 @@ import java.awt.Toolkit;
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ButtonGroup;
 import javax.swing.table.DefaultTableModel;
 import logica.ItemInventario;
 
@@ -30,15 +32,23 @@ public class SeleccionarDatos extends javax.swing.JFrame {
      */
     public SeleccionarDatos() {
         initComponents();
+
     }
 
     SeleccionarDatos(String id) {
         initComponents();
+        ButtonGroup btn = new ButtonGroup();
+        btn.add(ord_codigo);
+        btn.add(ord_descripcion);
+        btn.add(ord_presentacion);
+        jtf_buscCodigo.setText("");
+        jtf_buscDescripcion.setText("");
+        jtf_buscPresentacion.setText("");
         SeleccionarDatos.id = id;
         setIcon();
         this.setLocationRelativeTo(null);
-        this.setSize(740, this.getHeight());
-        this.RefrescarInven.doClick();
+        this.setSize(this.getWidth(), this.getHeight());
+
     }
 
     /**
@@ -60,6 +70,19 @@ public class SeleccionarDatos extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         btnAgregarItms = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jtf_buscCodigo = new javax.swing.JTextField();
+        jtf_buscPresentacion = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jtf_buscDescripcion = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        ord_codigo = new javax.swing.JRadioButton();
+        ord_presentacion = new javax.swing.JRadioButton();
+        ord_descripcion = new javax.swing.JRadioButton();
+        btnBuscar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -106,7 +129,7 @@ public class SeleccionarDatos extends javax.swing.JFrame {
         });
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Refrescar");
+        jLabel3.setText("Restaurar listado");
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Cerrar");
@@ -159,6 +182,71 @@ public class SeleccionarDatos extends javax.swing.JFrame {
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {RefrescarInven, btnAgregarItms, btnCerrar});
 
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel5.setText("Buscador");
+
+        jLabel6.setText("Código");
+
+        jLabel7.setText("Presentación");
+
+        jLabel8.setText("Descripción   ");
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel9.setText("Ordenar por:");
+
+        ord_codigo.setText("Código");
+        ord_codigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ord_codigoActionPerformed(evt);
+            }
+        });
+
+        ord_presentacion.setText("Presentación");
+
+        ord_descripcion.setText("Descripción");
+
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(btnBuscar)
+                        .addContainerGap(38, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ord_codigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(ord_presentacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(ord_descripcion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ord_codigo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(ord_presentacion)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(ord_descripcion)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addComponent(btnBuscar))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -167,26 +255,60 @@ public class SeleccionarDatos extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(0, 607, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel5)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel6))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jtf_buscCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 539, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jtf_buscPresentacion, javax.swing.GroupLayout.PREFERRED_SIZE, 539, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jtf_buscDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 539, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jtf_buscCodigo, jtf_buscPresentacion});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(jtf_buscCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(jtf_buscPresentacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8)
+                            .addComponent(jtf_buscDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 16, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -194,24 +316,18 @@ public class SeleccionarDatos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     @SuppressWarnings("unchecked")
     private void RefrescarInvenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefrescarInvenActionPerformed
-        DefaultTableModel df = (DefaultTableModel) this.tablaInventario.getModel();
-        for (int i = df.getRowCount() - 1; i >= 0; i--) {
-            df.removeRow(i);
+        String orderBy = "";
+        if (ord_presentacion.isSelected()) {
+            orderBy = "presentacion";
+        } else if (ord_descripcion.isSelected()) {
+            orderBy = "desc";
+        } else {
+            orderBy = "codigo";
         }
         ArrayList<ItemInventario> itemInventario = null;
-        itemInventario = (ArrayList<ItemInventario>) itemInventarioAdmin();
-        int j = 0;
-        for (ItemInventario i : itemInventario) {
-            Object[] aux = new Object[4];
-            aux[0] = i.getNumero();
-            aux[1] = i.getDescripcion();
-            aux[2] = i.getPresentacion();
-            aux[3] = i.getCantidad();
-            df.addRow(aux);
-            df.setValueAt(false, j, 4);
-            j++;
-        }
-        this.listado = itemInventario;
+        itemInventario = (ArrayList<ItemInventario>) busquedaItemCod("", "", "", orderBy);
+        cargarListado(itemInventario);
+
     }//GEN-LAST:event_RefrescarInvenActionPerformed
 
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
@@ -239,6 +355,26 @@ public class SeleccionarDatos extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_btnAgregarItmsActionPerformed
+
+    private void ord_codigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ord_codigoActionPerformed
+
+    }//GEN-LAST:event_ord_codigoActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        String codigo = this.jtf_buscCodigo.getText();
+        String presentacion = this.jtf_buscPresentacion.getText();
+        String descripcion = this.jtf_buscDescripcion.getText();
+        String orderBy = "";
+        if (ord_presentacion.isSelected()) {
+            orderBy = "presentacion";
+        } else if (ord_descripcion.isSelected()) {
+            orderBy = "desc";
+        } else {
+            orderBy = "codigo";
+        }
+        List<ItemInventario> busqueda = busquedaItemCod(descripcion, presentacion, codigo, orderBy);
+        cargarListado((ArrayList<ItemInventario>) busqueda);
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -279,13 +415,26 @@ public class SeleccionarDatos extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton RefrescarInven;
     private javax.swing.JButton btnAgregarItms;
+    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCerrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTextField jtf_buscCodigo;
+    private javax.swing.JTextField jtf_buscDescripcion;
+    private javax.swing.JTextField jtf_buscPresentacion;
+    private javax.swing.JRadioButton ord_codigo;
+    private javax.swing.JRadioButton ord_descripcion;
+    private javax.swing.JRadioButton ord_presentacion;
     private javax.swing.JTable tablaInventario;
     // End of variables declaration//GEN-END:variables
 
@@ -293,9 +442,35 @@ public class SeleccionarDatos extends javax.swing.JFrame {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconB.png")));
     }
 
+    public void cargarListado(ArrayList<ItemInventario> itemInventario) {
+        DefaultTableModel df = (DefaultTableModel) this.tablaInventario.getModel();
+        for (int i = df.getRowCount() - 1; i >= 0; i--) {
+            df.removeRow(i);
+        }
+        int j = 0;
+        for (ItemInventario i : itemInventario) {
+            Object[] aux = new Object[4];
+            aux[0] = i.getNumero();
+            aux[1] = i.getDescripcion();
+            aux[2] = i.getPresentacion();
+            aux[3] = i.getCantidad();
+            df.addRow(aux);
+            df.setValueAt(false, j, 4);
+            j++;
+        }
+        this.listado = itemInventario;
+    }
+
     private static java.util.List<logica.ItemInventario> itemInventarioAdmin() {
         logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
         logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
         return port.itemInventarioAdmin();
     }
+
+    private static java.util.List<logica.ItemInventario> busquedaItemCod(java.lang.String descripcion, java.lang.String presentacion, java.lang.String codigo, java.lang.String orderBy) {
+        logica.LogicaBiotrends_Service service = new logica.LogicaBiotrends_Service();
+        logica.LogicaBiotrends port = service.getLogicaBiotrendsPort();
+        return port.busquedaItemCod(descripcion, presentacion, codigo, orderBy);
+    }
+
 }

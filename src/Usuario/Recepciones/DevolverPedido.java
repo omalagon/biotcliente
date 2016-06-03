@@ -6,13 +6,9 @@
 package Usuario.Recepciones;
 
 import Usuario.solicitudes.MenuSolicitud;
-import com.sun.org.apache.bcel.internal.generic.AALOAD;
-import interfaces.Usuario;
 import java.awt.Toolkit;
 import java.math.BigDecimal;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,11 +16,11 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import logica.EvProv;
 import logica.ItemInventario;
 import logica.ItemRecep;
 import logica.RecepcionProd;
-import sun.util.BuddhistCalendar;
 
 /**
  *
@@ -513,6 +509,7 @@ public class DevolverPedido extends javax.swing.JFrame {
                 this.recobs.setText(articulo.getObs());
                 tot += articulo.getCAprobada() * articulo.getPrecio();
                 this.total.setText(Float.toString(tot));
+                i++;
             }
             EvProv ev = getEvaluacionProv(new Double(orden.toString()));
             if (ev != null) {
@@ -546,11 +543,11 @@ public class DevolverPedido extends javax.swing.JFrame {
                     ii.setCAprobada(new Float(df.getValueAt(i, 3).toString()));
                     ii.setPrecio(new Float(df.getValueAt(i, 5).toString()));
                     GregorianCalendar g = new GregorianCalendar();
-                    g.setTime((Date) df.getValueAt(i, 7));
+                    g =((XMLGregorianCalendar) df.getValueAt(i, 7)).toGregorianCalendar();
                     ii.setFLlegada(DatatypeFactory.newInstance().newXMLGregorianCalendar(g));
                     ii.setCCalidad(df.getValueAt(i, 8).toString());
                     ii.setCEsp(df.getValueAt(i, 9).toString());
-                    g.setTime((Date) df.getValueAt(i, 10));
+                    g =((XMLGregorianCalendar) df.getValueAt(i, 10)).toGregorianCalendar();
                     ii.setFVencimiento(DatatypeFactory.newInstance().newXMLGregorianCalendar(g));
                     ii.setMVerificacion(df.getValueAt(i, 11));
                     articulos.add(ii);

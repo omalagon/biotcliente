@@ -96,19 +96,19 @@ public class Recepciones extends javax.swing.JFrame {
         btnProcesarRec = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        ev1 = new javax.swing.JComboBox<>();
-        ev3 = new javax.swing.JComboBox<>();
-        ev4 = new javax.swing.JComboBox<>();
-        ev2 = new javax.swing.JComboBox<>();
+        ev1 = new javax.swing.JComboBox<String>();
+        ev3 = new javax.swing.JComboBox<String>();
+        ev4 = new javax.swing.JComboBox<String>();
+        ev2 = new javax.swing.JComboBox<String>();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        ev5 = new javax.swing.JComboBox<>();
-        ev7 = new javax.swing.JComboBox<>();
-        ev8 = new javax.swing.JComboBox<>();
-        ev6 = new javax.swing.JComboBox<>();
+        ev5 = new javax.swing.JComboBox<String>();
+        ev7 = new javax.swing.JComboBox<String>();
+        ev8 = new javax.swing.JComboBox<String>();
+        ev6 = new javax.swing.JComboBox<String>();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -185,13 +185,13 @@ public class Recepciones extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("Evaluación del Servicio");
 
-        ev1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "0", "NA" }));
+        ev1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "0", "NA" }));
 
-        ev3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "0", "NA" }));
+        ev3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "0", "NA" }));
 
-        ev4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "0", "NA" }));
+        ev4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "0", "NA" }));
 
-        ev2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "0", "NA" }));
+        ev2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "0", "NA" }));
 
         jLabel2.setText("1. Servicio Preventa");
 
@@ -241,13 +241,13 @@ public class Recepciones extends javax.swing.JFrame {
                     .addComponent(jLabel5)))
         );
 
-        ev5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "0", "NA" }));
+        ev5.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "0", "NA" }));
 
-        ev7.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "0", "NA" }));
+        ev7.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "0", "NA" }));
 
-        ev8.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "0", "NA" }));
+        ev8.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "0", "NA" }));
 
-        ev6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "0", "NA" }));
+        ev6.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "0", "NA" }));
 
         jLabel6.setText("5. Entrega Pedidos completos a tiempo");
 
@@ -304,7 +304,7 @@ public class Recepciones extends javax.swing.JFrame {
             }
         });
 
-        btnEnviarRec.setText("Enviar Revisión");
+        btnEnviarRec.setText("Recibir pedido");
         btnEnviarRec.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEnviarRecActionPerformed(evt);
@@ -523,6 +523,7 @@ public class Recepciones extends javax.swing.JFrame {
                 this.recobs.setText(articulo.getObs());
                 tot += articulo.getCAprobada() * articulo.getPrecio();
                 this.total.setText(Float.toString(tot));
+                i++;
             }
             cCalidadCell.setCellEditor(new DefaultCellEditor(calidad));
             cEspe.setCellEditor(new DefaultCellEditor(cEspecificaciones));

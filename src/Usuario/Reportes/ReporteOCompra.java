@@ -257,23 +257,11 @@ public class ReporteOCompra extends javax.swing.JFrame {
 
         jLabel6.setText("NIT");
 
-        lbl_tel.setText("jLabel21");
-
         jLabel11.setText("Fax");
-
-        lbl_cel.setText("jLabel23");
-
-        lbl_direccion.setText("jLabel20");
 
         jLabel12.setText("Celular");
 
         jLabel10.setText("Teléfono");
-
-        lbl_fax.setText("jLabel22");
-
-        lbl_nombre.setText("jLabel19");
-
-        lbl_nit.setText("jLabel18");
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel15.setText("Información del Proveedor");

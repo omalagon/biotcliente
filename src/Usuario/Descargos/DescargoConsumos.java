@@ -30,7 +30,7 @@ import logica.Users;
 public class DescargoConsumos extends javax.swing.JFrame {
 
     private static final GregorianCalendar hoy = new GregorianCalendar();
-    private static String cadenaFecha = hoy.get(Calendar.DAY_OF_MONTH) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/" + hoy.get(Calendar.YEAR);
+    private static String cadenaFecha = hoy.get(Calendar.YEAR) + "/" + (hoy.get(Calendar.MONTH) + 1) + "/"+ hoy.get(Calendar.DAY_OF_MONTH);
     private static ArrayList<ItemInventario> itemInventarioAdmin = null;
     private static String ide = null;
 
@@ -414,7 +414,7 @@ public class DescargoConsumos extends javax.swing.JFrame {
                 d.setId(ide);
                 d.setArea(this.desc_area.getText());
                 d.setCantidad(new Float(this.desc_cantidad.getText()));
-                d.setCinterno(itemInventarioAdmin.get(selectedIndex).getNumero());
+                d.setCinterno(this.desc_items.getSelectedItem().toString());
             } catch (DatatypeConfigurationException ex) {
                 Logger.getLogger(DescargoConsumos.class.getName()).log(Level.SEVERE, null, ex);
             }

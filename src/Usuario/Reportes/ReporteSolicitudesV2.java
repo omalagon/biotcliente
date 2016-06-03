@@ -86,7 +86,7 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
             fecha = s.getFecha().toGregorianCalendar();
             Object[] datos = new Object[3];
             datos[0] = s.getNumSol();
-            datos[1] = fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/" + fecha.get(Calendar.YEAR);
+            datos[1] = fecha.get(Calendar.YEAR) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/"+ fecha.get(Calendar.DAY_OF_MONTH);
             datos[2] = s.getNombreSolicitante();
             df_NoRevisadas.addRow(datos);
         }
@@ -357,7 +357,8 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
             parametros.put("titulo", datos.getTitulo());
             parametros.put("image", rutaImagen);
             parametros.put("numsol", Integer.toString(new Double(numSol).intValue()));
-            parametros.put("fecha", new java.util.Date(solicitud.getFecha().toGregorianCalendar().getTimeInMillis()).toString());
+            GregorianCalendar fecha = solicitud.getFecha().toGregorianCalendar();
+            parametros.put("fecha", fecha.get(Calendar.YEAR) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/"+ fecha.get(Calendar.DAY_OF_MONTH));
             parametros.put("area", datosSolicitante.getLab());
             parametros.put("nombreRA", datosSolicitante.getNombre());
             parametros.put("observaciones", this.jta_verObs.getText());
@@ -560,6 +561,7 @@ public class ReporteSolicitudesV2 extends javax.swing.JFrame {
                     i.getNumero(), i.getDescripcion(), i.getPresentacion(),
                     i.getCantidad(), i.getPrecio(), i.getCCalidad(), i.getInventario(),
                     i.getSucursal(), i.getCEsp());
+            itm.setCantidadSolicitada(i.getCantidadSolicitada());
             arr.add(itm);
         }
         return arr;

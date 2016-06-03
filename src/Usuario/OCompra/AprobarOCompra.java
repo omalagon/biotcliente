@@ -410,8 +410,12 @@ public class AprobarOCompra extends javax.swing.JFrame {
                 ItemInventario get = this.itemAsociados.get(i);
                 get.setNumSolAsociado(df_items.getValueAt(i, 0).toString());
                 aAprobar.add(get);
+                if(this.jta_verObs.getText()=="" && this.jta_verObs.getText().isEmpty())
+                {
+                    this.jta_verObs.setText("-");
+                }
                 itemsOrdenCompra itm = new itemsOrdenCompra(df_items.getValueAt(i, 0).toString(),get.getNumero(), get.getInventario(), get.getDescripcion(), get.getCantidadAprobada(),
-                        get.getPresentacion(), get.getPrecio(), "", new BigDecimal(0));
+                        get.getPresentacion(), get.getPrecio(), this.jta_verObs.getText(), new BigDecimal(0));
                 itm.setvTotal(itm.getCaprobada() * itm.getPrecioU());
                 listaItems.add(itm);
             }
